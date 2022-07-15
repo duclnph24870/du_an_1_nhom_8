@@ -1,0 +1,40 @@
+.addCategory-message {
+    font-size: 1.5rem;
+    display: block;
+    margin-top: 5px;
+    font-style: italic;
+}
+
+.addCategory-message.err {
+    color: #9b1d2c;
+}
+
+.addCategory-message.success {
+    color: #4ba155;
+}
+
+.addCategory-message.success .err {
+    color: #9b1d2c;
+    margin-left: 5px;
+}
+
+.admin-right-item-content-item-ghiChu {
+    text-align: left;
+    width: 100%;
+    display: block;
+    font-size: 1.5rem;
+    color: var(--primary);
+    font-style: italic;
+}
+
+.admin-right-item-content-item-input.invalid .addCategory-message {
+    color: #9b1d2c !important;
+}
+
+.admin-right-item-content-item-list {
+    margin: 12px 0;
+}
+
+.admin-right-item-content-item-list .checkbox-btn-block {
+    margin-bottom: 2px;
+}

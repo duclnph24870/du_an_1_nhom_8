@@ -1,0 +1,98 @@
+.category__container .banner__img {
+    background-image: url(https://static.cdnno.com/storage/topbox/606eab88a0d2ab68a8834c614ab04f07.jpg);
+}
+
+.category__filter {
+    display: flex;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.category__filter-item {
+    margin-right: 25px;
+    display: flex;
+    align-items: center;
+}
+
+.category__filter-item.active {
+    color: var(--primary);
+}
+
+.category__filter-item i {
+    margin-left: 8px;
+}
+
+.btn-category.active {
+    background: var(--primary);
+    opacity: 0.8;
+    color: var(--white);
+    border-color: var(--primary);
+}
+
+.filter__category-item .btn-category {
+    margin: 0 5px 5px 0;
+}
+
+.filter__category-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.filter__category-title {
+    padding-bottom: 5px;
+    font-size: 1.5rem;
+}
+
+.filter__category-submit {
+    position: fixed;
+    bottom: 3vh;
+    left: 1vw;
+    padding: 5px 20px;
+    background-color: var(--primary);
+    color: var(--white);
+    border: none;
+}
+
+.filter__category-item:first-child {
+    padding-top: 0;
+}
+
+.category__filter-item.active {
+    position: relative;
+}
+
+.category__filter-item.active:hover .category__filter-update {
+    display: block;
+}
+
+.category__filter-update {
+    width: 200px;
+    top: calc(100% + 5px);
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.category__filter-update::after {
+    width: 100%;
+    height: 10px;
+    content: "";
+    display: block;
+    top: -8px;
+    position: absolute;
+    right: 0;
+}
+
+.category__filter-update .category-item {
+    width: 100%;
+    font-size: 1.5rem;
+    color: var(--text);
+}
+
+.category__filter-update .category-item:hover {
+    color: var(--primary);
+}
+
+.filter__category-title-keyword {
+    font-size: 1.5rem;
+    color: var(--text);
+    margin-top: 12px;
+}
