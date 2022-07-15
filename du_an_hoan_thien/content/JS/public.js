@@ -1,13 +1,15 @@
-const chatIcon = document.querySelector('.admin-chat-icon');
-const chatIcon2 = document.querySelector('.admin-heald-2');
-const chatContent = document.querySelector('.admin-held');
-chatIcon.addEventListener('click',()=>{
-    chatContent.classList.toggle('active');
-});
+window.onload = () => {
+    const chatIcon = document.querySelector('.admin-chat-icon');
+    const chatIcon2 = document.querySelector('.admin-heald-2');
+    const chatContent = document.querySelector('.admin-held');
+    chatIcon.addEventListener('click',()=>{
+        chatContent.classList.toggle('active');
+    });
 
-if (chatIcon2) {
-    chatIcon2.onclick = () => {
-        chatContent.classList.add('active');
+    if (chatIcon2) {
+        chatIcon2.onclick = () => {
+            chatContent.classList.add('active');
+        }
     }
 }
 //modifyer
@@ -15,11 +17,11 @@ if (chatIcon2) {
 function showModifier (selectorModifier,titleText,contentText) {
     const modifier = document.querySelector(selectorModifier);
     const titleElment = modifier.querySelector('.modifier-title');
-    const content = modifier.querySelector('.modifier-content');
+    const contentEl = modifier.querySelector('.modifier-content');
 
     modifier.style.right = '10px';  
     titleElment.innerText = titleText;
-    content.innerText = contentText;
+    contentEl.innerText = contentText;
     setTimeout(function(){
         modifier.style.right = '-500px';   
     },2000);

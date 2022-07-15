@@ -1,23 +1,23 @@
 
-    // chuyển item
-    const btn = document.querySelectorAll(".product__navbar-btn");
-    const btnItem = document.querySelectorAll(".product__navbar-item");
-    for (let i = 0;i<btn.length;i++) {
-        btn[i].addEventListener('click',()=>{
-            for (let j = 0;j<btnItem.length;j++) {
-                btnItem[j].setAttribute('class','product__navbar-item');
-                btn[j].setAttribute('class','product__navbar-btn');
-            }
-            const cl = btnItem[i].getAttribute('class');
-            const dk = cl.includes('active');
-            const cl1 = btn[i].getAttribute('class');
-            const dk1 = cl1.includes('active');
-            if (!dk && !dk1) {
-                btnItem[i].classList.toggle('active');
-                btn[i].classList.toggle('active');
-            }
-        });
-    }
+// chuyển item
+const btn = document.querySelectorAll(".product__navbar-btn");
+const btnItem = document.querySelectorAll(".product__navbar-item");
+for (let i = 0;i<btn.length;i++) {
+    btn[i].addEventListener('click',()=>{
+        for (let j = 0;j<btnItem.length;j++) {
+            btnItem[j].setAttribute('class','product__navbar-item');
+            btn[j].setAttribute('class','product__navbar-btn');
+        }
+        const cl = btnItem[i].getAttribute('class');
+        const dk = cl.includes('active');
+        const cl1 = btn[i].getAttribute('class');
+        const dk1 = cl1.includes('active');
+        if (!dk && !dk1) {
+            btnItem[i].classList.toggle('active');
+            btn[i].classList.toggle('active');
+        }
+    });
+}
 
     // đánh giá
     const ran = document.querySelectorAll('.myRange');

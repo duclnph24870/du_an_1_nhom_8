@@ -3,7 +3,7 @@
     $CONTENT_URL = "../../content";
     $ADMIN_URL = "../../admin";
     $USER_URL = "../../user";
-    $pageName = "Thêm thể loại";
-    $VIEW_NAME = "category.php";
+    $pageName = "Chương";
+    $VIEW_NAME = "$USER_URL/chuong/chuongMain.php";
     require "../layout.php";
 ?>

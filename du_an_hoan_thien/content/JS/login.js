@@ -1,3 +1,4 @@
+
 const login = document.querySelectorAll(".header__login");
 const register = document.querySelectorAll(".header__register");
 const modal = document.querySelector(".modal");

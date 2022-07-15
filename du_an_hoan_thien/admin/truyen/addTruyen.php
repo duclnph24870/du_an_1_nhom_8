@@ -14,7 +14,7 @@
                 <div class="admin-right-item-header">
                     <div class="admin-right-item-header-item active">Thêm Truyện</div>
                     <div class="admin-right-item-header-item">Danh Sách Truyện</div>
-                    <a href="themChuong.html" class="admin-right-item-header-item-link">Thêm Chương</a>
+                    <a href="<?=$ADMIN_URL?>/truyen/indexAdminTruyen.php?addChuong=1" class="admin-right-item-header-item-link">Thêm Chương</a>
                 </div>
                 <div class="admin-right-item-content">
                     <!-- === thêm truyện === -->
@@ -166,7 +166,7 @@
                                         <td> 2 giờ trước</td>
                                         <td>Đang Ra</td>
                                         <td>24</td>
-                                        <td><a href="indexAdminTruyen.php?edit=0?idTruyen=0" class="editTruyen" title="Sửa Truyện"><i class="fad fa-edit"></i></a><a href="indexAdminTruyen.php?addChuong=0?idChuong=0" class="addChuong" title="Đăng Chương"><i class="fad fa-books-medical"></i></a><input type="checkbox" name="truyenCheckBox" class="chonCheckBox"></td>
+                                        <td><a href="indexAdminTruyen.php?editTruyen=0?idTruyen=0" class="editTruyen" title="Sửa Truyện"><i class="fad fa-edit"></i></a><a href="indexAdminTruyen.php?addChuong=0?idChuong=0" class="addChuong" title="Đăng Chương"><i class="fad fa-books-medical"></i></a><input type="checkbox" name="truyenCheckBox" class="chonCheckBox"></td>
                                     </tr>
                                     
                                     <tr>
