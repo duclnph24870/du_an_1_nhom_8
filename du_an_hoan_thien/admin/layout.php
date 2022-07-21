@@ -1,3 +1,8 @@
+<?php 
+    require "$ROOT_URL/dao/pdo.php";
+    $sql = "SELECT * FROM truyen";      
+    $truyen = pdo_query($sql);              
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -90,8 +95,10 @@
                     <!-- ===========search========= -->
                     <div class="header__search">
                         <form class="header__search-input">
-                            <input type="text" name="header__search-input" autocomplete="off" placeholder="Tìm Kiếm">
+                            <input type="text" name="header__search-input" autocomplete="off" placeholder="Nhập tên truyện hoặc tác giả">
                             <i class="fas fa-search header__search-icon"></i>
+
+                            <div class="category header__search-history"></div>
                         </form>
                     </div>
     
@@ -539,6 +546,10 @@
                 validator.isEmail('input[name="forgotPass-email"]','Bạn chưa nhập đúng định dạng email'),
             ]
         });
+    </script>
+    <script>
+        const newArr = phpArrayJs(<?=json_encode($truyen)?>);
+        search(newArr,'.header__search-input','.header__search-history','<?=$USER_URL.'/truyen/index.php?idTruyen='?>');
     </script>
 </body>
 </html>

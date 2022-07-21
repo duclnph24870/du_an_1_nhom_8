@@ -1,3 +1,8 @@
+<?php 
+    require "$ROOT_URL/dao/pdo.php";
+    $sql = "SELECT * FROM truyen";      
+    $truyen = select_all ($sql);              
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -91,9 +96,13 @@
                     <!-- ===========search========= -->
                     <div class="header__search">
                         <form class="header__search-input">
-                            <input type="text" name="header__search-input" autocomplete="off" placeholder="Tìm Kiếm">
+                            <input type="text" name="header__search-input" autocomplete="off" placeholder="Nhập tên truyện hoặc tác giả">
                             <i class="fas fa-search header__search-icon"></i>
+
+                            <!-- === history === -->
+                            <div class="category header__search-history"></div>
                         </form>
+                        
                     </div>
     
                     <div class="header__right">
@@ -467,6 +476,7 @@
     <script src="<?=$CONTENT_URL?>/JS/validation.js"></script>
     <!-- validate form  -->
     <script>
+        // đăng nhập
         validator({
             form: '#formLogin',
             errSelector: '.modal__form-err',
@@ -478,13 +488,17 @@
             ]
         });
 
+        //đăng ký
         validator({
             form: '#formRegister',
             errSelector: '.modal__form-err',
             rules: [
                 validator.isRequied('input[name="registerEmail"]','Trường email không được bỏ trống'),
                 validator.isEmail('input[name="registerEmail"]','Bạn chưa nhập đúng định dạng email'),
+                validator.maxLength('input[name="registerEmail"]',100,'Email dài tối đa 100 ký tự'),
                 validator.isRequied('input[name="registerPass"]','Trường mật khẩu không được bỏ trống'),
+                validator.maxLength('input[name="registerPass"]',30,'Trường mật khẩu dài không quá 50 ký tự'),
+                validator.maxLength('input[name="registerUsername"]',30,'Username dài không quá 50 ký tự'),
                 validator.isRequied('input[name="registerUsername"]','Không được bỏ trống Username'),
                 validator.minLength('input[name="registerUsername"]',5,'Username dài tối thiểu 5 ký tự'),
                 validator.minLength('input[name="registerPass"]',5,'Mật khẩu dài tối thiểu 5 ký tự'),
@@ -494,6 +508,8 @@
                 },'Mật khẩu nhập lại không chính xác'),
             ]
         });
+
+        // quên mật khẩu
         validator({
             form: '#forgotPass',
             errSelector: '.modal__form-err',
@@ -502,22 +518,10 @@
                 validator.isEmail('input[name="forgotPass-email"]','Bạn chưa nhập đúng định dạng email'),
             ]
         });
-        validator({
-            form: '#changePass',
-            errSelector: '.modal__form-err',
-            rules: [
-                validator.isRequied('input[name="passOld"]','Trường này không được bỏ trống'),
-                validator.isRequied('input[name="passNew"]','Trường này không được bỏ trống'),
-                validator.minLength('input[name="passOld"]',5,'Password dài tối thiểu 5 ký tự'),
-                validator.minLength('input[name="passNew"]',5,'Password dài tối thiểu 5 ký tự'),
-                validator.maxLength('input[name="passNew"]',100,'Password dài tối đa 100 ký tự'),
-                validator.maxLength('input[name="passOld"]',100,'Password dài tối đa 100 ký tự'),
-                validator.isRequied('input[name="confirmPass"]','Trường này không được bỏ trống'),
-                validator.confirmed('input[name="confirmPass"]',function () {
-                return document.querySelector('#formRegister input[name="passNew"]').value;
-                },'Mật khẩu nhập lại không chính xác'),
-            ]
-        });
+    </script>
+    <script>
+        const newArr = phpArrayJs(<?=json_encode($truyen)?>);
+        search(newArr,'.header__search-input','.header__search-history','<?=$USER_URL.'/truyen/index.php?idTruyen='?>');
     </script>
 </body>
 </html>

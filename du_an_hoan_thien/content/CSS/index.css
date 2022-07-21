@@ -169,7 +169,7 @@
 .header__search-input input {
     width: 100%;
     height: 100%;
-    border-radius: 50px;
+    border-radius: 3px;
     outline: none;
     border: none;
     padding-left: 15px;
@@ -206,6 +206,8 @@
     width: 100%;
     top: calc(100% + 3px);
     padding-left: 15px;
+    background: none;
+    /* display: none !important; */
 }
 
 .header__search-input input:focus ~ .header__search-history {

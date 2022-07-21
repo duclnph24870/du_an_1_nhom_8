@@ -1,8 +1,10 @@
 <?php 
     require "../../public.php";
-    $CONTENT_URL = "../../content";
-    $ADMIN_URL = "../../admin";
-    $USER_URL = "../../user";
+    $ROOT_URL = "../../../du_an_hoan_thien";
+    $CONTENT_URL = "$ROOT_URL/content";
+    $ADMIN_URL = "$ROOT_URL/admin";
+    $USER_URL = "$ROOT_URL/user";
+    $DAO_URL = "$ROOT_URL/dao";
     $pageName = "Thêm thể loại";
     $VIEW_NAME = "category.php";
     require "../layout.php";

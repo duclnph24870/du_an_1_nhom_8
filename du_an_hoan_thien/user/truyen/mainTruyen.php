@@ -86,14 +86,14 @@
 
             <div class="product__navbar">
                 <div class="product__navbar-btn-block">
-                    <button class="product__navbar-btn active">Giới Thiệu</button>
+                    <button class="product__navbar-btn">Giới Thiệu</button>
                     <button class="product__navbar-btn">Đánh Giá <span>0</span></button>
                     <button class="product__navbar-btn">D.s Chương <span>125</span></button>
                     <button class="product__navbar-btn">Bình Luận <span>74</span></button>
                 </div>
                 <div class="product__navbar-block">
                     <!-- ==== thông tin truyện ==== -->
-                    <div class="product__navbar-item active">
+                    <div class="product__navbar-item">
                         <div class="row">
                             <div class="col-8">
                                 <div class="product__navbar-item-left">
@@ -797,6 +797,7 @@
 <script src="<?=$CONTENT_URL?>/JS/product.js"></script>
 <script>
     starColor('.product__navbar-item-danhGia-item-start');
+    nextPage('.product__navbar-btn','.product__navbar-item','page');
     showFormRep('.btn-commentRep');
     // php: nếu list rep tồn tại ms chyaj function showRep
     showRep('.showListRep','.hidden-listRep','.listRep');

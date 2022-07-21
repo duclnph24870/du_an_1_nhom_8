@@ -1,4 +1,9 @@
-<?php ?>
+<?php 
+    $sql = "SELECT * FROM truyen";      
+    $truyen = select_all($sql); 
+    $sql1 = "SELECT * FROM danhMuc";      
+    $category = select_all($sql1);
+?> 
 
 <link rel="stylesheet" href="<?=$CONTENT_URL?>/CSS/category.css">
 
@@ -113,104 +118,75 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="category__filter">
-                                        <div class="category__filter-item filter-icon text">
+                                        <div class="filter-icon text mr-3">
                                             <i class="fas fa-sliders-h"></i>
                                         </div>
-                                        <div class="category__filter-item text active">
+                                        <div class="category__filter-item text" name="date2">
                                             Mới Cập Nhập 
-                                            <i class="fas fa-caret-down"></i>
-                                            <div class="category__filter-update category">
-                                                <div class="category-item">Mới Cập Nhập</div>
-                                                <div class="category-item">Mới Đăng</div>
-                                            </div>
                                         </div>
-                                        <div class="category__filter-item text">
+                                        <div class="category__filter-item text" name="date1">
+                                            Mới Đăng 
+                                        </div>
+                                        <div class="category__filter-item text" name="view">
                                             Lượt Đọc
                                         </div>
-                                        <div class="category__filter-item text">Yêu Thích</div>
-                                        <div class="category__filter-item text">Bình Luận</div>
-                                        <div class="category__filter-item text">Đề Cử</div>
-                                        <div class="category__filter-item text">Số chương</div>
+                                        <div class="category__filter-item text" name="chuong">Số chương</div>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="filter__category-title-keyword limit1">Kết quả tìm kiếm cho: <b>Ngự thú</b></div>
                                 </div>
-                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                    <div class="content__section1-main-item">
-                                        <a href="../HTML/product.html" class="content__section1-main-item-img" style="background-image: url(https://static.cdnno.com/poster/tu-luyen-theo-dau-pha-thuong-khung-bat-dau/150.jpg?1585210461);"></a>
-                                        <div class="content__section1-main-item-content">
-                                            <a href="../HTML/product.html" class="content__section1-main-item-title text">Tu Luyện Theo Đấu Phá Thương Khung Bắt Đầu</a>
-                                            <div class="content__section1-main-item-demo">
-                                                Hệ thống nơi tay, thế giới ta có, thiếu niên người mang vạn năng hệ thống, theo Đấu Phá Thương Khung bắt đầu tu luyện, đây là một người hiện đại tại dị giới tu hành cố sự. . .
-                                            </div>
-                                            <div class="content__section1-main-item-footer">
-                                                <div class="content__section1-main-item-master">
-                                                    <i class="fas fa-user-edit"></i>
-                                                    Giang Hồ Hữu Tửu
+                                <div class="itemList d-flex" style="flex-wrap: wrap;">
+                                    <!-- <div class="col-12 col-md-6 col-lg-6 col-xl-6 itemList-item">
+                                        <div class="content__section1-main-item">
+                                            <a href="../HTML/product.html" class="content__section1-main-item-img">
+                                                <img src="https://static.cdnno.com/poster/ban-tien/150.jpg?1623342325" alt="">
+                                            </a>
+                                            <div class="content__section1-main-item-content">
+                                                <a href="../HTML/product.html" class="content__section1-main-item-title text">Tu Luyện Theo Đấu Phá Thương Khung Bắt Đầu</a>
+                                                <div class="content__section1-main-item-demo">
+                                                    Hệ thống nơi tay, thế giới ta có, thiếu niên người mang vạn năng hệ thống, theo Đấu Phá Thương Khung bắt đầu tu luyện, đây là một người hiện đại tại dị giới tu hành cố sự. . .
                                                 </div>
-                                                <div class="content__section1-main-item-category btn">Đồng Nhân</div>
-                                                <div class="content__section1-main-item-chap d-flex">
-                                                    <i class="fas fa-bars"></i>
-                                                    369 chương
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                    <div class="content__section1-main-item">
-                                        <div class="content__section1-main-item-img" style="background-image: url(https://static.cdnno.com/poster/ban-tien/150.jpg?1623342325);"></div>
-                                        <div class="content__section1-main-item-content">
-                                            <div class="content__section1-main-item-title text">Bán Tiên</div>
-                                            <div class="content__section1-main-item-demo">
-                                                Núi sâu có đạo quan, hương hỏa sớm tàn lụi.
-
-                                                Kẻ hèn bất tài, tuổi vừa mới mười chín, từ nhỏ liền là một tên đạo sĩ, bên trên có sư huynh mười mấy vị, dưới chỉ còn nhỏ nhỏ nhất, tục xưng quan môn đệ tử. Sư môn nghèo quá, các sư huynh khó nhịn kham khổ, may mắn chưởng môn sư tôn rộng rãi , mặc cho các sư huynh giải thể mà đi.
-
-                                                Sau có ba vị sư huynh sai đường biết quay lại, tuổi tác khá lớn, đều có bốn năm mươi.
-
-                                                Được sư tôn xem trọng, chết trước truyền chức chưởng môn tại tiểu đạo, nhưng không luận niên tuế hoặc tư lịch đều không có thể phục chúng, ba vị sư huynh không phục. Sư môn bất hạnh, tiểu đạo không phải quả hồng mềm, tuyệt không nhượng bộ, tới tranh chấp nội bộ.
-
-                                                Dưới núi trong thôn, có tân cử nhân, chính là tiểu đạo phát tiểu, sư tôn trôi qua trước cũng có bàn giao, hộ tống hắn vào kinh đi thi. Nghĩa bất dung từ, lại cho tiểu đạo nhân gian đi một lần, trở về sẽ cùng các sư huynh đấu!
-                                            </div>
-                                            <div class="content__section1-main-item-footer">
-                                                <div class="content__section1-main-item-master">
-                                                    <i class="fas fa-user-edit"></i>
-                                                    Vãn Lâm Không
-                                                </div>
-                                                <div class="content__section1-main-item-category btn">Huyền Huyễn</div>
-                                                <div class="content__section1-main-item-chap d-flex">
-                                                    <i class="fas fa-bars"></i>
-                                                    369 chương
+                                                <div class="content__section1-main-item-footer">
+                                                    <div class="content__section1-main-item-master">
+                                                        <i class="fas fa-user-edit"></i>
+                                                        Giang Hồ Hữu Tửu
+                                                    </div>
+                                                    <div class="content__section1-main-item-category btn">Đồng Nhân</div>
+                                                    <div class="content__section1-main-item-chap d-flex">
+                                                        <i class="fas fa-bars"></i>
+                                                        369 chương
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                    <div class="content__section1-main-item">
-                                        <div class="content__section1-main-item-img" style="background-image: url(https://static.cdnno.com/poster/tu-luyen-theo-dau-pha-thuong-khung-bat-dau/150.jpg?1585210461);"></div>
-                                        <div class="content__section1-main-item-content">
-                                            <div class="content__section1-main-item-title text">Tu Luyện Theo Đấu Phá Thương Khung Bắt Đầu</div>
-                                            <div class="content__section1-main-item-demo">
-                                                Hệ thống nơi tay, thế giới ta có, thiếu niên người mang vạn năng hệ thống, theo Đấu Phá Thương Khung bắt đầu tu luyện, đây là một người hiện đại tại dị giới tu hành cố sự. . .
-                                            </div>
-                                            <div class="content__section1-main-item-footer">
-                                                <div class="content__section1-main-item-master">
-                                                    <i class="fas fa-user-edit"></i>
-                                                    Giang Hồ Hữu Tửu
+                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6 itemList-item">
+                                        <div class="content__section1-main-item">
+                                            <a href="../HTML/product.html" class="content__section1-main-item-img">
+                                                <img src="https://static.cdnno.com/poster/ban-tien/150.jpg?1623342325" alt="">
+                                            </a>
+                                            <div class="content__section1-main-item-content">
+                                                <a href="../HTML/product.html" class="content__section1-main-item-title text">Tu Luyện Theo Đấu Phá Thương Khung Bắt Đầu</a>
+                                                <div class="content__section1-main-item-demo">
+                                                    Hệ thống nơi tay, thế giới ta có, thiếu niên người mang vạn năng hệ thống, theo Đấu Phá Thương Khung bắt đầu tu luyện, đây là một người hiện đại tại dị giới tu hành cố sự. . .
                                                 </div>
-                                                <div class="content__section1-main-item-category btn">Đồng Nhân</div>
-                                                <div class="content__section1-main-item-chap d-flex">
-                                                    <i class="fas fa-bars"></i>
-                                                    369 chương
+                                                <div class="content__section1-main-item-footer">
+                                                    <div class="content__section1-main-item-master">
+                                                        <i class="fas fa-user-edit"></i>
+                                                        Giang Hồ Hữu Tửu
+                                                    </div>
+                                                    <div class="content__section1-main-item-category btn">Đồng Nhân</div>
+                                                    <div class="content__section1-main-item-chap d-flex">
+                                                        <i class="fas fa-bars"></i>
+                                                        369 chương
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
-                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                <!-- <div class="col-12 col-md-6 col-lg-6 col-xl-6">
                                     <div class="content__section1-main-item">
                                         <div class="content__section1-main-item-img" style="background-image: url(https://static.cdnno.com/poster/ban-tien/150.jpg?1623342325);"></div>
                                         <div class="content__section1-main-item-content">
@@ -344,16 +320,68 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                    <div class="content__section1-main-item">
+                                        <div class="content__section1-main-item-img" style="background-image: url(https://static.cdnno.com/poster/tu-luyen-theo-dau-pha-thuong-khung-bat-dau/150.jpg?1585210461);"></div>
+                                        <div class="content__section1-main-item-content">
+                                            <div class="content__section1-main-item-title text">Tu Luyện Theo Đấu Phá Thương Khung Bắt Đầu</div>
+                                            <div class="content__section1-main-item-demo">
+                                                Hệ thống nơi tay, thế giới ta có, thiếu niên người mang vạn năng hệ thống, theo Đấu Phá Thương Khung bắt đầu tu luyện, đây là một người hiện đại tại dị giới tu hành cố sự. . .
+                                            </div>
+                                            <div class="content__section1-main-item-footer">
+                                                <div class="content__section1-main-item-master">
+                                                    <i class="fas fa-user-edit"></i>
+                                                    Giang Hồ Hữu Tửu
+                                                </div>
+                                                <div class="content__section1-main-item-category btn">Đồng Nhân</div>
+                                                <div class="content__section1-main-item-chap d-flex">
+                                                    <i class="fas fa-bars"></i>
+                                                    369 chương
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
+                                    <div class="content__section1-main-item">
+                                        <div class="content__section1-main-item-img" style="background-image: url(https://static.cdnno.com/poster/ban-tien/150.jpg?1623342325);"></div>
+                                        <div class="content__section1-main-item-content">
+                                            <div class="content__section1-main-item-title text">Bán Tiên</div>
+                                            <div class="content__section1-main-item-demo">
+                                                Núi sâu có đạo quan, hương hỏa sớm tàn lụi.
+
+                                                Kẻ hèn bất tài, tuổi vừa mới mười chín, từ nhỏ liền là một tên đạo sĩ, bên trên có sư huynh mười mấy vị, dưới chỉ còn nhỏ nhỏ nhất, tục xưng quan môn đệ tử. Sư môn nghèo quá, các sư huynh khó nhịn kham khổ, may mắn chưởng môn sư tôn rộng rãi , mặc cho các sư huynh giải thể mà đi.
+
+                                                Sau có ba vị sư huynh sai đường biết quay lại, tuổi tác khá lớn, đều có bốn năm mươi.
+
+                                                Được sư tôn xem trọng, chết trước truyền chức chưởng môn tại tiểu đạo, nhưng không luận niên tuế hoặc tư lịch đều không có thể phục chúng, ba vị sư huynh không phục. Sư môn bất hạnh, tiểu đạo không phải quả hồng mềm, tuyệt không nhượng bộ, tới tranh chấp nội bộ.
+
+                                                Dưới núi trong thôn, có tân cử nhân, chính là tiểu đạo phát tiểu, sư tôn trôi qua trước cũng có bàn giao, hộ tống hắn vào kinh đi thi. Nghĩa bất dung từ, lại cho tiểu đạo nhân gian đi một lần, trở về sẽ cùng các sư huynh đấu!
+                                            </div>
+                                            <div class="content__section1-main-item-footer">
+                                                <div class="content__section1-main-item-master">
+                                                    <i class="fas fa-user-edit"></i>
+                                                    Vãn Lâm Không
+                                                </div>
+                                                <div class="content__section1-main-item-category btn">Huyền Huyễn</div>
+                                                <div class="content__section1-main-item-chap d-flex">
+                                                    <i class="fas fa-bars"></i>
+                                                    369 chương
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
                                 <div class="col-12">
-                                    <form method="post" class="pagination">
-                                        <div class="pagination__item text"><</div>
+                                    <form method="post" class="pagination pagination-category">
+                                        <!-- <div class="pagination__item text"><</div>
                                         <div class="pagination__item text active">1</div>
                                         <div class="pagination__item text">2</div>
                                         <div class="pagination__item text">3</div>
                                         <div class="pagination__item text">4</div>
                                         <div class="pagination__item text">></div>
                                         <input type="text" value="1" class="pagination__input">
-                                        <input type="submit" value="Go" class="pagination__submit">
+                                        <input type="submit" value="Go" class="pagination__submit"> -->
                                     </form>
                                 </div>
                             </div>
@@ -401,4 +429,21 @@
     filterCategory('.filter__category-item-boiCanh');
     filterCategory('.filter__category-item-luuPhai');
     filterCategory('.filter__category-item-thiGiac');
+
+    const newArr1 = phpArrayJs(<?=json_encode($truyen)?>);
+    const opitionShow = {
+        subArr: phpArrayJs(<?=json_encode($category)?>), // mảng hiển thị phụ
+        mainArr: phpArrayJs(<?=json_encode($truyen)?>), // mảng hiển thị chính
+        linkImg: '<?=$CONTENT_URL?>/IMG/',
+        linkTruyen: '<?=$USER_URL?>/truyen/index.php?idTruyen=',
+        selectorList: '.itemList', // selector list chứa các truyện
+        selectorPagi: '.pagination-category', // selector pagination
+        numberPagi : 10,// số item 1 page
+        arrange: function () {
+            // phương thức sắp xếp truyện
+        },
+    };
+    // selector pagination phải là duy nhất
+    phanTrang(showPagePagi,opitionShow);
+    clickArrange('.category__filter','.category__filter-item',arrangeTruyen,showPagePagi,opitionShow);
 </script>

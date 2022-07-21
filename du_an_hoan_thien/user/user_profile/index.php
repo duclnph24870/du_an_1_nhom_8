@@ -5,7 +5,7 @@
     $ADMIN_URL = "$ROOT_URL/admin";
     $USER_URL = "$ROOT_URL/user";
     $DAO_URL = "$ROOT_URL/dao";
-    $pageName = "Trang chủ";
-    $VIEW_NAME = "$USER_URL/trangchu/main.php";
+    $pageName = "User Profile";
+    $VIEW_NAME = "$USER_URL/user_profile/userProfileMain.php";
     require "../layout.php";
 ?>

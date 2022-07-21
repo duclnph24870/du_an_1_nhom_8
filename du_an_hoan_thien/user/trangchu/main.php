@@ -24,7 +24,7 @@
                                             <img src="https://static.cdnno.com/poster/trach-nhat-phi-thang/150.jpg?1649217741" alt="">
                                         </a>
                                         <div class="content__section1-main-item-content">
-                                            <a href="HTML/product.html" class="content__section1-main-item-title text">Tu Luyện Theo Đấu Phá Thương Khung Bắt Đầu</a>
+                                            <a href="<?=$USER_URL?>/truyen/index.php?idTruyen=1" class="content__section1-main-item-title text">Tu Luyện Theo Đấu Phá Thương Khung Bắt Đầu</a>
                                             <div class="content__section1-main-item-demo">
                                                 Hệ thống nơi tay, thế giới ta có, thiếu niên người mang vạn năng hệ thống, theo Đấu Phá Thương Khung bắt đầu tu luyện, đây là một người hiện đại tại dị giới tu hành cố sự. . .
                                             </div>
