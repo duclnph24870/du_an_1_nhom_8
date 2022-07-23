@@ -7,5 +7,6 @@
     $DAO_URL = "$ROOT_URL/dao";
     $pageName = "Trang chủ";
     $VIEW_NAME = "$USER_URL/trangchu/main.php";
+    $link = "$USER_URL/trangchu/index.php";
     require "../layout.php";
 ?>

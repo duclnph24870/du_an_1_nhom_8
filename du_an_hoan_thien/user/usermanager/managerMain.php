@@ -985,10 +985,10 @@
     showExp();
     previewUpImg('#userProfile','.admin-file-input-img','#admin-file-input','.imgErr');
     nextPage('.admin-right-item-mission-item-event','.event-child');
-    setTimeout(function () {
-        showModifier('.modifier-success','Đăng nhập thành công','Chào Đức, chúc bạn đọc truyện vui vẻ!');
-    },1000);
-    showEvent('noel',1000);
+    // setTimeout(function () {
+    //     showModifier('.modifier-success','Đăng nhập thành công','Chào Đức, chúc bạn đọc truyện vui vẻ!');
+    // },1000);
+    // showEvent('noel',1000);
 </script>
 
 <script>

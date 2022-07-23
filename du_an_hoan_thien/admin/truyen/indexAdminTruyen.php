@@ -5,6 +5,7 @@
     $ADMIN_URL = "$ROOT_URL/admin";
     $USER_URL = "$ROOT_URL/user";
     $DAO_URL = "$ROOT_URL/dao";
+    $link = "$ADMIN_URL/truyen/indexAdminTruyen.php";
     extract($_REQUEST);
     if (check_modul("editTruyen")) {
         $pageName = "Sửa Truyện";

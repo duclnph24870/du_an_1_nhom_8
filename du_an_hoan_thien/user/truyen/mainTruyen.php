@@ -227,10 +227,10 @@
                                     <!-- Đánh giá list  -->
                                     <div class="product__navbar-item-list-danhGia">
                                         <div class="product__navbar-item-comment-item">
-                                            <div class="product__navbar-item-comment-item-img">
+                                            <a href="<?=$USER_URL?>/user_profile/index.php?idUser=1" class="product__navbar-item-comment-item-img">
                                                 <img src="https://metruyenchu.com/images/avatar-profile.png?97b80827721f6116c3dbc797d11d629b" alt="">
                                                 <span>Cấp 0</span>
-                                            </div>
+                                            </a>
                                             <div class="product__navbar-item-comment-item-right">
                                                 <div class="product__navbar-item-comment-item-name text limit1">Ngọc Đức <span>đã đánh giá</span></div>
                                                 <div class="d-flex my-2 align-items-center">
@@ -492,12 +492,12 @@
                                 </div>
                             </div>
                             <div class="col-4">
-                                <div class="product__navbar-item-chap text">
+                                <a href="<?=$USER_URL?>/chuong/index.php?idTruyen=1&idChuong=1" class="product__navbar-item-chap text">
                                     Chương 01: Tam Quỷ Gia 
                                     <span>(1 giờ trước)</span>
                                     <a href="" class="admin-right-item-comment-delete text"><i class="fas fa-edit"></i></a>
                                     <a href="" class="admin-right-item-comment-delete text"><i class="fas fa-trash"></i></a>                                 
-                                </div> 
+                                </a> 
                             </div>
                             <div class="col-4">
                                 <div class="product__navbar-item-chap text">

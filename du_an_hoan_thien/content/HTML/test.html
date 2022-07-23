@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test icon</title>
+    <script src="https://kit.fontawesome.com/cf5472ea14.js" crossorigin="anonymous"></script>
+    <!-- <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v5.15.4/css/all.css"> -->
+    <style>
+        textarea::before {
+            content: "\01F600";
+        }
+    </style>
+</head>
+<body>
+    <textarea name="" id="" cols="30" rows="10" placeholder="Nhập vào đây"></textarea>
+
+</body>
+    <script>
+        const arrIcon1 = [
+            {
+                iconText: ':))',
+                iconUnicode: 0x1F600
+            },
+            {
+                iconText: ':)',
+                iconUnicode: 0x1F642,
+            },
+            {
+                iconText: '.)',
+                iconUnicode: 0x1F436,
+            }
+        ];
+        function showIcon (selectorInput,arrIcon) {
+            const inputEl = document.querySelector(selectorInput);
+            inputEl.oninput = () => {
+                for (let i = 0; i < arrIcon.length; i++) {
+                    setTimeout(() => {
+                        if (inputEl.value == arrIcon[i].iconText) {
+                            var textInputNew = inputEl.value.replace(arrIcon[i].iconText,String.fromCodePoint(arrIcon[i].iconUnicode));
+                            inputEl.value = textInputNew;
+                            inputEl.onkeydown = e => {
+                                if (e.ctrlKey == true && e.keyCode == 32) {
+                                    textInputNew = inputEl.value.replace(String.fromCodePoint(arrIcon[i].iconUnicode),arrIcon[i].iconText);
+                                    inputEl.value = textInputNew;
+                                }
+                                if (e.ctrlKey == true && e.keyCode == 73) {
+                                    textInputNew = inputEl.value.replace(arrIcon[i].iconText,String.fromCodePoint(arrIcon[i].iconUnicode));
+                                    inputEl.value = textInputNew;
+                                }
+                            }
+                        }else if (inputEl.value.indexOf(arrIcon[i].iconText) != -1) {
+                            var textInputNew = inputEl.value.replace(arrIcon[i].iconText,String.fromCodePoint(arrIcon[i].iconUnicode));
+                            inputEl.value = textInputNew;
+                            inputEl.onkeydown = e => {
+                                if (e.ctrlKey == true && e.keyCode == 32) {
+                                    textInputNew = inputEl.value.replace(String.fromCodePoint(arrIcon[i].iconUnicode),arrIcon[i].iconText);
+                                    inputEl.value = textInputNew;
+                                }
+                                if (e.ctrlKey == true && e.keyCode == 73) {
+                                    textInputNew = inputEl.value.replace(arrIcon[i].iconText,String.fromCodePoint(arrIcon[i].iconUnicode));
+                                    inputEl.value = textInputNew;
+                                }
+                            }
+                        }
+
+                        // inputEl.onkeydown = e => {
+                        //         if (e.ctrlKey == true && e.keyCode == 73) {
+                        //             textInputNew = inputEl.value.replace(String.fromCodePoint(arrIcon[i].iconUnicode),arrIcon[i].iconText);
+                        //             inputEl.value = textInputNew;
+                        //         }
+                        // }
+                    },500);
+                }
+            }
+        }
+       
+        showIcon('textarea',arrIcon1);
+    </script>
+
+</html>

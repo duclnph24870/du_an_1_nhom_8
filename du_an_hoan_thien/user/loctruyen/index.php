@@ -6,6 +6,7 @@
     $USER_URL = "$ROOT_URL/user";
     $DAO_URL = "$ROOT_URL/dao";
     $pageName = "Lọc truyện";
+    $link = "$USER_URL/loctruyen/index.php";
     $VIEW_NAME = "$USER_URL/loctruyen/fillterMain.php";
     require "../layout.php";
 ?>

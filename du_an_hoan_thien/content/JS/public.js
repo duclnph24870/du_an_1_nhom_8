@@ -46,7 +46,7 @@ function filterCategory(selecter) {
 }
 
 // next page không có page con
-function nextPage (selectorBtn,selectorContent,type,variab) {
+function nextPage (selectorBtn,selectorContent,type,variab,status='on') {
     const btnElements = document.querySelectorAll(selectorBtn);
     const contents = document.querySelectorAll(selectorContent);
 
@@ -68,8 +68,10 @@ function nextPage (selectorBtn,selectorContent,type,variab) {
 
             if (btnElements[i].matches('.active')) {
 
-                btnElements[i].classList.remove('active');
-                contents[i].classList.remove('active');
+                if (status == 'on') {
+                    btnElements[i].classList.remove('active');
+                    contents[i].classList.remove('active');
+                }
 
             }else {
 

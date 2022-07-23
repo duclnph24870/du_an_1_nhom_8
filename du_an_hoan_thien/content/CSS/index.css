@@ -134,6 +134,7 @@
 .header__rank-text {
     transition: 0.2s;
     cursor: pointer;
+    color: var(--text);
 }
 
 .header__rank:hover .header__rank-text {
@@ -209,8 +210,12 @@
     background: none;
     /* display: none !important; */
 }
+/* 
+.header__search-input input ~ .header__search-history {
+    display: flex;
+} */
 
-.header__search-input input:focus ~ .header__search-history {
+.header__search-history.active {
     display: flex;
 }
 
@@ -262,7 +267,7 @@
     top: -11px;
     right:-14px;
     background-color: #ef4532;
-    padding: 3px;
+    padding: 2px 4px;
     border-radius:10px;
     color: var(--white);
     font-size:1.1rem;
@@ -347,6 +352,10 @@
 
 .header__user:hover .header__user-name-text {
     color: var(--primary);
+}
+
+.header__user-name-text {
+    max-width: 110px;
 }
 
 .header__user:hover .header__user-avt {

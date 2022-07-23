@@ -1,7 +1,14 @@
 <?php 
-    require "$ROOT_URL/dao/pdo.php";
+    require "$DAO_URL/pdo.php";
+    require "$DAO_URL/sign_up_login/login.php";
     $sql = "SELECT * FROM truyen";      
-    $truyen = select_all ($sql);              
+    $truyen = select_all ($sql);   
+
+    if (isset($_SESSION['user'])) {
+        $sqlNotify = "SELECT * FROM `notify` WHERE idUser LIKE '%".$_SESSION['user']['idUser']."%' AND idUserXoa NOT LIKE '%".$_SESSION['user']['idUser']."%';";
+        $notify = select_all($sqlNotify);
+    }
+         
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,56 +49,23 @@
                                 <div class="category-item">
                                     <a href="<?=$USER_URL?>/loctruyen/index.php" class="category-item-link">Tất Cả</a>
                                 </div>
+                                <?php
+                                    $sqlNhom1 = "SELECT * FROM danhMuc WHERE nhom=1";
+                                    $nhom1 = select_all($sqlNhom1);
+                                    foreach ($nhom1 as $k => $n1) :
+                                    extract($n1);
+                                ?>
                                 <div class="category-item">
-                                    <a href="" class="category-item-link">Tiên Hiệp</a>
+                                    <a href="<?=$USER_URL?>/loctruyen/index.php?idDanhMuc=<?=$idDanhMuc?>" class="category-item-link"><?=$tenDanhMuc?></a>
                                 </div>
-                                <div class="category-item">
-                                    <a href="" class="category-item-link">Huyền Huyễn</a>
-                                </div>
-                                <div class="category-item">
-                                    <a href="" class="category-item-link">Kỳ Ảo</a>
-                                </div>
-                                <div class="category-item">
-                                    <a href="" class="category-item-link">Khoa Huyễn</a>
-                                </div>
-                                <div class="category-item">
-                                    <a href="" class="category-item-link">Võng Du</a>
-                                </div>
-                                <div class="category-item">
-                                    <a href="" class="category-item-link">Đô Thị</a>
-                                </div>
-                                <div class="category-item">
-                                    <a href="" class="category-item-link">Đồng Nhân</a>
-                                </div>
-                                <div class="category-item">
-                                    <a href="" class="category-item-link">Cạnh Kỹ</a>
-                                </div>
-                                <div class="category-item">
-                                    <a href="" class="category-item-link">Kiếm Hiệp</a>
-                                </div>
+                                <?php endforeach?>
                             </div>
                         </div>
+
                         <!-- ===========rank========== -->
-                        <div class="header__rank">
+                        <a href="<?=$USER_URL?>/rank/index.php" class="header__rank">
                             <div class="header__rank-text">Bảng Xếp Hạng</div>
-                            <div class="header__rank-content category">
-                                <div class="category-item">
-                                    <a href="" class="category-item-link">Thịnh Hành</a>
-                                </div>
-                                <div class="category-item">
-                                    <a href="" class="category-item-link">Đọc Nhiều</a>
-                                </div>
-                                <div class="category-item">
-                                    <a href="" class="category-item-link">Tặng Thưởng</a>
-                                </div>
-                                <div class="category-item">
-                                    <a href="" class="category-item-link">Đề Cử</a>
-                                </div>
-                                <div class="category-item">
-                                    <a href="" class="category-item-link">Yêu Thích</a>
-                                </div>
-                            </div>
-                        </div>
+                        </a>
                     </div>
                     <!-- ===========search========= -->
                     <div class="header__search">
@@ -113,61 +87,102 @@
                             </div>
                         </a>
         
+                        <?php if (!isset($_SESSION['user'])) :?>
                         <!-- ========đăng nhập,đăng kí=========== -->
                         <div class="header__login header__form">Đăng Nhập</div>
                         <div class="header__register header__form">Đăng Ký</div>
-    
+                        <?php endif?>
+
+                        <?php if (isset($_SESSION['user'])) :?>
                         <!-- ======notify===== -->
-                        <!--<div class="header__notify">
+                        <div class="header__notify">
                             <div class="header__notify-icon">
                                 <i class="fas fa-bell"></i>
-                                <div class="notify-number">12</div>
+                                <?php 
+                                    $sqlNoReadNotify = "SELECT * FROM `notify` WHERE idUser LIKE '%".$_SESSION['user']['idUser']."%' AND idUserDoc NOT LIKE '%".$_SESSION['user']['idUser']."%' AND idUserXoa NOT LIKE '%".$_SESSION['user']['idUser']."%'";
+                                    $notifyNoRead = select_all($sqlNoReadNotify);
+                                ?>
+                                <?php if (isset($notifyNoRead) && count($notifyNoRead) > 0) :?>
+                                    <div class="notify-number"><?=count($notifyNoRead) < 100 ? count($notifyNoRead) : '99'?></div>
+                                <?php endif?>
                             </div>
                             
                             <ul class="header__notify-content-main category">
-                                <li class="category-item watched">
-                                    <div class="icon-cricle"></div>
-                                    <a href="" class="category-item-link">Đức vừa trả lời bình luận của bạn</a>
-                                </li>
-                                <li class="category-item">
-                                    <div class="icon-cricle"></div>
-                                    <a href="" class="category-item-link">Truyện bạn đăng đang ở top 1 bảng tháng</a>
-                                </li>
-                                <li class="category-item">
-                                    <div class="icon-cricle"></div>
-                                    <a href="" class="category-item-link">Nhân dịp năm mới, thân chúc chư vị đạo hữu một năm mới An Khang, Thịnh Vượng</a>
-                                </li>
-                                <li class="category-item">
-                                    <div class="icon-cricle"></div>
-                                    <a href="" class="category-item-link">Nhân dịp năm mới, thân chúc chư vị đạo hữu một năm mới An Khang, Thịnh Vượng</a>
-                                </li>
-                                <li class="category-item">
-                                    <div class="icon-cricle"></div>
-                                    <a href="" class="category-item-link">Nhân dịp năm mới, thân chúc chư vị đạo hữu một năm mới An Khang, Thịnh Vượng</a>
-                                </li>
-                                <li class="category-item notify-hollow">
-                                    <i class="fas fa-box-open"></i>
-                                    <span>Bạn chưa có thông báo nào!</span>
-                                </li>
-                                <div class="header__notify-content-footer">
+                                <?php if (isset($notify)) :?>
+                                    <?php foreach ($notify as $k => $noti) :?>
+                                        <?php
+                                            extract($noti);
+                                            if ($kieuNotify == 0) :?>
+                                                
+                                                <?php if (exist_string($idUserDoc,$_SESSION['user']['idUser'])) :?>
+                                                    <li class="category-item <?=exist_string($idUserDoc,$_SESSION['user']['idUser']) ? 'watched' : '' ?> " style="cursor: default;">
+                                                        <div class="icon-cricle"></div>
+                                                        <div class="category-item-link"><?=$tieuDe?></div>
+                                                    </li>
+                                                <?php endif?>
+
+                                                <?php if (!exist_string($idUserDoc,$_SESSION['user']['idUser'])) :?>
+                                                    <li class="category-item">
+                                                        <div class="icon-cricle"></div>
+                                                        <a href="<?=$DAO_URL?>/notify/read_notify.php?typeNoti=one&linkNoti=<?=$link?>&idUser=<?=$_SESSION['user']['idUser']?>&idNotify=<?=$idNotify?>" class="category-item-link"><?=$tieuDe?></a>
+                                                    </li>
+                                                <?php endif?>
+                                        <?php continue;
+                                            endif
+                                        ?>
+
+                                        <?php
+                                            extract($noti);
+                                            if ($kieuNotify == 1) :
+                                                $linkNoti1 = "$USER_URL/truyen/index.php?idTruyen=$idTruyen";
+                                            ?>
+                                                <li class="category-item <?=exist_string($idUserDoc,$_SESSION['user']['idUser']) ? 'watched' : '' ?>">
+                                                    <div class="icon-cricle"></div>
+                                                    <a href="<?=$DAO_URL?>/notify/read_notify.php?typeNoti=one&linkNoti=<?=$linkNoti1?>&idUser=<?=$_SESSION['user']['idUser']?>&idNotify=<?=$idNotify?>" class="category-item-link"><?=$tieuDe?></a>
+                                                </li>
+                                        <?php continue;
+                                            endif
+                                        ?>
+
+                                        <?php
+                                            extract($noti);
+                                            if ($kieuNotify == 2) :
+                                                $linkNoti2 = "$USER_URL/usermanager/index.php?idUser=".$_SESSION['user']['idUser']."";
+                                            ?>
+                                                <li class="category-item <?=exist_string($idUserDoc,$_SESSION['user']['idUser']) ? 'watched' : '' ?>">
+                                                    <div class="icon-cricle"></div>
+                                                    <a href="<?=$DAO_URL?>/notify/read_notify.php?typeNoti=one&linkNoti=<?=$linkNoti2?>&idUser=<?=$_SESSION['user']['idUser']?>&idNotify=<?=$idNotify?>" class="category-item-link"><?=$tieuDe?></a>
+                                                </li>
+                                        <?php continue;
+                                            endif
+                                        ?>
+                                    <?php endforeach?>
+                                <?php endif?>
+                                <?php if (count($notify) == 0) :?>
+                                    <li class="category-item notify-hollow">
+                                        <i class="fas fa-box-open"></i>
+                                        <span>Bạn chưa có thông báo nào!</span>
+                                    </li>
+                                <?php endif?>
+                                <a href="<?=$USER_URL?>/usermanager/index.php?idUser=<?=$_SESSION['user']['idUser']?>" class="header__notify-content-footer">
                                     <span>Xem tất cả</span>
-                                </div>
+                                </a>
                             </ul>
                             
-                        </div>-->
+                        </div>
     
                         <!-- ========user======== -->
-                        <!-- <div class="header__user">
+                        <div class="header__user">
                             <div class="header__user-avt">
-                                <img src="https://static.cdnno.com/user/d6cebf19fbb6661f86b87df067ab7bc2/50.jpg?1598008352" alt="">
+                                <img src="<?=$CONTENT_URL?>/IMG/<?=$_SESSION['user']['imgUser']?>" alt="">
                             </div>
                             <div class="header__user-name">
-                                <div class="header__user-name-text">Đức Ngọc</div>
+                                <div class="header__user-name-text limit1"><?=$_SESSION['user']['userName']?></div>
                             </div>
     
                             <div class="header__user-content category">
                                 <div class="category-item">
-                                    <a href="" class="category-item-link">Hồ Sơ</a>
+                                    <a href="<?=$USER_URL?>/usermanager/index.php?idUser=1" class="category-item-link">Hồ Sơ</a>
                                 </div>
                                 <div class="category-item">
                                     <a href="" class="category-item-link">Tủ Truyện</a>
@@ -179,10 +194,11 @@
                                     <a href="" class="category-item-link">Nhận Thưởng</a>
                                 </div>
                                 <div class="category-item">
-                                    <a href="" class="category-item-link">Đăng Xuất</a>
+                                    <a href="<?=$DAO_URL?>/sign_up_login/logout.php?link=<?=$link?>" class="category-item-link">Đăng Xuất</a>
                                 </div>
                             </div>
-                        </div> -->
+                        </div>
+                        <?php endif?>
                     </div>
                 </header>
     
@@ -371,6 +387,7 @@
                     </div>
                     <div class="modal__form-content">
                         <form method="post" id="formLogin" class="modal__form-content-main">
+                            <input type="text" name="link" value="<?=$link?>" hidden>
                             <div class="modal__form-input">
                                 <div class="modal__form-input-text">
                                     <span style="color: var(--text)">Email</span>
@@ -397,7 +414,7 @@
                                 </label>
                             </div>
 
-                            <input type="submit" value="Đăng Nhập" class="modal__form-submit">
+                            <input type="submit" name="submitLogin" value="Đăng Nhập" class="modal__form-submit">
                         </form>
                     </div>
                     <div class="modal__form-footer">
@@ -411,7 +428,7 @@
                         <div class="modal__form-header-text" id="modal__form-login">Đăng Nhập</div>
                     </div>
                     <div class="modal__form-content">
-                        <form method="post" id="formRegister" class="modal__form-content-main">
+                        <form method="POST" id="formRegister" action="<?=$DAO_URL?>/sign_up_login/register.php" class="modal__form-content-main">
                             <div class="modal__form-input">
                                 <div class="modal__form-input-text">
                                     <span>Email</span>
@@ -441,9 +458,9 @@
                                 <input type="text" name="registerPassConfirmed" placeholder="Nhập Mật Khẩu">
                                 <span class="modal__form-err"></span>
                             </div>
+                            <input type="text" name="link" hidden value="<?=$link?>">
 
-                            <input type="submit" value="Đăng Ký" class="modal__form-submit">
-
+                            <input type="submit" value="Đăng Ký" name="registerSubmit" class="modal__form-submit">
                         </form>
                     </div>
                     <div class="modal__form-footer">
@@ -469,11 +486,44 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> 
     </div>
+
+
+    <?php if (!isset($_SESSION['user'])) :?>
     <script src="<?=$CONTENT_URL?>/JS/login.js"></script>
+    <?php endif?>
     <script src="<?=$CONTENT_URL?>/JS/public.js"></script>
     <script src="<?=$CONTENT_URL?>/JS/validation.js"></script>
+
+    <?php 
+        if (isset($_GET['status'])) {
+            $status = $_GET['status'];
+            $mess = $_GET['message'];
+            if ($status == 1) { 
+    ?>
+            <script>    
+                if(typeof window.history.pushState == 'function') {
+                    window.history.pushState({}, "Hide", '<?php echo $_SERVER['PHP_SELF'];?>');
+                }
+                showModifier('.modifier.modifier-success',<?=$mess?>,'');
+                </script>
+    <?php
+            }elseif ($status == 0) {    
+    ?>
+
+            <script>    
+                if(typeof window.history.pushState == 'function') {
+                    window.history.pushState({}, "Hide", '<?php echo $_SERVER['PHP_SELF'];?>');
+                }
+                showModifier('.modifier.modifier-err',<?=$mess?>,'');
+            </script>
+
+    <?php 
+            }
+        }
+    ?>
+
     <!-- validate form  -->
     <script>
         // đăng nhập
@@ -483,8 +533,10 @@
             rules: [
                 validator.isRequied('input[name="login__email"]','Trường email không được bỏ trống'),
                 validator.isEmail('input[name="login__email"]','Bạn chưa nhập đúng định dạng email'),
+                validator.maxLength('input[name="login__email"]',100,'Email dài tối đa 100 ký tự'),
                 validator.isRequied('input[name="login__pass"]','Trường mật khẩu không được bỏ trống'),
                 validator.minLength('input[name="login__pass"]',5,'Mật khẩu dài tối thiểu 5 ký tự'),
+                validator.maxLength('input[name="login__pass"]',100,'Mật khẩu dài tối đa 100 ký tự'),
             ]
         });
 
@@ -520,6 +572,7 @@
         });
     </script>
     <script>
+        nextPage('.header__search-input','.header__search-history');
         const newArr = phpArrayJs(<?=json_encode($truyen)?>);
         search(newArr,'.header__search-input','.header__search-history','<?=$USER_URL.'/truyen/index.php?idTruyen='?>');
     </script>

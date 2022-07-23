@@ -5,8 +5,8 @@
     $ADMIN_URL = "$ROOT_URL/admin";
     $USER_URL = "$ROOT_URL/user";
     $DAO_URL = "$ROOT_URL/dao";
-    $pageName = "Chương";
-    $link = "$USER_URL/chuong/index.php";
-    $VIEW_NAME = "$USER_URL/chuong/chuongMain.php";
+    $pageName = "Bảng xếp hạng";
+    $link = "$USER_URL/rank/index.php";
+    $VIEW_NAME = "$USER_URL/rank/main_rank.php";
     require "../layout.php";
 ?>

@@ -6,6 +6,7 @@
     $USER_URL = "$ROOT_URL/user";
     $DAO_URL = "$ROOT_URL/dao";
     $pageName = "Thêm thể loại";
+    // $link = "$ADMIN_URL/category/indexCategory.php";
     $VIEW_NAME = "category.php";
     require "../layout.php";
 ?>

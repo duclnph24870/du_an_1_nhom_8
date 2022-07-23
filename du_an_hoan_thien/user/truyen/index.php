@@ -6,6 +6,7 @@
     $USER_URL = "$ROOT_URL/user";
     $DAO_URL = "$ROOT_URL/dao";
     $pageName = "Product";
+    $link = "$USER_URL/truyen/index.php";
     $VIEW_NAME = "$USER_URL/truyen/mainTruyen.php";
     require "../layout.php";
 ?>

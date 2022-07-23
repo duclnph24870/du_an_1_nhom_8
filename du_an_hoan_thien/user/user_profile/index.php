@@ -6,6 +6,7 @@
     $USER_URL = "$ROOT_URL/user";
     $DAO_URL = "$ROOT_URL/dao";
     $pageName = "User Profile";
+    $link = "$USER_URL/user_profile/index.php";
     $VIEW_NAME = "$USER_URL/user_profile/userProfileMain.php";
     require "../layout.php";
 ?>
