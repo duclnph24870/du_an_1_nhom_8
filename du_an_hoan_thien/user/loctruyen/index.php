@@ -1,4 +1,5 @@
-<?php 
+<?php
+    session_start(); 
     require "../../public.php";
     $ROOT_URL = "../../../du_an_hoan_thien";
     $CONTENT_URL = "$ROOT_URL/content";

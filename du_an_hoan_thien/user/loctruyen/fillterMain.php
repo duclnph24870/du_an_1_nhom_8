@@ -121,16 +121,16 @@
                                         <div class="filter-icon text mr-3">
                                             <i class="fas fa-sliders-h"></i>
                                         </div>
-                                        <div class="category__filter-item text" name="date2">
+                                        <div class="category__filter-item text" data-nameColumn="dateTruyen" name="date">
                                             Mới Cập Nhập 
                                         </div>
-                                        <div class="category__filter-item text" name="date1">
+                                        <div class="category__filter-item text" data-nameColumn="dateCapNhap" name="date">
                                             Mới Đăng 
                                         </div>
-                                        <div class="category__filter-item text" name="view">
+                                        <div class="category__filter-item text" data-nameColumn="viewTruyen" name="number">
                                             Lượt Đọc
                                         </div>
-                                        <div class="category__filter-item text" name="chuong">Số chương</div>
+                                        <div class="category__filter-item text" data-nameColumn="soChuong" name="number">Số chương</div>
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -430,10 +430,9 @@
     filterCategory('.filter__category-item-luuPhai');
     filterCategory('.filter__category-item-thiGiac');
 
-    const newArr1 = phpArrayJs(<?=json_encode($truyen)?>);
     const opitionShow = {
-        subArr: phpArrayJs(<?=json_encode($category)?>), // mảng hiển thị phụ
-        mainArr: phpArrayJs(<?=json_encode($truyen)?>), // mảng hiển thị chính
+        subArr: phpArrayJs(<?=json_encode($category)?>), // mảng hiển thị phụ (mảng category) 
+        mainArr: phpArrayJs(<?=json_encode($truyen)?>), // mảng hiển thị chính (mảng truyện)
         linkImg: '<?=$CONTENT_URL?>/IMG/',
         linkTruyen: '<?=$USER_URL?>/truyen/index.php?idTruyen=',
         selectorList: '.itemList', // selector list chứa các truyện
@@ -445,5 +444,5 @@
     };
     // selector pagination phải là duy nhất
     phanTrang(showPagePagi,opitionShow);
-    clickArrange('.category__filter','.category__filter-item',arrangeTruyen,showPagePagi,opitionShow);
+    clickArrange('.category__filter','.category__filter-item',arrangeWeb,showPagePagi,opitionShow);
 </script>

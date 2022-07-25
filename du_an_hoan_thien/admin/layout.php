@@ -48,7 +48,7 @@
                                     <a href="<?=$USER_URL?>/loctruyen/index.php" class="category-item-link">Tất Cả</a>
                                 </div>
                                 <?php
-                                    $sqlNhom1 = "SELECT * FROM danhMuc WHERE nhom=1";
+                                    $sqlNhom1 = "SELECT * FROM danhMuc WHERE nhom='nhom1'";
                                     $nhom1 = select_all($sqlNhom1);
                                     foreach ($nhom1 as $k => $n1) :
                                     extract($n1);
@@ -528,7 +528,7 @@
     <?php if (!isset($_SESSION['user'])) :?>
     <script src="<?=$CONTENT_URL?>/JS/login.js"></script>
     <?php endif?>
-    <script src="<?=$CONTENT_URL?>/JS/login.js"></script>
+    <script src="<?=$CONTENT_URL?>/JS/public.js"></script>
     <script src="<?=$CONTENT_URL?>/JS/validation.js"></script>
 
     <?php 

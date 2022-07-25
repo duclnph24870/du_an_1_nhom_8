@@ -1,5 +1,4 @@
 <?php 
-    session_start();
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $sqlUser = "SELECT * FROM user";
         $users = select_all($sqlUser);

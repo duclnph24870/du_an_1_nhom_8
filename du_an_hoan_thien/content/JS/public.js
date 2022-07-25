@@ -561,7 +561,7 @@ function phanTrang (callback,options) {
     const pagination = document.querySelector(options.selectorPagi);
     let numberPagination = Math.ceil(options.mainArr.length/options.numberPagi);
 
-    if (numberPagination > 1) {
+    if (numberPagination >= 1) {
         showPagination(0,numberPagination,pagination);
         callback(0,options);
     }
@@ -582,14 +582,14 @@ function phanTrang (callback,options) {
             nextPagination.onclick = () => {
             const itemNextPagination = pagination.querySelector('.active.pagination__item.numberPagi');
                 showPagination(+itemNextPagination.innerText + 1,numberPagination,pagination);
-                callback(+itemPagination[i].innerText + 1,options);
+                callback(+itemNextPagination.innerText + 1,options);
             }
         }
         if (prePagination) {
             prePagination.onclick = () => {
             const itemPrePagination = pagination.querySelector('.active.pagination__item.numberPagi');
                 showPagination(+itemPrePagination.innerText - 1,numberPagination,pagination);
-                callback(+itemPagination[i].innerText - 1,options);
+                callback(+itemPrePagination.innerText - 1,options);
             }
         }
         const submitBtn = pagination.querySelector('.pagination__submit');
@@ -606,46 +606,12 @@ function phanTrang (callback,options) {
     }
 }
 
-// date1 sắp xếp theo thời gian đăng truyện mới nhất lên trước
-// date2 sắp xếp theo thời gian cập nhập mới nhất lên trước
-// view sắp xếp theo lượt view
-// chuong sắp xếp theo số chương
-// comment sắp xếp theo tổng số bình luận
-// like sắp xếp theo tổng số lượt đánh dấu truyện
-function arrangeTruyen (listProduct,type) {
-    // console.log(1);
-    if (type == "date1") {
-        // thời gian đăng truyện mới nhất lên trước
-        listProduct.sort((a,b) => {
-            let aDate = new Date(a['dateTruyen']);
-            let bDate = new Date(b['dateTruyen']);
-            return bDate - aDate;
-        });
-    }
-    if (type == "date2") {
-        // date2 sắp xếp theo thời gian cập nhập mới nhất lên trước
-        listProduct.sort((a,b) => {
-            let aDate = new Date(a['dateCapNhap']);
-            let bDate = new Date(b['dateCapNhap']);
-            return bDate - aDate;
-        });
-    }
-    if (type == 'view') {
-        listProduct.sort((a,b) => {
-            return b['viewTruyen'] - a['viewTruyen'];
-        });
-    }
-    if (type == 'chuong') {
-        listProduct.sort((a,b) => {
-            return b['soChuong'] - a['soChuong'];
-        });
-    }
-}
-
+// click sắp xếp
 function clickArrange (selectorBlock,selectorBtns,callback,callbackShow,options) {
     const blockEl = document.querySelector(selectorBlock);
     const btnEls = blockEl.querySelectorAll(selectorBtns);
     var typeBtn = '';
+    var nameColumn1 = '';
 
     let check = true;
     for (let i = 0; i < btnEls.length; i++) {
@@ -661,9 +627,10 @@ function clickArrange (selectorBlock,selectorBtns,callback,callbackShow,options)
         if (check) {
             btnEls[0].classList.add('active');
             typeBtn = btnEls[0].attributes.name.nodeValue;
+            nameColumn1 = btnEls[0].dataset.namecolumn;
             // thêm kiểu sắp xếp vào options trường hợp vừa load trang
             options.arrange = function () {
-                callback(options.mainArr,typeBtn);
+                callback(options.mainArr,typeBtn,nameColumn1);
             }
             
             phanTrang(callbackShow,opitionShow);
@@ -672,9 +639,10 @@ function clickArrange (selectorBlock,selectorBtns,callback,callbackShow,options)
             if (!btnEls[i].matches('.active')) {
                 btnEls[i].classList.add('active');
                 typeBtn = btnEls[i].attributes.name.nodeValue;
+                nameColumn1 = btnEls[i].dataset.namecolumn;
                 // thêm kiểu sắp xếp vào options
                 options.arrange = function () {
-                    callback(options.mainArr,typeBtn);
+                    callback(options.mainArr,typeBtn,nameColumn1);
                 }
                 phanTrang(callbackShow,opitionShow);
                 for (let j = 0; j < btnEls.length;j++) {
@@ -689,5 +657,212 @@ function clickArrange (selectorBlock,selectorBtns,callback,callbackShow,options)
     }
 }
 
+//hiển thị bảng danh sách danh mục
+function showPageCateQlPagi (numberPagination,options) {
+    const listEl = document.querySelector(options.selectorList);
+    if (options.arrange) {
+        options.arrange();
+    }
+    if (!numberPagination) {
+        numberPagination = 0;
+    }
+    
+    // vòng lặp lọc ra các truyện hiển thị
+    let htmls = '';
+    let nameUser = '';
+    let quyenHan = '';
+    for (let i = numberPagination*options.numberPagi;i < numberPagination*options.numberPagi + options.numberPagi; i++) {
+        if (options.mainArr[i]) {
+            options.subArr.forEach(userItem => {
+                if (userItem['idUser'] == options.mainArr[i]['idUser']) {
+                    nameUser = userItem['userName'];
+                    quyenHan = userItem['quyenHan'];
+                }
+                // valueUser();
+            });
+            htmls += `
+                    <tr>
+                        <td>${options.mainArr[i]['idDanhMuc']}</td>
+                        <td>${options.mainArr[i]['tenDanhMuc']}</td>
+                        <td>${showNamecate(options.mainArr[i]['nhom'])}</td>
+                        <td>
+                            <a href="" class="text">${nameUser}</a>
+                        </td>
+                        <td>${showNameBadge(quyenHan)}</td>
+                        <td>
+                            ${time_distance_current(options.mainArr[i]['ngayThem'])} <span>( ${options.mainArr[i]['ngayThem'].replace('.000000','')} )</span>
+                        </td>
+                        <td>
+                            <input type="checkbox" name="checkList[]" value="${options.mainArr[i]['idDanhMuc']}" class="chonCheckBox categoryCheckBox">
+                        </td>
+                    </tr>
+                `;
+        }else {
+            continue;
+        }
+    }
+    listEl.innerHTML = htmls;
+}
+
+// các phương thức sắp xếp
+function arrangeWeb (listProduct,type,nameColumn) {
+    if (type == "date") {
+        // thời gian đăng truyện mới nhất lên trước
+        listProduct.sort((a,b) => {
+            let aDate = new Date(a[nameColumn]);
+            let bDate = new Date(b[nameColumn]);
+            return bDate - aDate;
+        });
+    }
+    if (type == "date2") {
+        // date2 sắp xếp theo thời gian cũ nhất lên trước
+        listProduct.sort((a,b) => {
+            let aDate = new Date(a[nameColumn]);
+            let bDate = new Date(b[nameColumn]);
+            return aDate - bDate;
+        });
+    }
+    if (type == 'number') {
+        console.log(type);
+        // sắp xếp lớn nhất lên trước
+        listProduct.sort((a,b) => {
+            return b[nameColumn] - a[nameColumn];
+        });
+    }
+    if (type == 'number2') {
+        // sắp xếp bé nhất lên trước
+        listProduct.sort((a,b) => {
+            return b[nameColumn] - a[nameColumn];
+        });
+    }
+
+    if (type == 'string') {
+        listProduct.sort((a,b) => {
+            if(a[nameColumn] < b[nameColumn]) { return -1; }
+            if(a[nameColumn] > b[nameColumn]) { return 1; }
+            return 0;
+        });
+    }
+}
+
+// tính khoảng cách thời gian giữa 2 ngày
+function time_distance_current (time,toCount) {
+    const current = new Date();
+    const time_count = new Date(time);
+    
+    const get_day_of_time = (d1, d2) => {
+        let ms1 = d1.getTime();
+        let ms2 = d2.getTime();
+        return Math.ceil((ms2 - ms1) / (1000*60));
+    };
+
+    const late = get_day_of_time(time_count,current);
+
+    let thoiGian;
+    if (late <= 1) {
+       thoiGian = 'Vừa xong';
+    }else if (late > 1 && late < 60) {
+       thoiGian = Math.floor(late)+' phút trước';
+    }else if (late >= 60 && late< 1440) {
+       thoiGian = Math.floor(late/60)+' giờ trước';
+    }else if (late >= 1440 && late<43200) {
+       thoiGian = Math.floor(late/1440)+' ngày trước';
+    }else if (late >= 43200 && late<518400) {
+       thoiGian = Math.floor(late/43200)+' tháng trước';
+    }else if (late>=518400) {
+       thoiGian = Math.floor(late/518400)+' năm trước';
+    }
+    return thoiGian;
+}
+
+// Tìm kiếm thời gian thực
+function searchRealTime (callbackPagi,opitionShowCallback,showListCallback,options) {
+    const formEl = document.querySelector(options.searchForm);
+    const listEl = document.querySelector(options.selectorList)
+
+    function searchRule (searchVl,arr) {
+        let check = false;
+        for (let i = 0; i< options.nameColumnSearch.length;i++) {
+            let mainKeyword = removeVietnameseTones(arr[options.nameColumnSearch[i]]);
+
+            if (mainKeyword.indexOf(searchVl) != -1) {
+                check = true;
+                break;
+            }
+        }
+        return check;
+    }
+
+    formEl.oninput = () => {
+        const inputValue = formEl.value;
+        if (inputValue) {
+            const searchList= [];
+            let opitionShowCallbackNew = Object.assign({}, opitionShowCallback);
+            for (let i = 0; i < opitionShowCallback.mainArr.length; i++) {
+                if (searchRule(removeVietnameseTones(inputValue),opitionShowCallback.mainArr[i])) {
+                    searchList.push(opitionShowCallback.mainArr[i]);
+                }else {
+                    continue;
+                }
+            }
+
+            if (searchList.length == 0) {
+                showModifier('.modifier.modifier-err','Không tìm thấy keyword','');;
+            }
+
+            opitionShowCallbackNew.mainArr = searchList;
+
+            // show
+            // console.log(opitionShowCallbackNew)
+            callbackPagi(showListCallback,opitionShowCallbackNew);
+            options.checkAllCallback();
+        }
+    }
+}
+
+//show tên nhóm danh mục
+function showNamecate (str) {
+    let feedback;
+    if (str == 'nhom1') {
+        feedback = 'Thể Loại';
+    }
+    if (str == 'nhom2') {
+        feedback = 'Bối Cảnh';
+    }
+    if (str == 'nhom3') {
+        feedback = 'Thuộc Tính';
+    }
+    if (str == 'nhom4') {
+        feedback = 'Tính Cách';
+    }
+    if (str == 'nhom5') {
+        feedback = 'Lưu Phái';
+    }
+    if (str == 'nhom6') {
+        feedback = 'Thị Giác';
+    }
+    return feedback;
+}
+
+// show tên quyền hạn
+function showNameBadge (num) {
+    let feedback;
+    if (num == 1) {
+        feedback = 'Người Mới';
+    }
+    if (num == 2) {
+        feedback = 'Người Đăng Truyện';
+    }
+    if (num == 3) {
+        feedback = 'Người Kiểm Duyệt';
+    }
+    if (num == 4) {
+        feedback = 'Quản Trị Web';
+    }
+    if (num == 5) {
+        feedback = 'Boss';
+    }
+    return feedback;
+}
 
 
