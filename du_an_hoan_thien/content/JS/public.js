@@ -564,6 +564,9 @@ function phanTrang (callback,options) {
     if (numberPagination >= 1) {
         showPagination(0,numberPagination,pagination);
         callback(0,options);
+        if (options.checkAllCallback) {
+            options.checkAllCallback();
+        }
     }
 
     pagination.onmouseover = () => {
@@ -575,6 +578,9 @@ function phanTrang (callback,options) {
                 itemPagination[i].onclick = () => {
                     showPagination(+itemPagination[i].innerText,numberPagination,pagination);
                     callback(+itemPagination[i].innerText,options);
+                    if (options.checkAllCallback) {
+                        options.checkAllCallback();
+                    }
                 }
             }
         }
@@ -583,6 +589,9 @@ function phanTrang (callback,options) {
             const itemNextPagination = pagination.querySelector('.active.pagination__item.numberPagi');
                 showPagination(+itemNextPagination.innerText + 1,numberPagination,pagination);
                 callback(+itemNextPagination.innerText + 1,options);
+                if (options.checkAllCallback) {
+                    options.checkAllCallback();
+                }
             }
         }
         if (prePagination) {
@@ -590,6 +599,9 @@ function phanTrang (callback,options) {
             const itemPrePagination = pagination.querySelector('.active.pagination__item.numberPagi');
                 showPagination(+itemPrePagination.innerText - 1,numberPagination,pagination);
                 callback(+itemPrePagination.innerText - 1,options);
+                if (options.checkAllCallback) {
+                    options.checkAllCallback();
+                }
             }
         }
         const submitBtn = pagination.querySelector('.pagination__submit');
@@ -599,6 +611,9 @@ function phanTrang (callback,options) {
             if (+inputPagination.value < numberPagination) {
                 showPagination(+inputPagination.value,numberPagination,pagination);
                 callback(+inputPagination.value,options);
+                if (options.checkAllCallback) {
+                    options.checkAllCallback();
+                }
             }else {
                 showModifier('.modifier-err','Bạn nhập số trang không chính xác','');
             }
@@ -813,9 +828,7 @@ function searchRealTime (callbackPagi,opitionShowCallback,showListCallback,optio
             opitionShowCallbackNew.mainArr = searchList;
 
             // show
-            // console.log(opitionShowCallbackNew)
             callbackPagi(showListCallback,opitionShowCallbackNew);
-            options.checkAllCallback();
         }
     }
 }

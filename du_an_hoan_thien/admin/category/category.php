@@ -160,14 +160,15 @@
         arrange: function () {
             // phương thức sắp xếp category
         },
+        checkAllCallback: function () {
+            console.log('hello');
+            checkAll('.admin-right-item-content-item-list','.checkbox-btn-block-iconCheck','.btn-allCheck','.categoryCheckBox','.checkbox-btn-block-delete');
+        }
     };
     // selector pagination phải là duy nhất
     phanTrang(showPageCateQlPagi,opitionShow);
     // click sắp xếp
     clickArrange('.table-list__content thead','.table-list__content thead th.cateArrange',arrangeWeb,showPageCateQlPagi,opitionShow);
-
-    // search thời gian thực
-    time_distance_current('2022-07-25 10:09:58');
 
     // search thời gian thực
 
