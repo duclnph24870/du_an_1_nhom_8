@@ -274,7 +274,7 @@ function previewUpImg (selectorForm,selectorImg,selectorInput,selectorImgErr,sub
     const errMess = formEl.querySelector(selectorImgErr);
     
     function validateImg (inputType) {
-        const validImageTypes = ['image/gif', 'image/jpeg', 'image/png']
+        const validImageTypes = ['image/gif', 'image/jpeg', 'image/png','image/webp']
         
         let checkValidInput;
         if (!validImageTypes.includes(inputType)) {

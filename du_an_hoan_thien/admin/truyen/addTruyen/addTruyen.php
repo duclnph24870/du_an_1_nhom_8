@@ -1,5 +1,6 @@
 <?php 
-    
+    $sqlCate = "SELECT * FROM danhmuc";
+    $category = select_all($sqlCate);
 ?>
 
 <link rel="stylesheet" href="<?=$CONTENT_URL?>/CSS/product.css">
@@ -18,7 +19,7 @@
                 </div>
                 <div class="admin-right-item-content">
                     <!-- === thêm truyện === -->
-                    <form method="post" id="product__qlAdd" class="admin-right-item-content-item active">
+                    <form method="POST" enctype="multipart/form-data" id="product__qlAdd" class="admin-right-item-content-item active">
                         <div class="admin-right-item-content-item-input">
                             <input type="file" hidden name="imgTruyen" id="admin-file-input">
                             <span class="addProduct-message d-none"></span>
@@ -30,7 +31,7 @@
                                     <i class="fas fa-camera"></i>
                                 </div>
                             </div>
-                            <div class="imgErr">Chọn hình ảnh sản phẩm sản phẩm</div>
+                            <div class="imgErr">Chọn hình ảnh truyện</div>
                         </label>
                         <hr>
                         <div class="admin-right-item-content-item-input">
@@ -51,52 +52,72 @@
                         <div class="admin-right-item-content-item-select">
                             <div class="admin-right-item-content-item-select-block">
                                 <div>Thể Loại</div>
-                                <select name="" id="">
-                                    <option value="1">Tiên Hiệp</option>
-                                    <option value="1">Huyền Huyễn</option>
-                                    <option value="1">Võng Du</option>
+                                <select name="nhom1" id="">
+                                    <?php foreach ($category as $k => $cate) :?>
+                                        <?php extract($cate);
+                                             if ($nhom === 'nhom1') :?>
+                                            <option value="<?=$idDanhMuc?>"><?=$tenDanhMuc?></option>
+                                        <?php endif?>
+                                    <?php endforeach?>
                                 </select>
                             </div>
                             <div class="admin-right-item-content-item-select-block">
                                 <div>Thuộc Tính</div>
-                                <select name="" id="">
-                                    <option value="1">Chất Lượng Cao</option>
-                                    <option value="1">Chọn Lọc</option>
+                                <select name="nhom3" id="">
+                                    <?php foreach ($category as $k => $cate) :?>
+                                        <?php extract($cate);
+                                             if ($nhom === 'nhom3') :?>
+                                            <option value="<?=$idDanhMuc?>"><?=$tenDanhMuc?></option>
+                                        <?php endif?>
+                                    <?php endforeach?>
                                 </select>
                             </div>
                             <div class="admin-right-item-content-item-select-block">
                                 <div>Tính Cách Nhân Vật</div>
-                                <select name="" id="">
-                                    <option value="1">Điềm Đạm</option>
-                                    <option value="1">Nhiệt Huyết</option>
-                                    <option value="1">Cơ Trí</option>
+                                <select name="nhom4" id="">
+                                    <?php foreach ($category as $k => $cate) :?>
+                                        <?php extract($cate);
+                                             if ($nhom === 'nhom4') :?>
+                                            <option value="<?=$idDanhMuc?>"><?=$tenDanhMuc?></option>
+                                        <?php endif?>
+                                    <?php endforeach?>
                                 </select>
                             </div>
                             <div class="admin-right-item-content-item-select-block">
                                 <div>Bối Cảnh Thế Giới</div>
-                                <select name="" id="">
-                                    <option value="1">Tây Phương Kỳ Huyễn</option>
-                                    <option value="1">Đông Phương HUyền Huyễn</option>
+                                <select name="nhom2" id="">
+                                    <?php foreach ($category as $k => $cate) :?>
+                                        <?php extract($cate);
+                                             if ($nhom === 'nhom2') :?>
+                                            <option value="<?=$idDanhMuc?>"><?=$tenDanhMuc?></option>
+                                        <?php endif?>
+                                    <?php endforeach?>
                                 </select>
                             </div>
                             <div class="admin-right-item-content-item-select-block">
                                 <div>Lưu Phái</div>
-                                <select name="" id="">
-                                    <option value="1">Hệ Thống</option>
-                                    <option value="1">Lão Gia</option>
-                                    <option value="1">Tùy Thân</option>
+                                <select name="nhom5" id="">
+                                    <?php foreach ($category as $k => $cate) :?>
+                                        <?php extract($cate);
+                                             if ($nhom === 'nhom5') :?>
+                                            <option value="<?=$idDanhMuc?>"><?=$tenDanhMuc?></option>
+                                        <?php endif?>
+                                    <?php endforeach?>
                                 </select>
                             </div>
                             <div class="admin-right-item-content-item-select-block">
                                 <div>Thị Giác</div>
-                                <select name="" id="">
-                                    <option value="1">Góc Nhìn Nam</option>
-                                    <option value="1">Góc Nhìn Nữ</option>
-                                    <option value="1">Ngôi Thứ Nhất</option>
+                                <select name="nhom6" id="">
+                                    <?php foreach ($category as $k => $cate) :?>
+                                        <?php extract($cate);
+                                             if ($nhom === 'nhom6') :?>
+                                            <option value="<?=$idDanhMuc?>"><?=$tenDanhMuc?></option>
+                                        <?php endif?>
+                                    <?php endforeach?>
                                 </select>
                             </div>
                         </div>
-                        <input type="submit" value="Cập Nhập">
+                        <input type="submit" name="insertSubmit" value="Đăng Truyện">
                     </form>
                     <!-- ==== danh sách truyện ==== -->
                     <div class="admin-right-item-content-item">
@@ -216,10 +237,10 @@
 <script>
     nextPage('.admin-right-item-header-item','.admin-right-item-content-item');
     nextPage('.arrange-btn','.arrange-child__btn');
-    previewUpImg('#product__qlAdd','.admin-file-input-img','#admin-file-input','.imgErr','off');
+    // previewUpImg('#product__qlAdd','.admin-file-input-img','#admin-file-input','.imgErr','off');
     checkAll('.productList','.checkbox-btn-block-iconCheck','.btn-allCheck','input[name="truyenCheckBox"]','.checkbox-btn-block-delete');
 </script>
-<script>
+<!-- <script>
     document.addEventListener('DOMContentLoaded', function () {
         validator({
             form: '#product__qlAdd',
@@ -240,4 +261,4 @@
             ],
         });
     })
-</script>
+</script> -->

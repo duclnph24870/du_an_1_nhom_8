@@ -38,4 +38,9 @@
 		$str = preg_replace("/(Đ)/", 'D', $str);
 		return strtolower($str);
 	}
+
+    // chia nhóm category
+    // function classify_cate($cate) {
+    //     $cate
+    // }
 ?>

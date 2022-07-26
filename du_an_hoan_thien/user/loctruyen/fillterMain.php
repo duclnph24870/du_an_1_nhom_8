@@ -3,7 +3,7 @@
     $truyen = select_all($sql); 
     $sql1 = "SELECT * FROM danhMuc";      
     $category = select_all($sql1);
-?> 
+?>
 
 <link rel="stylesheet" href="<?=$CONTENT_URL?>/CSS/category.css">
 
