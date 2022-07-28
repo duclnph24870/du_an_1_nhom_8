@@ -738,7 +738,6 @@ function arrangeWeb (listProduct,type,nameColumn) {
         });
     }
     if (type == 'number') {
-        console.log(type);
         // sắp xếp lớn nhất lên trước
         listProduct.sort((a,b) => {
             return b[nameColumn] - a[nameColumn];
@@ -747,7 +746,7 @@ function arrangeWeb (listProduct,type,nameColumn) {
     if (type == 'number2') {
         // sắp xếp bé nhất lên trước
         listProduct.sort((a,b) => {
-            return b[nameColumn] - a[nameColumn];
+            return a[nameColumn] - b[nameColumn];
         });
     }
 
@@ -831,6 +830,12 @@ function searchRealTime (callbackPagi,opitionShowCallback,showListCallback,optio
             callbackPagi(showListCallback,opitionShowCallbackNew);
         }
     }
+
+    formEl.onblur = () => {
+        if (formEl.value.length == 0) {
+            callbackPagi(showListCallback,opitionShowCallback);
+        }
+    }
 }
 
 //show tên nhóm danh mục
@@ -876,6 +881,46 @@ function showNameBadge (num) {
         feedback = 'Boss';
     }
     return feedback;
+}
+
+// show list product up
+function showPagePrAdd (numberPagination,options) {
+    const listEl = document.querySelector(options.selectorList);
+    if (options.arrange) {
+        options.arrange();
+    }
+    if (!numberPagination) {
+        numberPagination = 0;
+    }
+    
+    // vòng lặp lọc ra các truyện hiển thị
+    let htmls = '';
+    let nameUser = '';
+    for (let i = numberPagination*options.numberPagi;i < numberPagination*options.numberPagi + options.numberPagi; i++) {
+        if (options.mainArr[i]) {
+            options.subArr.forEach(userItem => {
+                if (userItem['idUser'] == options.mainArr[i]['idUser']) {
+                    return nameUser = userItem['userName'];
+                }
+            });
+            htmls += `
+            <tr>
+                <td>${options.mainArr[i]['idTruyen']}</td>
+                <td>${options.mainArr[i]['tenTruyen']}</td>
+                <td><a href="" class="text">${nameUser}</a></td>
+                <td>${time_distance_current(options.mainArr[i]['dateCapNhap'])}</td>
+                <td>${time_distance_current(options.mainArr[i]['dateTruyen'])}</td>
+                <td>${options.mainArr[i]['trangThai'] == 0 ? 'Chờ Xét Duyệt' : 'Đã Đăng'}</td>
+                <td>${options.mainArr[i]['soChuong']}</td>
+                <td>${options.mainArr[i]['viewTruyen']}</td>
+                <td><a href="indexAdminTruyen.php?editTruyen=0&idTruyen=${options.mainArr[i]['idTruyen']}" class="editTruyen" title="Sửa Truyện"><i class="fad fa-edit"></i></a><a href="indexAdminTruyen.php?addChuong=0" class="addChuong" title="Đăng Chương"><i class="fad fa-books-medical"></i></a><input type="checkbox" name="truyenCheckBox[]" value="${options.mainArr[i]['idTruyen']}" class="chonCheckBox"></td>
+            </tr>
+                `;
+        }else {
+            continue;
+        }
+    }
+    listEl.innerHTML = htmls;
 }
 
 

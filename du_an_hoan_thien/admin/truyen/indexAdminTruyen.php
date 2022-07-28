@@ -24,9 +24,15 @@
 
     if (!isset($_SESSION['user']) || (int)$_SESSION['user']['quyenHan'] < 2) {
         header('location: '.$ROOT_URL.'/index.php');
+        die;
     }
 
     if (check_modul("editTruyen")) {
+        // lấy ra truyện cần sửa
+        if (!isset($_GET['idTruyen'])) {
+            header('location: ../'.$link.'');
+            die;
+        }
         $pageName = "Sửa Truyện";
         $VIEW_NAME = "editTruyen/editTruyen.php";
     }elseif (check_modul("addChuong")) {

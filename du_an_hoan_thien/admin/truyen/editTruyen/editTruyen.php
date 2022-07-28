@@ -1,4 +1,19 @@
-<?php ?>
+<?php 
+    //category
+    $sqlCate = "SELECT * FROM danhmuc";
+    $category = select_all($sqlCate);
+
+    // kiểm tra xem có phải để duyệt truyện hay không
+    $checkDuyet = isset($_GET['duyet']);
+
+    if (isset($_GET['idTruyen'])) {
+        $idTruyenEdit = $_GET['idTruyen'];
+        $sqlTruyenEdit = "SELECT * FROM truyen WHERE idTruyen=$idTruyenEdit";
+        $truyenEdit = select_one($sqlTruyenEdit);
+        extract($truyenEdit);
+    }
+
+?>
 
 <link rel="stylesheet" href="<?=$CONTENT_URL?>/CSS/product.css">
 <link rel="stylesheet" href="<?=$CONTENT_URL?>/CSS/admin.css">
@@ -9,200 +24,130 @@
     <div class="col-12">
         <div class="admin-right">
             <div class="admin-right-item active admin-right-item-productList">
-                <div class="admin-right-item-header">
+                <!-- <div class="admin-right-item-header">
                     <div class="admin-right-item-header-item active">Sửa Truyện</div>
-                    <div class="admin-right-item-header-item">Danh Sách Truyện</div>
-                </div>
+                </div> -->
                 <div class="admin-right-item-content">
                     <!-- === Sửa truyện === -->
-                    <form method="post" id="product__qlAdd" class="admin-right-item-content-item active">
+                    <form method="POST" action="editTruyen/updateTruyen.php" enctype="multipart/form-data" id="product__qlAdd" class="admin-right-item-content-item active">
                         <div class="admin-right-item-content-item-input">
                             <input type="file" hidden name="imgTruyen" id="admin-file-input">
                             <span class="addProduct-message d-none"></span>
                         </div>
+                        <input type="number" value="<?=$_SESSION['user']['idUser']?>" name="idUser" hidden>
+                        <input type="text" value="<?=$_SESSION['user']['quyenHan']?>" name="quyenHan" hidden>
+                        <input type="text" value="<?=$link?>" name="link" hidden>
+                        <input type="number" name="idTruyenEdit" hidden value="<?=$idTruyenEdit?>">
                         <label for="admin-file-input">
                             <div class="admin-file-input-img">
-                                <img src="https://static.cdnno.com/user/d6cebf19fbb6661f86b87df067ab7bc2/200.jpg?1598008352" alt="">
+                                <img src="<?=$CONTENT_URL?>/IMG/<?=$imgTruyen?>" alt="">
                                 <div class="admin-file-input-icon">
                                     <i class="fas fa-camera"></i>
                                 </div>
                             </div>
-                            <div class="imgErr">Chọn hình ảnh sản phẩm sản phẩm</div>
+                            <div class="imgErr">Chọn hình ảnh truyện</div>
                         </label>
                         <hr>
                         <div class="admin-right-item-content-item-input">
                             <div>Tên Truyện</div>
-                            <input type="text" name="tenTruyen">
+                            <input type="text" name="tenTruyen" value="<?=$tenTruyen?>">
                             <span class="addProduct-message"></span>
                         </div>
                         <div class="admin-right-item-content-item-input">
                             <div>Tác Giả</div>
-                            <input type="text" name="tacGia">
+                            <input type="text" name="tacGia" value="<?=$tacGia?>">
                             <span class="addProduct-message"></span>
                         </div>
                         <div class="admin-right-item-content-item-input">
                             <div>Giới Thiệu Ngắn</div>
-                            <textarea name="gioiThieu" id="" cols="30" rows="5" class="w-100"></textarea>
+                            <textarea name="gioiThieu" id="" cols="30" rows="5" class="w-100"><?=$gioiThieu?></textarea>
                             <span class="addProduct-message"></span>
                         </div>
                         <div class="admin-right-item-content-item-select">
                             <div class="admin-right-item-content-item-select-block">
                                 <div>Thể Loại</div>
-                                <select name="" id="">
-                                    <option value="1">Tiên Hiệp</option>
-                                    <option value="1">Huyền Huyễn</option>
-                                    <option value="1">Võng Du</option>
+                                <select name="nhom1" id="">
+                                    <?php foreach ($category as $k => $cate) :?>
+                                        <?php extract($cate);
+                                             if ($nhom === 'nhom1') :?>
+                                            <option value="<?=$idDanhMuc?>" <?=$idDanhMuc == $nhom1 ? 'selected' : ''?>><?=$tenDanhMuc?></option>
+                                        <?php endif?>
+                                    <?php endforeach?>
                                 </select>
                             </div>
                             <div class="admin-right-item-content-item-select-block">
                                 <div>Thuộc Tính</div>
-                                <select name="" id="">
-                                    <option value="1">Chất Lượng Cao</option>
-                                    <option value="1">Chọn Lọc</option>
+                                <select name="nhom3" id="">
+                                    <?php foreach ($category as $k => $cate) :?>
+                                        <?php extract($cate);
+                                             if ($nhom === 'nhom3') :?>
+                                            <option value="<?=$idDanhMuc?>" <?=$idDanhMuc == $nhom3 ? 'selected' : ''?>><?=$tenDanhMuc?></option>
+                                        <?php endif?>
+                                    <?php endforeach?>
                                 </select>
                             </div>
                             <div class="admin-right-item-content-item-select-block">
                                 <div>Tính Cách Nhân Vật</div>
-                                <select name="" id="">
-                                    <option value="1">Điềm Đạm</option>
-                                    <option value="1">Nhiệt Huyết</option>
-                                    <option value="1">Cơ Trí</option>
+                                <select name="nhom4" id="">
+                                    <?php foreach ($category as $k => $cate) :?>
+                                        <?php extract($cate);
+                                             if ($nhom === 'nhom4') :?>
+                                            <option value="<?=$idDanhMuc?>" <?=$idDanhMuc == $nhom4 ? 'selected' : ''?>><?=$tenDanhMuc?></option>
+                                        <?php endif?>
+                                    <?php endforeach?>
                                 </select>
                             </div>
                             <div class="admin-right-item-content-item-select-block">
                                 <div>Bối Cảnh Thế Giới</div>
-                                <select name="" id="">
-                                    <option value="1">Tây Phương Kỳ Huyễn</option>
-                                    <option value="1">Đông Phương HUyền Huyễn</option>
+                                <select name="nhom2" id="">
+                                    <?php foreach ($category as $k => $cate) :?>
+                                        <?php extract($cate);
+                                             if ($nhom === 'nhom2') :?>
+                                            <option value="<?=$idDanhMuc?>"<?=$idDanhMuc == $nhom2 ? 'selected' : ''?>><?=$tenDanhMuc?></option>
+                                        <?php endif?>
+                                    <?php endforeach?>
                                 </select>
                             </div>
                             <div class="admin-right-item-content-item-select-block">
                                 <div>Lưu Phái</div>
-                                <select name="" id="">
-                                    <option value="1">Hệ Thống</option>
-                                    <option value="1">Lão Gia</option>
-                                    <option value="1">Tùy Thân</option>
+                                <select name="nhom5" id="">
+                                    <?php foreach ($category as $k => $cate) :?>
+                                        <?php extract($cate);
+                                             if ($nhom === 'nhom5') :?>
+                                            <option value="<?=$idDanhMuc?>" <?=$idDanhMuc == $nhom5 ? 'selected' : ''?>><?=$tenDanhMuc?></option>
+                                        <?php endif?>
+                                    <?php endforeach?>
                                 </select>
                             </div>
                             <div class="admin-right-item-content-item-select-block">
                                 <div>Thị Giác</div>
-                                <select name="" id="">
-                                    <option value="1">Góc Nhìn Nam</option>
-                                    <option value="1">Góc Nhìn Nữ</option>
-                                    <option value="1">Ngôi Thứ Nhất</option>
+                                <select name="nhom6" id="">
+                                    <?php foreach ($category as $k => $cate) :?>
+                                        <?php extract($cate);
+                                             if ($nhom === 'nhom6') :?>
+                                            <option value="<?=$idDanhMuc?>" <?=$idDanhMuc == $nhom6 ? 'selected' : ''?>><?=$tenDanhMuc?></option>
+                                        <?php endif?>
+                                    <?php endforeach?>
+                                </select>
+                            </div>
+
+                            <div class="admin-right-item-content-item-select-block">
+                                <div>Tình Trạng</div>
+                                <select name="tinhTrang">
+                                    <option value="0" <?=$tinhTrang == 0 ? 'selected' : ''?>>Đang Ra</option>
+                                    <option value="1" <?=$tinhTrang == 1 ? 'selected' : ''?>>Đã Hoàn Thành</option>
                                 </select>
                             </div>
                         </div>
-                        <input type="submit" value="Cập Nhập">
+                        <?php if ($checkDuyet) :?>
+                            <input type="submit" name="insertSubmit" value="Thông Qua">
+                            <input type="text" name="duyet" value="0" hidden>
+                        <?php endif?>
+
+                        <?php if (!$checkDuyet) :?>
+                            <input type="submit" name="insertSubmit" value="Cập Nhập">
+                        <?php endif?>
                     </form>
-                    <!-- ==== danh sách truyện ==== -->
-                    <div class="admin-right-item-content-item">
-                        <div class="table-list productList">
-                            <!-- === header === -->
-                            <div class="table-list__header">
-                                <div class="table-list__header-input-block">
-                                    <input type="text" placeholder="Search User">
-                                    <i class="fas fa-search"></i>
-                                </div>
-                                <div class="table-list__header-btn checkbox-btn-block d-flex justify-content-end">
-                                    <span class="btn-category block-icon blue checkbox-btn-block-iconCheck">
-                                        <i class="fa-solid fa-x"></i>
-                                        <span>Chọn</span>
-                                        <span>Đóng</span>
-                                    </span>
-                                    <span class="btn-category cam btn-allCheck">
-                                        <span>Chọn Tất Cả</span>
-                                        <span> Bỏ Chọn Tất Cả</span>
-                                    </span>
-                                    
-                                    <a href="" class="btn-category block-icon toi checkbox-btn-block-delete">
-                                        <i class="fa-solid fa-trash"></i>
-                                        Xóa các mục đã chọn
-                                    </a>
-                                    <span class="btn-category block-icon vang arrange-btn">
-                                        <i class="fa-solid fa-arrow-down-short-wide"></i>
-                                        Sắp Xếp
-                                    </span>
-                                    <div class="arrange-child__btn">
-                                        <span class="btn-category block-icon green">
-                                            <i class="fa-solid fa-clock"></i>
-                                            Ngày Thêm
-                                        </span>
-                                        <span class="btn-category block-icon toi">
-                                            <i class="fa-solid fa-arrow-down-a-z"></i>
-                                            Tên Truyện
-                                        </span>
-                                        <span class="btn-category block-icon primary">
-                                            <i class="fa-solid fa-user-tie"></i>
-                                            Người Thêm
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- === table ==== -->
-                            <table class="table-list__content">
-                                <thead>
-                                    <th>ID <i class="fad fa-sort-up"></i></th>
-                                    <th>Tên Truyện</th>
-                                    <th>Tác Giả <i class="fad fa-sort-up"></i></th>
-                                    <th>Người Thêm <i class="fad fa-sort-up"></i></th>
-                                    <th class="active">Cập Nhập <i class="fad fa-sort-up"></i></th>
-                                    <th>Ngày Thêm <i class="fad fa-sort-up"></i></th>
-                                    <th>Tình Trạng <i class="fad fa-sort-up"></i></th>
-                                    <th>Số Chương <i class="fad fa-sort-up"></i></th>
-                                    <th></th>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Đấu Phá Thương Khung</td>
-                                        <td>Thiên Tằm Thổ Đậu</td>
-                                        <td><a href="" class="text">Ngọc Đức</a></td>
-                                        <td>2 giờ trước</td>
-                                        <td> 2 giờ trước</td>
-                                        <td>Đang Ra</td>
-                                        <td>24</td>
-                                        <td><a href="" class="editTruyen" title="Sửa Truyện"><i class="fad fa-edit"></i></a><a href="" class="addChuong" title="Đăng Chương"><i class="fad fa-books-medical"></i></a><input type="checkbox" name="truyenCheckBox" class="chonCheckBox"></td>
-                                    </tr>
-                                    
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Đấu Phá Thương Khung</td>
-                                        <td>Thiên Tằm Thổ Đậu</td>
-                                        <td><a href="" class="text">Ngọc Đức</a></td>
-                                        <td>2 giờ trước</td>
-                                        <td> 2 giờ trước</td>
-                                        <td>Đang Ra</td>
-                                        <td>24</td>
-                                        <td><a href="" class="editTruyen" title="Sửa Truyện"><i class="fad fa-edit"></i></a><a href="" class="addChuong" title="Đăng Chương"><i class="fad fa-books-medical"></i></a><input type="checkbox" name="truyenCheckBox" class="chonCheckBox"></td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Đấu Phá Thương Khung</td>
-                                        <td>Thiên Tằm Thổ Đậu</td>
-                                        <td><a href="" class="text">Ngọc Đức</a></td>
-                                        <td>2 giờ trước</td>
-                                        <td> 2 giờ trước</td>
-                                        <td>Đang Ra</td>
-                                        <td>24</td>
-                                        <td><a href="" class="editTruyen" title="Sửa Truyện"><i class="fad fa-edit"></i></a><a href="" class="addChuong" title="Đăng Chương"><i class="fad fa-books-medical"></i></a><input type="checkbox" name="truyenCheckBox" class="chonCheckBox"></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <form method="post" class="pagination">
-                                <div class="pagination__item text"><</div>
-                                <div class="pagination__item text active">1</div>
-                                <div class="pagination__item text">2</div>
-                                <div class="pagination__item text">3</div>
-                                <div class="pagination__item text">4</div>
-                                <div class="pagination__item text">></div>
-                                <input type="text" value="1" class="pagination__input">
-                                <input type="submit" value="Go" class="pagination__submit">
-                            </form>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -210,10 +155,7 @@
 </div>
 
 <script>
-        nextPage('.admin-right-item-header-item','.admin-right-item-content-item');
-        nextPage('.arrange-btn','.arrange-child__btn');
         previewUpImg('#product__qlAdd','.admin-file-input-img','#admin-file-input','.imgErr','off');
-        checkAll('.productList','.checkbox-btn-block-iconCheck','.btn-allCheck','input[name="truyenCheckBox"]','.checkbox-btn-block-delete');
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {

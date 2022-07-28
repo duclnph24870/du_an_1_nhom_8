@@ -39,8 +39,38 @@
 		return strtolower($str);
 	}
 
-    // chia nhóm category
-    // function classify_cate($cate) {
-    //     $cate
-    // }
+    // xóa truyện theo id
+    function delete_truyen_one ($id) {
+        // Xóa truyện
+        $sql = "DELETE FROM `truyen` WHERE idTruyen=$id";
+        pdo_execute($sql);
+
+        // Xóa truyện đang đọc
+        $sqlDangDoc = "DELETE FROM `dangdoc` WHERE idTruyen=$id";
+        pdo_execute($sqlDangDoc);
+
+        // Xoa truyện đánh dấu
+        $sqlDanhDau = "DELETE FROM `danhdau` WHERE idTruyen=$id";
+        pdo_execute($sqlDanhDau);
+
+        //Xóa đánh giá truyện
+        $sqlDanhGia = "DELETE FROM `danhgia` WHERE idTruyen=$id";
+        pdo_execute($sqlDanhGia);
+
+        // Xoa trả lời đánh giá
+        $sqlRepDanhGia = "DELETE FROM `replydanhgia` WHERE idTruyen=$id";
+        pdo_execute($sqlRepDanhGia);
+
+        //Xóa comment truyện
+        $sqlComment = "DELETE FROM `comment` WHERE idTruyen=$id";
+        pdo_execute($sqlComment);
+
+        // Xóa trả lời comment
+        $sqlRepComment = "DELETE FROM `replycomment` WHERE idTruyen=$id";
+        pdo_execute($sqlRepComment);
+        
+        //Xóa thông báo truyện
+        $sqlNoti = "DELETE FROM `notify` WHERE idTruyen=$id";
+        pdo_execute($sqlNoti);
+    }
 ?>

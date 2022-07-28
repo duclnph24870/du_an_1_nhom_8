@@ -726,6 +726,7 @@ input:disabled.admin-right-item-mission-item-submit {
     border-bottom: 0.5px solid rgba(183, 138, 40,0.1);
     color: var(--primary);
     font-size: 1.2rem;
+    white-space: nowrap;
 }
 
 .table-list__content thead th.active {
@@ -747,4 +748,12 @@ input:disabled.admin-right-item-mission-item-submit {
 
 .table-list__content tbody tr td a {
     color: #1e2022;
+}
+
+.checkbox-btn-block-delete {
+    font-size: 1.2rem !important;
+    padding: 2px 8px !important;
+    margin: 0 5px!important;
+    border: none !important;
+    border-radius: 3px !important;
 }

@@ -572,3 +572,16 @@ input:focus {
     color: var(--white);
 }
 
+/* thông báo list rỗng */
+.emtyList {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: var(--text);
+    padding: 12px 0;
+}
+
+.emtyList i {
+    margin-right: 8px;
+}

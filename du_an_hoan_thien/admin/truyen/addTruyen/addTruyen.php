@@ -1,6 +1,23 @@
 <?php 
+    //category
     $sqlCate = "SELECT * FROM danhmuc";
     $category = select_all($sqlCate);
+    //user
+    $sqlUser = "SELECT * FROM user";
+    $userUpTruyen = select_all($sqlUser);
+
+    if (isset($_GET['status'])) {
+        $st = $_GET['status'];
+    }
+
+    if ((int)$_SESSION['user']['quyenHan'] == 2) {
+        $sqlSelectTruyen = "SELECT * FROM truyen WHERE idUser=".$_SESSION['user']['idUser']."";
+        $truyenList = select_all($sqlSelectTruyen);
+    }elseif ((int)$_SESSION['user']['quyenHan'] > 2) {
+        $sqlSelectTruyen = "SELECT * FROM truyen";
+        $truyenList = select_all($sqlSelectTruyen);
+    }
+
 ?>
 
 <link rel="stylesheet" href="<?=$CONTENT_URL?>/CSS/product.css">
@@ -13,20 +30,23 @@
         <div class="admin-right">
             <div class="admin-right-item active admin-right-item-productList">
                 <div class="admin-right-item-header">
-                    <div class="admin-right-item-header-item active">Thêm Truyện</div>
+                    <div class="admin-right-item-header-item">Thêm Truyện</div>
                     <div class="admin-right-item-header-item">Danh Sách Truyện</div>
                     <a href="<?=$ADMIN_URL?>/truyen/indexAdminTruyen.php?addChuong=1" class="admin-right-item-header-item-link">Thêm Chương</a>
                 </div>
                 <div class="admin-right-item-content">
                     <!-- === thêm truyện === -->
-                    <form method="POST" enctype="multipart/form-data" id="product__qlAdd" class="admin-right-item-content-item active">
+                    <form method="POST" action="addTruyen/isertTruyen.php" enctype="multipart/form-data" id="product__qlAdd" class="admin-right-item-content-item">
                         <div class="admin-right-item-content-item-input">
                             <input type="file" hidden name="imgTruyen" id="admin-file-input">
                             <span class="addProduct-message d-none"></span>
                         </div>
+                        <input type="number" value="<?=$_SESSION['user']['idUser']?>" name="idUser" hidden>
+                        <input type="text" value="<?=$_SESSION['user']['quyenHan']?>" name="quyenHan" hidden>
+                        <input type="text" value="<?=$link?>" name="link" hidden>
                         <label for="admin-file-input">
                             <div class="admin-file-input-img">
-                                <img src="https://static.cdnno.com/user/d6cebf19fbb6661f86b87df067ab7bc2/200.jpg?1598008352" alt="">
+                                <img src="https://metruyenchu.com/assets/images/logo.png?260329" alt="">
                                 <div class="admin-file-input-icon">
                                     <i class="fas fa-camera"></i>
                                 </div>
@@ -120,113 +140,59 @@
                         <input type="submit" name="insertSubmit" value="Đăng Truyện">
                     </form>
                     <!-- ==== danh sách truyện ==== -->
-                    <div class="admin-right-item-content-item">
+                    <form method="POST" action="addTruyen/deleteTruyen.php?link=<?=$link?>" class="admin-right-item-content-item">
                         <div class="table-list productList">
                             <!-- === header === -->
                             <div class="table-list__header">
                                 <div class="table-list__header-input-block">
-                                    <input type="text" placeholder="Search User">
+                                    <input type="text" name="searchRealTime" placeholder="Search User">
                                     <i class="fas fa-search"></i>
                                 </div>
-                                <div class="table-list__header-btn checkbox-btn-block d-flex justify-content-end">
-                                    <span class="btn-category block-icon blue checkbox-btn-block-iconCheck">
-                                        <i class="fa-solid fa-x"></i>
-                                        <span>Chọn</span>
-                                        <span>Đóng</span>
-                                    </span>
-                                    <span class="btn-category cam btn-allCheck">
-                                        <span>Chọn Tất Cả</span>
-                                        <span> Bỏ Chọn Tất Cả</span>
-                                    </span>
-                                    
-                                    <a href="" class="btn-category block-icon toi checkbox-btn-block-delete">
-                                        <i class="fa-solid fa-trash"></i>
-                                        Xóa các mục đã chọn
-                                    </a>
-                                    <span class="btn-category block-icon vang arrange-btn">
-                                        <i class="fa-solid fa-arrow-down-short-wide"></i>
-                                        Sắp Xếp
-                                    </span>
-                                    <div class="arrange-child__btn">
-                                        <span class="btn-category block-icon green">
-                                            <i class="fa-solid fa-clock"></i>
-                                            Ngày Thêm
+                                <?php if (isset($_SESSION['user']) && $_SESSION['user']['quyenHan'] >= 4) :?>
+                                    <div class="table-list__header-btn checkbox-btn-block d-flex justify-content-end">
+                                        <span class="btn-category block-icon blue checkbox-btn-block-iconCheck">
+                                            <i class="fa-solid fa-x"></i>
+                                            <span>Chọn</span>
+                                            <span>Đóng</span>
                                         </span>
-                                        <span class="btn-category block-icon toi">
-                                            <i class="fa-solid fa-arrow-down-a-z"></i>
-                                            Tên Truyện
+                                        <span class="btn-category cam btn-allCheck">
+                                            <span>Chọn Tất Cả</span>
+                                            <span> Bỏ Chọn Tất Cả</span>
                                         </span>
-                                        <span class="btn-category block-icon primary">
-                                            <i class="fa-solid fa-user-tie"></i>
-                                            Người Thêm
-                                        </span>
+                                        
+                                        <input type="submit" class="btn-category block-icon toi checkbox-btn-block-delete" value="Xóa các mục đã chọn">
                                     </div>
-                                </div>
+                                <?php endif?>
                             </div>
 
                             <!-- === table ==== -->
                             <table class="table-list__content">
                                 <thead>
-                                    <th>ID <i class="fad fa-sort-up"></i></th>
-                                    <th>Tên Truyện</th>
-                                    <th>Tác Giả <i class="fad fa-sort-up"></i></th>
+                                    <th class="addPrArrange" name="number2" data-nameColumn="idTruyen">ID <i class="fad fa-sort-up"></i></th>
+                                    <th class="addPrArrange" name="string" data-nameColumn="tenTruyen">Tên Truyện <i class="fad fa-sort-up"></i></th>
                                     <th>Người Thêm <i class="fad fa-sort-up"></i></th>
-                                    <th class="active">Cập Nhập <i class="fad fa-sort-up"></i></th>
-                                    <th>Ngày Thêm <i class="fad fa-sort-up"></i></th>
-                                    <th>Tình Trạng <i class="fad fa-sort-up"></i></th>
-                                    <th>Số Chương <i class="fad fa-sort-up"></i></th>
+                                    <th class="addPrArrange" name="date" data-nameColumn="dateCapNhap">Cập Nhập <i class="fad fa-sort-up"></i></th>
+                                    <th class="addPrArrange" name="date" data-nameColumn="dateTruyen">Ngày Thêm <i class="fad fa-sort-up"></i></th>
+                                    <th class="addPrArrange" name="string" data-nameColumn="trangThai">Trạng Thái <i class="fad fa-sort-up"></i></th>
+                                    <th class="addPrArrange"name="number" data-nameColumn="soChuong">Số Chương <i class="fad fa-sort-up"></i></th>
+                                    <th class="addPrArrange" name="number" data-nameColumn="viewTruyen">View Truyện <i class="fad fa-sort-up"></i></th>
                                     <th></th>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Đấu Phá Thương Khung</td>
-                                        <td>Thiên Tằm Thổ Đậu</td>
-                                        <td><a href="" class="text">Ngọc Đức</a></td>
-                                        <td>2 giờ trước</td>
-                                        <td> 2 giờ trước</td>
-                                        <td>Đang Ra</td>
-                                        <td>24</td>
-                                        <td><a href="indexAdminTruyen.php?editTruyen=0?idTruyen=0" class="editTruyen" title="Sửa Truyện"><i class="fad fa-edit"></i></a><a href="indexAdminTruyen.php?addChuong=0?idChuong=0" class="addChuong" title="Đăng Chương"><i class="fad fa-books-medical"></i></a><input type="checkbox" name="truyenCheckBox" class="chonCheckBox"></td>
-                                    </tr>
-                                    
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Đấu Phá Thương Khung</td>
-                                        <td>Thiên Tằm Thổ Đậu</td>
-                                        <td><a href="" class="text">Ngọc Đức</a></td>
-                                        <td>2 giờ trước</td>
-                                        <td> 2 giờ trước</td>
-                                        <td>Đang Ra</td>
-                                        <td>24</td>
-                                        <td><a href="" class="editTruyen" title="Sửa Truyện"><i class="fad fa-edit"></i></a><a href="" class="addChuong" title="Đăng Chương"><i class="fad fa-books-medical"></i></a><input type="checkbox" name="truyenCheckBox" class="chonCheckBox"></td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Đấu Phá Thương Khung</td>
-                                        <td>Thiên Tằm Thổ Đậu</td>
-                                        <td><a href="" class="text">Ngọc Đức</a></td>
-                                        <td>2 giờ trước</td>
-                                        <td> 2 giờ trước</td>
-                                        <td>Đang Ra</td>
-                                        <td>24</td>
-                                        <td><a href="" class="editTruyen" title="Sửa Truyện"><i class="fad fa-edit"></i></a><a href="" class="addChuong" title="Đăng Chương"><i class="fad fa-books-medical"></i></a><input type="checkbox" name="truyenCheckBox" class="chonCheckBox"></td>
-                                    </tr>
+                                   
                                 </tbody>
                             </table>
-                            <form method="post" class="pagination">
-                                <div class="pagination__item text"><</div>
-                                <div class="pagination__item text active">1</div>
-                                <div class="pagination__item text">2</div>
-                                <div class="pagination__item text">3</div>
-                                <div class="pagination__item text">4</div>
-                                <div class="pagination__item text">></div>
-                                <input type="text" value="1" class="pagination__input">
-                                <input type="submit" value="Go" class="pagination__submit">
-                            </form>
+                            <?php if (count($truyenList) == 0) :?>
+                                <div class="emtyList">
+                                    <i class="fad fa-heart-broken"></i>
+                                    Bạn chưa bắt đầu đăng truyện nào!
+                                </div>
+                            <?php endif?>
+                            <div class="pagination paginationTruyenAdd">
+                                
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -235,12 +201,52 @@
 
 
 <script>
-    nextPage('.admin-right-item-header-item','.admin-right-item-content-item');
+    nextPage('.admin-right-item-header-item','.admin-right-item-content-item','page','addTruyen','off');
     nextPage('.arrange-btn','.arrange-child__btn');
-    // previewUpImg('#product__qlAdd','.admin-file-input-img','#admin-file-input','.imgErr','off');
-    checkAll('.productList','.checkbox-btn-block-iconCheck','.btn-allCheck','input[name="truyenCheckBox"]','.checkbox-btn-block-delete');
+    previewUpImg('#product__qlAdd','.admin-file-input-img','#admin-file-input','.imgErr','off');
+
+    // phân trang, sắp xếp và hiển thị
+    const opitionShow = {
+        subArr: phpArrayJs(<?=json_encode($userUpTruyen)?>),
+        mainArr: phpArrayJs(<?=json_encode($truyenList)?>),
+        linkTruyen: '../<?=$USER_URL?>/loctruyen/index.php?idCate=',
+        linkUser: '../<?=$USER_URL?>/user_profile/index.php?idUser=',
+        selectorList: '.table-list__content tbody', // selector list chứa các category
+        selectorPagi: '.paginationTruyenAdd', // selector pagination
+        numberPagi : 10,// số item 1 page
+        arrange: function () {
+            // phương thức sắp xếp category
+        },
+        checkAllCallback: function () {
+            checkAll('.productList','.checkbox-btn-block-iconCheck','.btn-allCheck','input[name="truyenCheckBox[]"]','.checkbox-btn-block-delete');
+        }
+    };
+    // selector pagination phải là duy nhất
+    phanTrang(showPagePrAdd,opitionShow);
+    // click sắp xếp
+    clickArrange('.table-list__content thead','.table-list__content thead th.addPrArrange',arrangeWeb,showPagePrAdd,opitionShow);
+
+    // search thời gian thực
+
+    searchRealTime (phanTrang,opitionShow,showPagePrAdd,{
+        searchForm: 'input[name="searchRealTime"]',
+        selectorList: '.table-list__content tbody',
+        nameColumnSearch: [
+            'idTruyen','tenTruyen','tacGia'
+        ],
+        checkAllCallback: function () {
+            checkAll('.productList','.checkbox-btn-block-iconCheck','.btn-allCheck','input[name="truyenCheckBox[]"]','.checkbox-btn-block-delete');
+        }
+    });
+
+
+    <?php if (isset($_SESSION['user']) && $_SESSION['user']['quyenHan'] >= 4) :?>
+        checkAll('.productList','.checkbox-btn-block-iconCheck','.btn-allCheck','input[name="truyenCheckBox[]"]','.checkbox-btn-block-delete');
+    <?php endif?>
 </script>
-<!-- <script>
+
+ <!-- validata form  -->
+<script>
     document.addEventListener('DOMContentLoaded', function () {
         validator({
             form: '#product__qlAdd',
@@ -261,4 +267,4 @@
             ],
         });
     })
-</script> -->
+</script>
