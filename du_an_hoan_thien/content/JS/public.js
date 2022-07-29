@@ -923,4 +923,105 @@ function showPagePrAdd (numberPagination,options) {
     listEl.innerHTML = htmls;
 }
 
+//search tự động điền
+function searchAuto (arrSearch,options) {
+    const formEl = document.querySelector(options.selectorForm);
+    const listEl = document.querySelector(options.selectorList);
+
+    formEl.oninput = () => {
+        formEl.parentElement.classList.remove('invalid');
+        formEl.parentElement.querySelector('span').innerText = '';
+        let inputValue = formEl.value;
+        if (inputValue.length > 0) {
+            listEl.classList.add('active');
+        }else {
+            listEl.classList.remove('active');
+        }
+        function searchRule (searchVl,arr) {
+            const truyenTextSearch = removeVietnameseTones(arr['tenTruyen']);
+            const idTruyen = removeVietnameseTones(arr['idTruyen']);
+            const tacGiaText = removeVietnameseTones(arr['tacGia']);
+            let check;
+            if (truyenTextSearch.indexOf(searchVl) != -1 || tacGiaText.indexOf(searchVl) != -1 || idTruyen.indexOf(searchVl) != -1) {
+                check = true;
+            }else {
+                check = false;
+            }
+            return check;
+        }
+
+        const arrShow = [];
+        arrSearch.forEach(item => {
+            if (searchRule(removeVietnameseTones(inputValue),item)) {
+                arrShow.push(item);
+            }
+        });
+
+        let numberLoop;
+        if (arrShow.length > 2) {
+            numberLoop = 2;
+        }else if (arrShow.length <= 2) {
+            numberLoop = arrShow.length;
+        }
+
+        let htmls = '';
+        for (let i = 0; i < numberLoop;i++) {
+            htmls += ` <div class="searchRealTime__tenTruyen-item" data-idvalue="${arrShow[i]['idTruyen']}">${arrShow[i]['tenTruyen']}</div>`;
+        }
+        listEl.innerHTML = htmls;
+
+        if (listEl.innerHTML.length > 0) {
+            const listItemEl = listEl.querySelectorAll(options.selectorListItem);
+            for (let i = 0; i < listItemEl.length; i++) {
+                listItemEl[i].onclick = () => {
+                    let idValue = listItemEl[i].dataset.idvalue;
+                    formEl.value = +idValue;
+                    listEl.classList.remove('active');
+                    formEl.parentElement.classList.remove('invalid');
+                    formEl.parentElement.querySelector('span').innerText = '';
+                }
+            }
+        }
+    }
+}  
+
+// show list chương
+function showPageChuongAdd (numberPagination,options) {
+    const listEl = document.querySelector(options.selectorList);
+    if (options.arrange) {
+        options.arrange();
+    }
+    if (!numberPagination) {
+        numberPagination = 0;
+    }
+    
+    // vòng lặp lọc ra các truyện hiển thị
+    let htmls = '';
+    let nameUser = '';
+    let tenTruyen = options.subArr2[0]['tenTruyen'];
+    for (let i = numberPagination*options.numberPagi;i < numberPagination*options.numberPagi + options.numberPagi; i++) {
+        if (options.mainArr[i]) {
+            options.subArr.forEach(userItem => {
+                if (userItem['idUser'] == options.mainArr[i]['idUser']) {
+                    return nameUser = userItem['userName'];
+                }
+            });
+            htmls += `
+            <tr>
+                <td>${options.mainArr[i]['idChuong']}</td>
+                <td>${options.mainArr[i]['soChuong']}</td>
+                <td>${options.mainArr[i]['tieuDe']}</td>
+                <td><a href="" class="text">${nameUser}</a></td>
+                <td>${time_distance_current(options.mainArr[i]['dateChuong'])}</td>
+                <td>${options.mainArr[i]['viewChuong']}</td>
+                <td>${tenTruyen}</td>
+                <td><a href="indexAdminTruyen.php?editChuong=1&idChuong=${options.mainArr[i]['idChuong']}&idTruyen=${options.subArr2[0]['idTruyen']}" class="editTruyen" title="Sửa Chương"><i class="fad fa-edit"></i></a><input type="checkbox" name="chuongCheckBox[]" value="${options.mainArr[i]['idChuong']}" class="chonCheckBox"></td>
+            </tr>
+                `;
+        }else {
+            continue;
+        }
+    }
+    listEl.innerHTML = htmls;
+}
 

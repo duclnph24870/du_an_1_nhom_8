@@ -396,6 +396,8 @@ input:focus {
     align-items: center;
     margin-top: 20px;
     justify-content: flex-end;
+    margin-bottom: 20px;
+    margin-right: 20px;
 }
 
 .pagination__item {

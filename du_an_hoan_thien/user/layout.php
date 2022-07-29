@@ -422,6 +422,7 @@
                         <label for="modal__form-register">Đăng Ký Ngay</label>
                     </div>
                 </div>
+                
                 <div class="modal__form modal__form-register">
                     <div class="modal__form-header">
                         <div class="modal__form-header-text active" id="modal__form-register">Đăng Ký</div>
@@ -468,12 +469,13 @@
                         <label for="modal__form-login">Đăng Nhâp Ở Đây</label>
                     </div>
                 </div>
+
                 <div class="modal__form modal__form-forgotPass">
                     <div class="modal__form-header">
                         <div class="modal__form-header-text">Quên Mật Khẩu</div>
                     </div>
                     <div class="modal__form-content">
-                        <form action="" method="post" id="forgotPass" class="modal__form-content-main">
+                        <form action="<?=$DAO_URL?>/phpMailler/forget_pass.php" method="post" id="forgotPass" class="modal__form-content-main">
                             <div class="modal__form-input">
                                 <div class="modal__form-input-text">
                                     <span style="color: var(--text)">Email</span>

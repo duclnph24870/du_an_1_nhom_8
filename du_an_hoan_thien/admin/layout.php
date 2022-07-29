@@ -510,7 +510,7 @@
                         <div class="modal__form-header-text">Quên Mật Khẩu</div>
                     </div>
                     <div class="modal__form-content">
-                        <form action="" method="post" id="forgotPass" class="modal__form-content-main">
+                        <form action="<?=$DAO_URL?>/phpMailler/forget_pass.php" method="post" id="forgotPass" class="modal__form-content-main">
                             <div class="modal__form-input">
                                 <div class="modal__form-input-text">
                                     <span style="color: var(--text)">Email</span>
