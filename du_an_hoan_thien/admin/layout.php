@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="<?=$CONTENT_URL?>/CSS/index.css">
     <link rel="stylesheet" href="<?=$CONTENT_URL?>/CSS/home-content.css">
     <link rel="stylesheet" href="<?=$CONTENT_URL?>/CSS/responsive.css">
-</head>
+    </head>
 <body>
     
     <div class="container-fluid p-xl-0 p-lg-0 p-md-0">
