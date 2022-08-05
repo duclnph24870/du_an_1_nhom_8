@@ -9,5 +9,9 @@
     $pageName = "Bảng xếp hạng";
     $link = "$USER_URL/rank/index.php";
     $VIEW_NAME = "$USER_URL/rank/main_rank.php";
+    require "$DAO_URL/pdo.php";
     require "../layout.php";
 ?>
+<script>
+    scrollNoDrifted('userRank');
+</script>

@@ -464,6 +464,8 @@
     margin-left: auto;
     font-size: 1.5rem;
     color: #999;
+    min-width: 15px;
+    text-align: center;
 }
 
 .content__section3-item-master {

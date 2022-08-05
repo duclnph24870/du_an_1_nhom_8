@@ -609,15 +609,17 @@ label[for^=admin-file-input]:hover .admin-file-input-img img {
     color: #6c757d;
 }
 
-input[type="submit"].admin-right-item-mission-item-submit {
+.admin-right-item-mission-item-submit {
     margin-top: 0 !important;
     border-radius: 5px;
     font-size: 1.4rem;
     padding: 4px 8px;
+    background: var(--primary);
+    color: var(--white) !important;
     opacity: 1;
 }
 
-input:disabled.admin-right-item-mission-item-submit {
+.admin-right-item-mission-item-submit.disabled {
     opacity: 0.5;
     cursor: default !important;
 }
@@ -756,4 +758,8 @@ input:disabled.admin-right-item-mission-item-submit {
     margin: 0 5px!important;
     border: none !important;
     border-radius: 3px !important;
+}
+
+.notify-item.active div.text{
+    color: var(--primary) !important;
 }

@@ -6,8 +6,20 @@
     $ADMIN_URL = "$ROOT_URL/admin";
     $USER_URL = "$ROOT_URL/user";
     $DAO_URL = "$ROOT_URL/dao";
-    $pageName = "User Profile";
-    $link = "$USER_URL/user_profile/index.php";
     $VIEW_NAME = "$USER_URL/user_profile/userProfileMain.php";
+    require "$DAO_URL/pdo.php";
+    if (isset($_GET['idUser'])) {
+        $idUserPro = $_GET['idUser'];
+        $userProfile = select_one("SELECT * FROM user WHERE idUser=$idUserPro");
+        $pageName = $userProfile['userName'];
+        $link = "$USER_URL/user_profile/index.php";
+    }else {
+        header("location : ".$USER_URL."/trangchu/index.php");
+        die;
+    }
     require "../layout.php";
 ?>
+
+<script>
+    scrollNoDrifted('userProfile');
+</script>

@@ -6,6 +6,8 @@
     $userName = $_POST['registerUsername'];
     $pass = $_POST['registerPass'];
     $link = $_POST['link'];
+    date_default_timezone_set('Asia/Ho_Chi_Minh');
+    $timePr = date("Y-m-d H:i:s");  
 
     $checkEmail = true;
     foreach ($users as $u) {
@@ -16,13 +18,14 @@
     $newpass = md5($pass);
 
     if ($checkEmail) {
-        $sqlInserUser = "INSERT INTO user (`userName`, `password`, `email`) VALUES ('$userName','$newpass','$email')";
-        pdo_execute($sqlInserUser);
-        header("location: ".$link."?status=1&message='Đăng ký thành công'");
+        $sqlInserUser = "INSERT INTO user (`userName`, `password`, `email`,`userDate`) VALUES ('$userName','$newpass','$email','$timePr')";
+        // khi email thỏa mãn điều kiện thì gửi mail cho người dùng xác minh
+        header("location: ../phpMailler/mailRegister.php?sql=".$sqlInserUser."&email=".$email."");
+        die;
     }else {
         header("location: ".$link."?status=0&message='Email bạn dùng đã tồn tại'");
+        die;
     }
     
-    // header('location: '.$link.'');
 
 ?>

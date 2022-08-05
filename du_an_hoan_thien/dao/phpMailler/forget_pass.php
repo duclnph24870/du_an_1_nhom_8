@@ -1,15 +1,22 @@
 <?php
+    ob_start();
     require "../pdo.php";
     require "../../public.php";
     $passNew = rand_string(10);
     if (isset($_POST['forgotPass-email'])) {
         $email = $_POST['forgotPass-email'];
 
-        $sqlUp = "UPDATE `user` SET `password`='".md5($passNew)."' WHERE email='$email'";
-        pdo_execute($sqlUp);
-
+        // lấy ra user email
         $sqlEmail = "SELECT * FROM user WHERE email='$email'";
         $user = select_one($sqlEmail);
+
+        if (isset($user['email'])) {
+            $sqlUp = "UPDATE `user` SET `password`='".md5($passNew)."' WHERE email='$email'";
+            pdo_execute($sqlUp);
+        }else {
+            header('location: ../../user/trangchu/index.php?status=0&message="Bạn nhập email không chính xác"');
+            die;
+        }
     }else {
         header('location: ../../user/trangchu/index.php?status=0&message="Bạn nhập email không chính xác"');
         die;
@@ -36,7 +43,8 @@ try {
     //Server settings
     $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
     $mail->isSMTP();                                            //Send using SMTP
-    $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+    $mail->Host       = 'smtp.gmail.com';//Set the SMTP server to send through
+    $mail->CharSet = 'utf-8';// Khai báo để gửi mail tiếng việt
     $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
     $mail->Username   = 'zerotwo13102001@gmail.com';                     //SMTP username
     $mail->Password   = 'okzuhpjmzoiinshn';                               //SMTP password

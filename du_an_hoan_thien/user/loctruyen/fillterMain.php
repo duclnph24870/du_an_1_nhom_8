@@ -1,8 +1,55 @@
 <?php 
-    $sql = "SELECT * FROM truyen";      
-    $truyen = select_all($sql); 
-    $sql1 = "SELECT * FROM danhMuc";      
+    $sql1 = "SELECT * FROM danhmuc";      
     $category = select_all($sql1);
+
+    // kiểm tra xem từng danh mục có được chọn không
+    $arrFillter = [
+        'keyword' => isset($_GET['keyword']),
+        'nhom1' => isset($_GET['nhom1']),
+        'nhom2' => isset($_GET['nhom2']),
+        'nhom3' => isset($_GET['nhom3']),
+        'nhom4' => isset($_GET['nhom4']),
+        'nhom5' => isset($_GET['nhom5']),
+        'nhom6' => isset($_GET['nhom6']),
+        'tinhTrang' => isset($_GET['tinhTrang']),
+    ];
+
+    $arrFillterValue = [];
+    foreach ($arrFillter as $k => $item) {
+        if ($item) {
+            $arrFillterValue[$k] = $_GET[$k];
+        }else {
+            $k = 0;
+        }
+    }
+
+    $sqlFillter = [];
+    foreach ($arrFillterValue as $k => $valueFillter) {
+        if ($valueFillter != -1) {
+            $sqlFillter[$k] = $k."=".$valueFillter;
+        }
+    }
+
+    if (isset($sqlFillter['keyword'])) {
+        $keyword = $arrFillterValue['keyword'];
+        $sqlFillter['keyword'] = "( tenTruyen LIKE '%".$arrFillterValue['keyword']."%' OR tacGia LIKE '%".$arrFillterValue['keyword']."%' )";
+    }
+
+    $sqlSelect = "";
+    if (count($sqlFillter) > 0) {
+        $sqlSelect = "SELECT * FROM truyen WHERE ";
+        foreach ($sqlFillter as $sqlF) {
+            $sqlSelect .= $sqlF." AND ";
+        }
+    }else {
+        $sqlSelect = "SELECT * FROM truyen"; 
+    }
+
+    // echo trim($sqlSelect,' AND ');
+    $sqlSelectTruyen = trim($sqlSelect,' AND ');
+    $truyen = select_all($sqlSelectTruyen);
+
+
 ?>
 
 <link rel="stylesheet" href="<?=$CONTENT_URL?>/CSS/category.css">
@@ -17,102 +64,103 @@
         <div class="container block-content">
             <div class="content__section1">
                 <div class="row" style="flex-wrap: nowrap;">
+                    <!-- Phần này bên trái ( phần lọc truyện ) -->
                     <div class="col-lg-3 col-xl-3 d-none d-lg-block d-xl-block section1-right order-0">
-                        <form method="post" class="filter__category">
+                        <form method="get" class="filter__category">
                             <div class="filter__category-item">
                                 <div class="filter__category-title title">Filter</div>
                                 <input type="submit" class="filter__category-submit btn-category" value="Lọc">
-                                <button class="btn-category" style="background: var(--primary);color: #fff;border:none;">Ngự Thú</button>
+                                <!-- keyword tìm kiếm -->
+                                <?php if (isset($_GET['keyword'])) :?>
+                                    <button class="btn-category" style="background: var(--primary);color: #fff;border:none;"><?=$_GET['keyword']?></button>
+                                    <input type="text" hidden value="<?=$_GET['keyword']?>" name="keyword">
+                                <?php endif?>
                             </div>
                             <div class="filter__category-item filter__category-item-theLoai">
                                 <div class="filter__category-title title">Thể Loại</div>
-                                <input type="radio" name="theLoai" id="theLoai__0" hidden>
-                                <input type="radio" name="theLoai" checked id="theLoai__1" hidden>
-                                <input type="radio" name="theLoai" id="theLoai__2" hidden>
-                                <input type="radio" name="theLoai" id="theLoai__3" hidden>
-                                <input type="radio" name="theLoai" id="theLoai__4" hidden>
-                                <label for="theLoai__0" class="filter__category-item-btn1 btn-category">Không chọn</label>
-                                <label for="theLoai__1" class="filter__category-item-btn1 btn-category">Tiên Hiệp</label>
-                                <label for="theLoai__2" class="filter__category-item-btn2 btn-category">Huyền Huyễn</label>
-                                <label for="theLoai__3" class="filter__category-item-btn3 btn-category">Võng Du</label>
-                                <label for="theLoai__4" class="filter__category-item-btn4 btn-category">Đồng Nhân</label>
+                                <input type="radio" name="nhom1" value="-1" id="theLoai__0" hidden>
+                                <label for="theLoai__0" class="filter__category-item-btn btn-category">Không chọn</label>
+                                <?php foreach ($category as $cate) :?>
+                                    <?php if ($cate['nhom'] == 'nhom1') :?>
+                                        <input type="radio" <?=(isset($_GET['nhom1']) && $_GET['nhom1'] == $cate['idDanhMuc']) ? 'checked' : ''?> name="nhom1" value="<?=$cate['idDanhMuc']?>" id="theLoai__<?=$cate['idDanhMuc']?>" hidden>
+                                        <label for="theLoai__<?=$cate['idDanhMuc']?>" class="filter__category-item-btn btn-category"><?=$cate['tenDanhMuc']?></label>
+                                    <?php endif?>
+                                <?php endforeach?>
                             </div>
 
                             <div class="filter__category-item filter__category-item-tinhTrang">
                                 <div class="filter__category-title title">Tình Trạng</div>
-                                <input type="radio" name="tinhTrang" id="tinhTrang__0" hidden>
-                                <input type="radio" name="tinhTrang" id="tinhTrang__1" hidden>
-                                <input type="radio" name="tinhTrang" id="tinhTrang__2" hidden>
-                                <label for="tinhTrang__0" class="filter__category-item-btn1 btn-category">Không chọn</label>
-                                <label for="tinhTrang__1" class="filter__category-item-btn1 btn-category">Đang Ra</label>
-                                <label for="tinhTrang__2" class="filter__category-item-btn2 btn-category">Đã Hoàn Thành</label>
+                                <input type="radio" name="tinhTrang" value="-1" id="tinhTrang__0" hidden>
+                                <input type="radio" name="tinhTrang" <?=(isset($_GET['tinhTrang']) && $_GET['tinhTrang'] == 0) ? 'checked' : ''?> value="0" id="tinhTrang__1" hidden>
+                                <input type="radio" name="tinhTrang" <?=(isset($_GET['tinhTrang']) && $_GET['tinhTrang'] == 1) ? 'checked' : ''?> value="1" id="tinhTrang__2" hidden>
+                                <label for="tinhTrang__0" class="filter__category-item-btn btn-category">Không chọn</label>
+                                <label for="tinhTrang__1" class="filter__category-item-btn btn-category">Đang Ra</label>
+                                <label for="tinhTrang__2" class="filter__category-item-btn btn-category">Đã Hoàn Thành</label>
                             </div>
 
                             <div class="filter__category-item filter__category-item-thuocTinh">
                                 <div class="filter__category-title title">Thuộc Tính</div>
-                                <input type="radio" name="thuocTinh" id="thuocTinh__0" hidden>
-                                <input type="radio" name="thuocTinh" id="thuocTinh__1" hidden>
-                                <input type="radio" name="thuocTinh" id="thuocTinh__2" hidden>
-                                <label for="thuocTinh__1" class="filter__category-item-btn3 btn-category">Không Chọn</label>
-                                <label for="thuocTinh__2" class="filter__category-item-btn3 btn-category">Chọn Lọc</label>
-                                <label for="thuocTinh__3" class="filter__category-item-btn4 btn-category">Chất Lượng Cao</label>
+                                <input type="radio" name="nhom3" value="-1" id="thuocTinh__0" hidden>
+                                <label for="thuocTinh__0" class="filter__category-item-btn btn-category">Không Chọn</label>
+                                <?php foreach ($category as $cate) :?>
+                                    <?php if ($cate['nhom'] == 'nhom3') :?>
+                                        <input type="radio" name="nhom3" <?=(isset($_GET['nhom3']) && $_GET['nhom3'] == $cate['idDanhMuc']) ? 'checked' : ''?> value="<?=$cate['idDanhMuc']?>" id="thuocTinh__<?=$cate['idDanhMuc']?>" hidden>
+                                        <label for="thuocTinh__<?=$cate['idDanhMuc']?>" class="filter__category-item-btn btn-category"><?=$cate['tenDanhMuc']?></label>
+                                    <?php endif?>
+                                <?php endforeach?>
                             </div>
 
                             <div class="filter__category-item filter__category-item-tinhCach">
                                 <div class="filter__category-title title">Tính Cách Nhân Vật Chính</div>
-                                <input type="radio" name="tinhCach" id="tinhCach__0" hidden>
-                                <input type="radio" name="tinhCach" id="tinhCach__1" hidden>
-                                <input type="radio" name="tinhCach" id="tinhCach__2" hidden>
-                                <input type="radio" name="tinhCach" id="tinhCach__3" hidden>
-                                <input type="radio" name="tinhCach" id="tinhCach__4" hidden>
-                                <label for="tinhCach__0" class="filter__category-item-btn1 btn-category">Không Chọn</label>
-                                <label for="tinhCach__1" class="filter__category-item-btn1 btn-category">Điềm Đạm</label>
-                                <label for="tinhCach__2" class="filter__category-item-btn2 btn-category">Nhiệt Huyết</label>
-                                <label for="tinhCach__3" class="filter__category-item-btn3 btn-category">Vô Sỉ</label>
-                                <label for="tinhCach__4" class="filter__category-item-btn4 btn-category">Thiết Huyết</label>
+                                <input type="radio" name="nhom4" value="-1" id="tinhCach__0" hidden>
+                                <label for="tinhCach__0" class="filter__category-item-btn btn-category">Không Chọn</label>
+                                <?php foreach ($category as $cate) :?>
+                                    <?php if ($cate['nhom'] == 'nhom4') :?>
+                                        <input type="radio" <?=(isset($_GET['nhom4']) && $_GET['nhom4'] == $cate['idDanhMuc']) ? 'checked' : ''?> name="nhom4" value="<?=$cate['idDanhMuc']?>" id="tinhCach__<?=$cate['idDanhMuc']?>" hidden>
+                                        <label for="tinhCach__<?=$cate['idDanhMuc']?>" class="filter__category-item-btn btn-category"><?=$cate['tenDanhMuc']?></label>
+                                    <?php endif?>
+                                <?php endforeach?>
                             </div>
 
                             <div class="filter__category-item filter__category-item-boiCanh">
                                 <div class="filter__category-title title">Bối Cảnh Thế Giới</div>
-                                <input type="radio" name="boiCanh" id="boiCanh__0" hidden>
-                                <input type="radio" name="boiCanh" id="boiCanh__1" hidden>
-                                <input type="radio" name="boiCanh" id="boiCanh__2" hidden>
-                                <input type="radio" name="boiCanh" id="boiCanh__3" hidden>
-                                <input type="radio" name="boiCanh" id="boiCanh__4" hidden>
-                                <label for="boiCanh__0" class="filter__category-item-btn1 btn-category">Không Chọn</label>
-                                <label for="boiCanh__1" class="filter__category-item-btn1 btn-category">Đông Phương Huyền Huyễn</label>
-                                <label for="boiCanh__2" class="filter__category-item-btn2 btn-category">Dị Thế Đại Lục</label>
-                                <label for="boiCanh__3" class="filter__category-item-btn3 btn-category">Vương Triều Tranh Bá</label>
-                                <label for="boiCanh__4" class="filter__category-item-btn4 btn-category">Tây Phương Kỳ Huyễn</label>
+                                <input type="radio" name="nhom2" value="-1" id="boiCanh__0" hidden>
+                                <label for="boiCanh__0" class="filter__category-item-btn btn-category">Không Chọn</label>
+                                <?php foreach ($category as $cate) :?>
+                                    <?php if ($cate['nhom'] == 'nhom2') :?>
+                                        <input type="radio" name="nhom2" <?=(isset($_GET['nhom2']) && $_GET['nhom2'] == $cate['idDanhMuc']) ? 'checked' : ''?> value="<?=$cate['idDanhMuc']?>" id="boiCanh__<?=$cate['idDanhMuc']?>" hidden>
+                                        <label for="boiCanh__<?=$cate['idDanhMuc']?>" class="filter__category-item-btn btn-category"><?=$cate['tenDanhMuc']?></label>
+                                    <?php endif?>
+                                <?php endforeach?>
                             </div>
 
                             <div class="filter__category-item filter__category-item-luuPhai">
                                 <div class="filter__category-title title">Lưu Phái</div>
-                                <input type="radio" name="luuPhai" id="luuPhai__0" hidden>
-                                <input type="radio" name="luuPhai" id="luuPhai__1" hidden>
-                                <input type="radio" name="luuPhai" id="luuPhai__2" hidden>
-                                <input type="radio" name="luuPhai" id="luuPhai__3" hidden>
-                                <input type="radio" name="luuPhai" id="luuPhai__4" hidden>
-                                <label for="luuPhai__0" class="filter__category-item-btn1 btn-category">Không Chọn</label>
-                                <label for="luuPhai__1" class="filter__category-item-btn1 btn-category">Hệ Thống</label>
-                                <label for="luuPhai__2" class="filter__category-item-btn2 btn-category">Lão Gia</label>
-                                <label for="luuPhai__3" class="filter__category-item-btn3 btn-category">Bàn Thờ</label>
-                                <label for="luuPhai__4" class="filter__category-item-btn4 btn-category">Tùy Thân</label>
+                                <input type="radio" name="nhom5" value="-1" id="luuPhai__0" hidden>
+                                <label for="luuPhai__0" class="filter__category-item-btn btn-category">Không Chọn</label>
+                                <?php foreach ($category as $cate) :?>
+                                    <?php if ($cate['nhom'] == 'nhom5') :?>
+                                        <input type="radio" name="nhom5" <?=(isset($_GET['nhom5']) && $_GET['nhom5'] == $cate['idDanhMuc']) ? 'checked' : ''?> value="<?=$cate['idDanhMuc']?>" id="luuPhai__<?=$cate['idDanhMuc']?>" hidden>
+                                        <label for="luuPhai__<?=$cate['idDanhMuc']?>" class="filter__category-item-btn btn-category"><?=$cate['tenDanhMuc']?></label>
+                                    <?php endif?>
+                                <?php endforeach?>
                             </div>
 
                             <div class="filter__category-item filter__category-item-thiGiac">
                                 <div class="filter__category-title title">Thị Giác</div>
-                                <input type="radio" name="thiGiac" id="thiGiac__0" hidden>
-                                <input type="radio" name="thiGiac" id="thiGiac__1" hidden>
-                                <input type="radio" name="thiGiac" id="thiGiac__2" hidden>
-                                <input type="radio" name="thiGiac" id="thiGiac__3" hidden>
-                                <label for="thiGiac__0" class="filter__category-item-btn1 btn-category">Không Chọn</label>
-                                <label for="thiGiac__1" class="filter__category-item-btn1 btn-category">Góc Nhìn Nam</label>
-                                <label for="thiGiac__2" class="filter__category-item-btn2 btn-category">Góc Nhìn Nữ</label>
-                                <label for="thiGiac__3" class="filter__category-item-btn3 btn-category">Ngôi Thứ Nhất</label>
+                                <input type="radio" name="nhom6" value="-1" id="thiGiac__0" hidden>
+                                <label for="thiGiac__0" class="filter__category-item-btn btn-category">Không Chọn</label>
+                                <?php foreach ($category as $cate) :?>
+                                    <?php if ($cate['nhom'] == 'nhom6') :?>
+                                        <input type="radio" name="nhom6" <?=(isset($_GET['nhom6']) && $_GET['nhom6'] == $cate['idDanhMuc']) ? 'checked' : ''?> value="<?=$cate['idDanhMuc']?>" id="thiGiac__<?=$cate['idDanhMuc']?>" hidden>
+                                        <label for="thiGiac__<?=$cate['idDanhMuc']?>" class="filter__category-item-btn btn-category"><?=$cate['tenDanhMuc']?></label>
+                                    <?php endif?>
+                                <?php endforeach?>
                             </div>
                         </form>
                     </div>
+
+                    <!-- phàn bên phải  -->
                     <div class="col-12 col-lg-9 col-xl-9 section1-left order-1">
                         <div class="content__section1-main">
                             <div class="row">
@@ -131,257 +179,29 @@
                                             Lượt Đọc
                                         </div>
                                         <div class="category__filter-item text" data-nameColumn="soChuong" name="number">Số chương</div>
+                                        <div class="category__filter-item text" data-nameColumn="deCu" name="number">Đề Cử</div>
                                     </div>
                                 </div>
-                                <div class="col-12">
-                                    <div class="filter__category-title-keyword limit1">Kết quả tìm kiếm cho: <b>Ngự thú</b></div>
-                                </div>
+
+                                <!-- hiển thị keyword tìm kiếm -->
+                                <?php if (isset($_GET['keyword'])) :?>
+                                    <div class="col-12">
+                                        <div class="filter__category-title-keyword limit1">Kết quả tìm kiếm cho: <b><?=$_GET['keyword']?></b></div>
+                                    </div>
+                                <?php endif?>
                                 <div class="itemList d-flex" style="flex-wrap: wrap;">
-                                    <!-- <div class="col-12 col-md-6 col-lg-6 col-xl-6 itemList-item">
-                                        <div class="content__section1-main-item">
-                                            <a href="../HTML/product.html" class="content__section1-main-item-img">
-                                                <img src="https://static.cdnno.com/poster/ban-tien/150.jpg?1623342325" alt="">
-                                            </a>
-                                            <div class="content__section1-main-item-content">
-                                                <a href="../HTML/product.html" class="content__section1-main-item-title text">Tu Luyện Theo Đấu Phá Thương Khung Bắt Đầu</a>
-                                                <div class="content__section1-main-item-demo">
-                                                    Hệ thống nơi tay, thế giới ta có, thiếu niên người mang vạn năng hệ thống, theo Đấu Phá Thương Khung bắt đầu tu luyện, đây là một người hiện đại tại dị giới tu hành cố sự. . .
-                                                </div>
-                                                <div class="content__section1-main-item-footer">
-                                                    <div class="content__section1-main-item-master">
-                                                        <i class="fas fa-user-edit"></i>
-                                                        Giang Hồ Hữu Tửu
-                                                    </div>
-                                                    <div class="content__section1-main-item-category btn">Đồng Nhân</div>
-                                                    <div class="content__section1-main-item-chap d-flex">
-                                                        <i class="fas fa-bars"></i>
-                                                        369 chương
-                                                    </div>
-                                                </div>
-                                            </div>
+                                    <!-- list truyện  -->
+                                    <?php if (count($truyen) == 0) :?>
+                                        <div class="emtyList" style="padding-left: 15px;">
+                                            <i class="fad fa-heart-broken"></i>
+                                            Không có truyện thỏa mãn yêu cầu!
                                         </div>
-                                    </div>
-                                    <div class="col-12 col-md-6 col-lg-6 col-xl-6 itemList-item">
-                                        <div class="content__section1-main-item">
-                                            <a href="../HTML/product.html" class="content__section1-main-item-img">
-                                                <img src="https://static.cdnno.com/poster/ban-tien/150.jpg?1623342325" alt="">
-                                            </a>
-                                            <div class="content__section1-main-item-content">
-                                                <a href="../HTML/product.html" class="content__section1-main-item-title text">Tu Luyện Theo Đấu Phá Thương Khung Bắt Đầu</a>
-                                                <div class="content__section1-main-item-demo">
-                                                    Hệ thống nơi tay, thế giới ta có, thiếu niên người mang vạn năng hệ thống, theo Đấu Phá Thương Khung bắt đầu tu luyện, đây là một người hiện đại tại dị giới tu hành cố sự. . .
-                                                </div>
-                                                <div class="content__section1-main-item-footer">
-                                                    <div class="content__section1-main-item-master">
-                                                        <i class="fas fa-user-edit"></i>
-                                                        Giang Hồ Hữu Tửu
-                                                    </div>
-                                                    <div class="content__section1-main-item-category btn">Đồng Nhân</div>
-                                                    <div class="content__section1-main-item-chap d-flex">
-                                                        <i class="fas fa-bars"></i>
-                                                        369 chương
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> -->
+                                    <?php endif?>
                                 </div>
-                                <!-- <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                    <div class="content__section1-main-item">
-                                        <div class="content__section1-main-item-img" style="background-image: url(https://static.cdnno.com/poster/ban-tien/150.jpg?1623342325);"></div>
-                                        <div class="content__section1-main-item-content">
-                                            <div class="content__section1-main-item-title text">Bán Tiên</div>
-                                            <div class="content__section1-main-item-demo">
-                                                Núi sâu có đạo quan, hương hỏa sớm tàn lụi.
-
-                                                Kẻ hèn bất tài, tuổi vừa mới mười chín, từ nhỏ liền là một tên đạo sĩ, bên trên có sư huynh mười mấy vị, dưới chỉ còn nhỏ nhỏ nhất, tục xưng quan môn đệ tử. Sư môn nghèo quá, các sư huynh khó nhịn kham khổ, may mắn chưởng môn sư tôn rộng rãi , mặc cho các sư huynh giải thể mà đi.
-
-                                                Sau có ba vị sư huynh sai đường biết quay lại, tuổi tác khá lớn, đều có bốn năm mươi.
-
-                                                Được sư tôn xem trọng, chết trước truyền chức chưởng môn tại tiểu đạo, nhưng không luận niên tuế hoặc tư lịch đều không có thể phục chúng, ba vị sư huynh không phục. Sư môn bất hạnh, tiểu đạo không phải quả hồng mềm, tuyệt không nhượng bộ, tới tranh chấp nội bộ.
-
-                                                Dưới núi trong thôn, có tân cử nhân, chính là tiểu đạo phát tiểu, sư tôn trôi qua trước cũng có bàn giao, hộ tống hắn vào kinh đi thi. Nghĩa bất dung từ, lại cho tiểu đạo nhân gian đi một lần, trở về sẽ cùng các sư huynh đấu!
-                                            </div>
-                                            <div class="content__section1-main-item-footer">
-                                                <div class="content__section1-main-item-master">
-                                                    <i class="fas fa-user-edit"></i>
-                                                    Vãn Lâm Không
-                                                </div>
-                                                <div class="content__section1-main-item-category btn">Huyền Huyễn</div>
-                                                <div class="content__section1-main-item-chap d-flex">
-                                                    <i class="fas fa-bars"></i>
-                                                    369 chương
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                    <div class="content__section1-main-item">
-                                        <div class="content__section1-main-item-img" style="background-image: url(https://static.cdnno.com/poster/tu-luyen-theo-dau-pha-thuong-khung-bat-dau/150.jpg?1585210461);"></div>
-                                        <div class="content__section1-main-item-content">
-                                            <div class="content__section1-main-item-title text">Tu Luyện Theo Đấu Phá Thương Khung Bắt Đầu</div>
-                                            <div class="content__section1-main-item-demo">
-                                                Hệ thống nơi tay, thế giới ta có, thiếu niên người mang vạn năng hệ thống, theo Đấu Phá Thương Khung bắt đầu tu luyện, đây là một người hiện đại tại dị giới tu hành cố sự. . .
-                                            </div>
-                                            <div class="content__section1-main-item-footer">
-                                                <div class="content__section1-main-item-master">
-                                                    <i class="fas fa-user-edit"></i>
-                                                    Giang Hồ Hữu Tửu
-                                                </div>
-                                                <div class="content__section1-main-item-category btn">Đồng Nhân</div>
-                                                <div class="content__section1-main-item-chap d-flex">
-                                                    <i class="fas fa-bars"></i>
-                                                    369 chương
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                    <div class="content__section1-main-item">
-                                        <div class="content__section1-main-item-img" style="background-image: url(https://static.cdnno.com/poster/ban-tien/150.jpg?1623342325);"></div>
-                                        <div class="content__section1-main-item-content">
-                                            <div class="content__section1-main-item-title text">Bán Tiên</div>
-                                            <div class="content__section1-main-item-demo">
-                                                Núi sâu có đạo quan, hương hỏa sớm tàn lụi.
-
-                                                Kẻ hèn bất tài, tuổi vừa mới mười chín, từ nhỏ liền là một tên đạo sĩ, bên trên có sư huynh mười mấy vị, dưới chỉ còn nhỏ nhỏ nhất, tục xưng quan môn đệ tử. Sư môn nghèo quá, các sư huynh khó nhịn kham khổ, may mắn chưởng môn sư tôn rộng rãi , mặc cho các sư huynh giải thể mà đi.
-
-                                                Sau có ba vị sư huynh sai đường biết quay lại, tuổi tác khá lớn, đều có bốn năm mươi.
-
-                                                Được sư tôn xem trọng, chết trước truyền chức chưởng môn tại tiểu đạo, nhưng không luận niên tuế hoặc tư lịch đều không có thể phục chúng, ba vị sư huynh không phục. Sư môn bất hạnh, tiểu đạo không phải quả hồng mềm, tuyệt không nhượng bộ, tới tranh chấp nội bộ.
-
-                                                Dưới núi trong thôn, có tân cử nhân, chính là tiểu đạo phát tiểu, sư tôn trôi qua trước cũng có bàn giao, hộ tống hắn vào kinh đi thi. Nghĩa bất dung từ, lại cho tiểu đạo nhân gian đi một lần, trở về sẽ cùng các sư huynh đấu!
-                                            </div>
-                                            <div class="content__section1-main-item-footer">
-                                                <div class="content__section1-main-item-master">
-                                                    <i class="fas fa-user-edit"></i>
-                                                    Vãn Lâm Không
-                                                </div>
-                                                <div class="content__section1-main-item-category btn">Huyền Huyễn</div>
-                                                <div class="content__section1-main-item-chap d-flex">
-                                                    <i class="fas fa-bars"></i>
-                                                    369 chương
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                    <div class="content__section1-main-item">
-                                        <div class="content__section1-main-item-img" style="background-image: url(https://static.cdnno.com/poster/tu-luyen-theo-dau-pha-thuong-khung-bat-dau/150.jpg?1585210461);"></div>
-                                        <div class="content__section1-main-item-content">
-                                            <div class="content__section1-main-item-title text">Tu Luyện Theo Đấu Phá Thương Khung Bắt Đầu</div>
-                                            <div class="content__section1-main-item-demo">
-                                                Hệ thống nơi tay, thế giới ta có, thiếu niên người mang vạn năng hệ thống, theo Đấu Phá Thương Khung bắt đầu tu luyện, đây là một người hiện đại tại dị giới tu hành cố sự. . .
-                                            </div>
-                                            <div class="content__section1-main-item-footer">
-                                                <div class="content__section1-main-item-master">
-                                                    <i class="fas fa-user-edit"></i>
-                                                    Giang Hồ Hữu Tửu
-                                                </div>
-                                                <div class="content__section1-main-item-category btn">Đồng Nhân</div>
-                                                <div class="content__section1-main-item-chap d-flex">
-                                                    <i class="fas fa-bars"></i>
-                                                    369 chương
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                    <div class="content__section1-main-item">
-                                        <div class="content__section1-main-item-img" style="background-image: url(https://static.cdnno.com/poster/ban-tien/150.jpg?1623342325);"></div>
-                                        <div class="content__section1-main-item-content">
-                                            <div class="content__section1-main-item-title text">Bán Tiên</div>
-                                            <div class="content__section1-main-item-demo">
-                                                Núi sâu có đạo quan, hương hỏa sớm tàn lụi.
-
-                                                Kẻ hèn bất tài, tuổi vừa mới mười chín, từ nhỏ liền là một tên đạo sĩ, bên trên có sư huynh mười mấy vị, dưới chỉ còn nhỏ nhỏ nhất, tục xưng quan môn đệ tử. Sư môn nghèo quá, các sư huynh khó nhịn kham khổ, may mắn chưởng môn sư tôn rộng rãi , mặc cho các sư huynh giải thể mà đi.
-
-                                                Sau có ba vị sư huynh sai đường biết quay lại, tuổi tác khá lớn, đều có bốn năm mươi.
-
-                                                Được sư tôn xem trọng, chết trước truyền chức chưởng môn tại tiểu đạo, nhưng không luận niên tuế hoặc tư lịch đều không có thể phục chúng, ba vị sư huynh không phục. Sư môn bất hạnh, tiểu đạo không phải quả hồng mềm, tuyệt không nhượng bộ, tới tranh chấp nội bộ.
-
-                                                Dưới núi trong thôn, có tân cử nhân, chính là tiểu đạo phát tiểu, sư tôn trôi qua trước cũng có bàn giao, hộ tống hắn vào kinh đi thi. Nghĩa bất dung từ, lại cho tiểu đạo nhân gian đi một lần, trở về sẽ cùng các sư huynh đấu!
-                                            </div>
-                                            <div class="content__section1-main-item-footer">
-                                                <div class="content__section1-main-item-master">
-                                                    <i class="fas fa-user-edit"></i>
-                                                    Vãn Lâm Không
-                                                </div>
-                                                <div class="content__section1-main-item-category btn">Huyền Huyễn</div>
-                                                <div class="content__section1-main-item-chap d-flex">
-                                                    <i class="fas fa-bars"></i>
-                                                    369 chương
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                    <div class="content__section1-main-item">
-                                        <div class="content__section1-main-item-img" style="background-image: url(https://static.cdnno.com/poster/tu-luyen-theo-dau-pha-thuong-khung-bat-dau/150.jpg?1585210461);"></div>
-                                        <div class="content__section1-main-item-content">
-                                            <div class="content__section1-main-item-title text">Tu Luyện Theo Đấu Phá Thương Khung Bắt Đầu</div>
-                                            <div class="content__section1-main-item-demo">
-                                                Hệ thống nơi tay, thế giới ta có, thiếu niên người mang vạn năng hệ thống, theo Đấu Phá Thương Khung bắt đầu tu luyện, đây là một người hiện đại tại dị giới tu hành cố sự. . .
-                                            </div>
-                                            <div class="content__section1-main-item-footer">
-                                                <div class="content__section1-main-item-master">
-                                                    <i class="fas fa-user-edit"></i>
-                                                    Giang Hồ Hữu Tửu
-                                                </div>
-                                                <div class="content__section1-main-item-category btn">Đồng Nhân</div>
-                                                <div class="content__section1-main-item-chap d-flex">
-                                                    <i class="fas fa-bars"></i>
-                                                    369 chương
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                                    <div class="content__section1-main-item">
-                                        <div class="content__section1-main-item-img" style="background-image: url(https://static.cdnno.com/poster/ban-tien/150.jpg?1623342325);"></div>
-                                        <div class="content__section1-main-item-content">
-                                            <div class="content__section1-main-item-title text">Bán Tiên</div>
-                                            <div class="content__section1-main-item-demo">
-                                                Núi sâu có đạo quan, hương hỏa sớm tàn lụi.
-
-                                                Kẻ hèn bất tài, tuổi vừa mới mười chín, từ nhỏ liền là một tên đạo sĩ, bên trên có sư huynh mười mấy vị, dưới chỉ còn nhỏ nhỏ nhất, tục xưng quan môn đệ tử. Sư môn nghèo quá, các sư huynh khó nhịn kham khổ, may mắn chưởng môn sư tôn rộng rãi , mặc cho các sư huynh giải thể mà đi.
-
-                                                Sau có ba vị sư huynh sai đường biết quay lại, tuổi tác khá lớn, đều có bốn năm mươi.
-
-                                                Được sư tôn xem trọng, chết trước truyền chức chưởng môn tại tiểu đạo, nhưng không luận niên tuế hoặc tư lịch đều không có thể phục chúng, ba vị sư huynh không phục. Sư môn bất hạnh, tiểu đạo không phải quả hồng mềm, tuyệt không nhượng bộ, tới tranh chấp nội bộ.
-
-                                                Dưới núi trong thôn, có tân cử nhân, chính là tiểu đạo phát tiểu, sư tôn trôi qua trước cũng có bàn giao, hộ tống hắn vào kinh đi thi. Nghĩa bất dung từ, lại cho tiểu đạo nhân gian đi một lần, trở về sẽ cùng các sư huynh đấu!
-                                            </div>
-                                            <div class="content__section1-main-item-footer">
-                                                <div class="content__section1-main-item-master">
-                                                    <i class="fas fa-user-edit"></i>
-                                                    Vãn Lâm Không
-                                                </div>
-                                                <div class="content__section1-main-item-category btn">Huyền Huyễn</div>
-                                                <div class="content__section1-main-item-chap d-flex">
-                                                    <i class="fas fa-bars"></i>
-                                                    369 chương
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> -->
+                                
                                 <div class="col-12">
                                     <form method="post" class="pagination pagination-category">
-                                        <!-- <div class="pagination__item text"><</div>
-                                        <div class="pagination__item text active">1</div>
-                                        <div class="pagination__item text">2</div>
-                                        <div class="pagination__item text">3</div>
-                                        <div class="pagination__item text">4</div>
-                                        <div class="pagination__item text">></div>
-                                        <input type="text" value="1" class="pagination__input">
-                                        <input type="submit" value="Go" class="pagination__submit"> -->
+                                        <!-- list item pagi  -->
                                     </form>
                                 </div>
                             </div>
@@ -437,7 +257,7 @@
         linkTruyen: '<?=$USER_URL?>/truyen/index.php?idTruyen=',
         selectorList: '.itemList', // selector list chứa các truyện
         selectorPagi: '.pagination-category', // selector pagination
-        numberPagi : 10,// số item 1 page
+        numberPagi : 20,// số item 1 page
         arrange: function () {
             // phương thức sắp xếp truyện
         },

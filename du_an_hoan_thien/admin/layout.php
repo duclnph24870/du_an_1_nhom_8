@@ -2,12 +2,51 @@
     require "$DAO_URL/pdo.php";
     require "$DAO_URL/sign_up_login/login.php";
     $sql = "SELECT * FROM truyen";      
-    $truyen = select_all ($sql);     
+    $truyen = select_all ($sql);   
+    date_default_timezone_set('Asia/Ho_Chi_Minh');
+    $timePr = date("Y-m-d H:i:s");  
+    $timePrDate = date("Y-m-d");  
     
     if (isset($_SESSION['user'])) {
-        $sqlNotify = "SELECT * FROM `notify` WHERE idUser LIKE '%".$_SESSION['user']['idUser']."%' AND idUserXoa NOT LIKE '%".$_SESSION['user']['idUser']."%';";
+        $sqlNotify = "SELECT * FROM `notify` WHERE idUser LIKE '%".$_SESSION['user']['idUser']."%' AND idUserXoa NOT LIKE '%".$_SESSION['user']['idUser']."%' ORDER BY idNotify DESC;";
         $notify = select_all($sqlNotify);
+
+        if (isset($_GET['reload'])) {
+            $_SESSION['user'] = select_one("SELECT * FROM user WHERE idUser=".$_SESSION['user']['idUser']."");
+        }
+
+        // user tích lũy exp đầy để thăng cấp
+        if ((int)$_SESSION['user']['exp'] >= (int)$_SESSION['user']['quyenHan']*1000 && (int)$_SESSION['user']['quyenHan'] < 3) {
+            // Thăng cấp quyền hạn cho user và reset exp về 0
+            pdo_execute("UPDATE `user` SET `quyenHan`= ".((int)$_SESSION['user']['quyenHan'] + 1).",`exp`= 0 WHERE idUser=".$_SESSION['user']['idUser']."");
+            // Gửi thông báo đến cho user
+            pdo_execute("INSERT INTO `notify`( `tieuDe`,`idUser`,`kieuNotify`, `dateNotify`) 
+                        VALUES ('Xin chào ".$_SESSION['user']['userName'].", chúc mừng bạn đã thành công thăng cấp quyền hạn lên đến cấp 2!!',".$_SESSION['user']['idUser'].",2,'$timePr')");
+
+        }
+
+        //Cộng phiếu đề cử cho user
+        $userPhieuDeCu = select_one("SELECT * FROM user WHERE idUser=".$_SESSION['user']['idUser']."");
+        if (!isset($userPhieuDeCu['dateNhanPhieu'])) {
+            //nếu dateNhanPhieu 0 tồn tại nghĩa là lần đầu nhận phiếu
+            pdo_execute("UPDATE `user` SET `phieuDeCu`= ".($userPhieuDeCu['quyenHan']).",`dateNhanPhieu`='$timePrDate' WHERE idUser=".$userPhieuDeCu['idUser']."");
+            // Cập nhập lai session
+            $userNew = select_one("SELECT * FROM user WHERE idUser=".$userPhieuDeCu['idUser']."");
+            $_SESSION['user'] = $userNew;
+        }else {
+            if (compareDate($userPhieuDeCu['dateNhanPhieu'])) {
+                // update lại số phiếu cho user
+                pdo_execute("UPDATE `user` SET `phieuDeCu`= ".($userPhieuDeCu['phieuDeCu'] + $userPhieuDeCu['quyenHan']).",`dateNhanPhieu`='$timePrDate' WHERE idUser=".$userPhieuDeCu['idUser']."");
+                // Cập nhập lai session
+                $userNew = select_one("SELECT * FROM user WHERE idUser=".$userPhieuDeCu['idUser']."");
+                $_SESSION['user'] = $userNew;
+            }
+        }
     }
+
+    //Kiểm tra sự kiện
+    $event = select_all("SELECT * FROM sukien WHERE trangThai=1");
+    // nếu count > 0 thì có nghĩ sự kiện đang kích hoạt
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,15 +57,63 @@
     <title><?=$pageName?></title>
     <link rel="icon" href="https://metruyenchu.com/assets/images/logo.png?260329">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v5.15.4/css/all.css">
     <script src="https://kit.fontawesome.com/cf5472ea14.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v5.15.4/css/all.css">
     <link rel="stylesheet" href="<?=$CONTENT_URL?>/CSS/public.css">
     <link rel="stylesheet" href="<?=$CONTENT_URL?>/CSS/index.css">
     <link rel="stylesheet" href="<?=$CONTENT_URL?>/CSS/home-content.css">
     <link rel="stylesheet" href="<?=$CONTENT_URL?>/CSS/responsive.css">
 </head>
 <body>
-    
+    <?php if (count($event) > 0) :?>
+    <!-- ===event==== -->
+    <div class="event-block event-showFull">
+        <div class="event-icon">
+            <div class="event-icon_child"></div>
+            <div class="event-icon_child"></div>
+            <div class="event-icon_child"></div>
+            <div class="event-icon_child"></div>
+            <div class="event-icon_child"></div>
+            <div class="event-icon_child">
+                <img src="<?=$CONTENT_URL?>/IMG/—Pngtree—cartoon paper cut cloud mid-autumn_6402911.png" alt="">
+            </div>
+            <div class="event-icon_child event-text">Trung Thu Vui Vẻ!!!!</div>
+
+        </div>
+        <div class="event-icon">
+            <div class="event-icon_child"></div>
+            <div class="event-icon_child"></div>
+            <div class="event-icon_child"></div>
+            <div class="event-icon_child"></div>
+            <div class="event-icon_child"></div>
+            <div class="event-icon_child"></div>
+        </div>
+        <div class="event-icon">
+            <div class="event-icon_child"></div>
+            <div class="event-icon_child"></div>
+            <div class="event-icon_child"></div>
+            <div class="event-icon_child"></div>
+            <div class="event-icon_child"></div>
+            <div class="event-icon_child"></div>
+        </div>
+        <div class="event-icon">
+            <div class="event-icon_child"></div>
+            <div class="event-icon_child"></div>
+            <div class="event-icon_child"></div>
+            <div class="event-icon_child"></div>
+            <div class="event-icon_child"></div>
+            <div class="event-icon_child"></div>
+        </div>
+        <div class="event-icon">
+            <div class="event-icon_child"></div>
+            <div class="event-icon_child"></div>
+            <div class="event-icon_child"></div>
+            <div class="event-icon_child"></div>
+            <div class="event-icon_child"></div>
+            <div class="event-icon_child"></div>
+        </div>
+    </div>
+    <?php endif?>
     <div class="container-fluid p-xl-0 p-lg-0 p-md-0">
         <div class="container-fluid" style="background: var(--back-color);">
             <div class="container">
@@ -48,13 +135,13 @@
                                     <a href="<?=$USER_URL?>/loctruyen/index.php" class="category-item-link">Tất Cả</a>
                                 </div>
                                 <?php
-                                    $sqlNhom1 = "SELECT * FROM danhMuc WHERE nhom='nhom1'";
+                                    $sqlNhom1 = "SELECT * FROM danhmuc WHERE nhom='nhom1'";
                                     $nhom1 = select_all($sqlNhom1);
                                     foreach ($nhom1 as $k => $n1) :
                                     extract($n1);
                                 ?>
                                 <div class="category-item">
-                                    <a href="<?=$USER_URL?>/loctruyen/index.php?idDanhMuc=<?=$idDanhMuc?>" class="category-item-link"><?=$tenDanhMuc?></a>
+                                    <a href="<?=$USER_URL?>/loctruyen/index.php?nhom1=<?=$idDanhMuc?>" class="category-item-link"><?=$tenDanhMuc?></a>
                                 </div>
                                 <?php endforeach?>
                             </div>
@@ -67,12 +154,14 @@
                     </div>
                     <!-- ===========search========= -->
                     <div class="header__search">
-                        <form class="header__search-input">
+                    <form method="POST" action="<?=$DAO_URL?>/loctruyen.php" class="header__search-input">
                             <input type="text" name="header__search-input" autocomplete="off" placeholder="Nhập tên truyện hoặc tác giả">
+                            <input type="text" hidden name="linkCate" value="<?=$USER_URL?>/loctruyen/index.php" id="">
                             <i class="fas fa-search header__search-icon"></i>
 
                             <!-- === history === -->
                             <div class="category header__search-history"></div>
+                            <input type="submit" hidden>
                         </form>
                         
                     </div>
@@ -145,7 +234,7 @@
                                         <?php
                                             extract($noti);
                                             if ($kieuNotify == 2) :
-                                                $linkNoti2 = "$USER_URL/usermanager/index.php?idUser=".$_SESSION['user']['idUser']."";
+                                                $linkNoti2 = "$USER_URL/usermanager/index.php?idUser=".$_SESSION['user']['idUser']."&reload=1";
                                             ?>
                                                 <li class="category-item <?=exist_string($idUserDoc,$_SESSION['user']['idUser']) ? 'watched' : '' ?>">
                                                     <div class="icon-cricle"></div>
@@ -404,14 +493,103 @@
             </div>
         </div>
 
-        <!-- === nhiệm vụ event: tet,moon,noel ==== -->
-        <a href="" class="event active">
-            <div class="event__content">
-                <i class="fad fa-moon-stars"></i>
-                <i class="fas fa-stocking"></i>
-                <i class="far fa-piggy-bank"></i>
-            </div>
-        </a>
+        <?php if (count($event) > 0) :?>
+            <?php if (isset($_SESSION['user'])) {?>
+                <!-- ===event show click==== -->
+                <a href="<?=$DAO_URL?>/mission/event/clickEvent.php?idUser=<?=$_SESSION['user']['idUser']?>&link=<?=$link?>&nameEvent=moonEvent" class="event-block event-click" style="zoom: 0.2; background: none;">
+                    <div class="event-icon">
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child">
+                            <img src="<?=$CONTENT_URL?>/IMG/—Pngtree—cartoon paper cut cloud mid-autumn_6402911.png" alt="">
+                        </div>
+                    </div>
+                    <div class="event-icon">
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                    </div>
+                    <div class="event-icon">
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                    </div>
+                    <div class="event-icon">
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                    </div>
+                    <div class="event-icon">
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                    </div>
+                </a>
+            <?php }else {?>
+                <div onclick="showModifier('.modifier.modifier-err','Bạn cần đăng nhập để có thể tham gia sự kiện','')" class="event-block event-click" style="zoom: 0.2; background: none;">
+                    <div class="event-icon">
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child">
+                            <img src="<?=$CONTENT_URL?>/IMG/—Pngtree—cartoon paper cut cloud mid-autumn_6402911.png" alt="">
+                        </div>
+                    </div>
+                    <div class="event-icon">
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                    </div>
+                    <div class="event-icon">
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                    </div>
+                    <div class="event-icon">
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                    </div>
+                    <div class="event-icon">
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                        <div class="event-icon_child"></div>
+                    </div>
+                </div>
+            <?php }?>
+
+            <!-- ==== btn show event === -->
+            <div class="btn-showEvent"><i class="fas fa-moon-cloud"></i></div>
+        <?php endif?> 
 
         <!-- =======modal====== -->
         <div class="modal">
@@ -525,6 +703,33 @@
             </div>
         </div>
     </div>
+
+    <!-- function này sẽ bật khi sự kiện diễn ra -->
+    <?php if (count($event) > 0) :?>
+        <script>
+            showEvent('.event-block.event-showFull','.btn-showEvent');
+            <?php 
+                if (!isset($_SESSION['user'])) {
+                    echo "showEvent('.event-block.event-click');";
+                }else {
+                    // lấy ra event của user
+                    $eventUser = select_all("SELECT * FROM sukien WHERE idUser=".$_SESSION['user']['idUser']."");
+                    if (count($eventUser) > 0) {
+                        // nếu dateClick mà tồn tại thì
+                        if (isset($eventUser[0]['dateClick'])) {
+                            if (timeDate($eventUser[0]['dateClick'],$timePr) >= 10) {
+                                echo "showEvent('.event-block.event-click');";
+                            }
+                        }else {
+                                echo "showEvent('.event-block.event-click');";
+                        }
+                    }else {
+                        echo "showEvent('.event-block.event-click');";
+                    }
+                }
+            ?>
+        </script>
+    <?php endif?>
     <?php if (!isset($_SESSION['user'])) :?>
     <script src="<?=$CONTENT_URL?>/JS/login.js"></script>
     <?php endif?>

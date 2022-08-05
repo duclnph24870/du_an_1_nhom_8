@@ -1,4 +1,38 @@
-<?php ?>
+<?php 
+    if (isset($_GET['idChuong'])) {
+        $idTruyen = $_GET['idTruyen'];
+        $chuongAll = select_all("SELECT * FROM chuong WHERE idTruyen=$idTruyen ORDER BY soChuong");
+        $truyen = select_one("SELECT * FROM truyen WHERE idTruyen=$idTruyen");
+    }
+    
+    if (isset($_SESSION['user'])) {
+        $idUser = $_SESSION['user']['idUser'];
+        // lấy ra mảng đang đọc của truyện
+        $dangDoc = select_one("SELECT * FROM dangdoc WHERE idTruyen=$idTruyen AND idUser=$idUser");
+        if (isset($dangDoc['idUser'])) {
+            // nếu đã tồn tại
+            pdo_execute("UPDATE `dangdoc` SET `idChuong`=$idChuong,`soChuong`=".$chuong['soChuong'].",`dateDangDoc`='$timePr' WHERE idDangDoc=".$dangDoc['idDangDoc']."");
+        }else {
+            // nếu chưa tồn tại
+            pdo_execute("INSERT INTO `dangdoc`(`idTruyen`, `idUser`, `idChuong`,`soChuong`,`dateDangDoc`) VALUES ($idTruyen,".$_SESSION['user']['idUser'].",$idChuong,".$chuong['soChuong'].",'$timePr')");
+        }
+        if (checkView('view')) {
+            // tăng view chương lên 1 và cập nhập lại
+            $view = $chuong['viewChuong'] + 1;
+            pdo_execute("UPDATE `chuong` SET `viewChuong`=$view WHERE idChuong=$idChuong");
+            $viewAll = 1;
+            foreach ($chuongAll as $c) {
+                $viewAll += $c['viewChuong'];
+            }
+            // cập nhập lại view chương cho truyện
+            pdo_execute("UPDATE `truyen` SET `viewTruyen`=$viewAll WHERE idTruyen=$idTruyen");
+            // thêm thời gian nhận view của chương
+            $_SESSION['view'] = $timePr;
+        }
+    }
+
+?>
+
 
 <link rel="stylesheet" href="<?=$CONTENT_URL?>/CSS/chuong.css">
 
@@ -12,16 +46,14 @@
             <div class="chuong-navbar-list navList-content">
                 <div class="w-100 chuong-navbar-list-title title">Danh Sách Chương
                 </div>
+                <?php foreach ($chuongAll as $c) :?>
                 <div class="chuong-navbar-list-item">
-                    <a href="" class="chuong-navbar-list-link limit1">
-                        Chương 1: Sơ Lâm Dị Giới
+                    <a href="<?=$USER_URL?>/chuong/index.php?idChuong=<?=$c['idChuong']?>&idTruyen=<?=$idTruyen?>" class="chuong-navbar-list-link limit1">
+                        Chương <?=$c['soChuong']?>: <?=$c['tieuDe']?>
                     </a>
                 </div>
-                <div class="chuong-navbar-list-item">
-                    <a href="" class="chuong-navbar-list-link limit1">
-                        Chương 1: Sơ Lâm Dị Giới
-                    </a>
-                </div>
+                <?php endforeach?>
+               
             </div>
             <div class="chuong-navbar-item block-icon navList-icon"  title="Cài Đăt" >
                 <i class="fas fa-cog"></i>
@@ -62,126 +94,99 @@
                     </div>
                 </div>
             </div>
-            <div class="chuong-navbar-item block-icon" title="Thông Tin Truyện"><i class="fas fa-arrow-left"></i></div>
+            <a style="color: var(--text);" href="<?=$USER_URL?>/truyen/index.php?idTruyen=<?=$idTruyen?>" class="chuong-navbar-item block-icon" title="Thông Tin Truyện"><i class="fas fa-arrow-left"></i></a>
             <div class="chuong-navbar-item block-icon" title="Hướng Dẫn"><i class="fas fa-info-circle"></i></div>
         </div>
-        <!-- <script>
-            const chuongNav = document.querySelector('.navList-icon');
-            const chuongNavContent = document.querySelector('.chuong-navbar-list');
-
-            chuongNav.addEventListener('click',()=> {
-                chuongNavContent.classList.toggle('active');
-            });
-        </script> -->
         <div class="chuong-content">
             <div class="row">
                 <!-- === btn === -->
                 <div class="col-12">
                     <div class="chuong-content__btn">
-                        <div class="chuong-content__btn-item disabled">
-                            <i class="fas fa-arrow-left"></i>
-                            Chương Trước
-                        </div>
-                        <div class="chuong-content__btn-item">
-                            Chương Sau
-                            <i class="fas fa-arrow-right"></i>
-                        </div>
+                        <?php if ($chuong['soChuong'] > 1) :?>
+                            <a  style="color:var(--text);" href="<?=$USER_URL?>/chuong/index.php?idTruyen=<?=$idTruyen?>&idChuong=<?=select_idChuong($chuong['soChuong'],$chuongAll,false)?>" class="chuong-content__btn-item">
+                                <i class="fas fa-arrow-left"></i>
+                                Chương Trước
+                            </a>
+                        <?php endif?>
+                        <?php if (!($chuong['soChuong'] > 1)) :?>
+                            <div class="chuong-content__btn-item disabled" style="color:var(--text);">
+                                <i class="fas fa-arrow-left"></i>
+                                Chương Trước
+                            </div>
+                        <?php endif?>
+                        <?php if (($chuong['soChuong'] < $chuongAll[(count($chuongAll) - 1)]['soChuong'])) :?>
+                            <a href="<?=$USER_URL?>/chuong/index.php?idTruyen=<?=$idTruyen?>&idChuong=<?=select_idChuong($chuong['soChuong'],$chuongAll,true)?>" class="chuong-content__btn-item"  style="color:var(--text);">
+                                Chương Sau
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        <?php endif?>
+                        <?php if (!($chuong['soChuong'] < $chuongAll[(count($chuongAll) - 1)]['soChuong'])) :?>
+                            <div class="chuong-content__btn-item disabled"  style="color:var(--text);">
+                                Chương Sau
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        <?php endif?>
                     </div>
                 </div>
                 <!-- ==== thông tin chương === -->
                 <div class="col-12">
-                    <div class="chuong-content__title">Chương 1: Sơ Lâm Dị Giới</div>
+                    <div class="chuong-content__title">Chương <?=$chuong['soChuong']?>: <?=$chuong['tieuDe']?></div>
                 </div>
                 <div class="col-12">
                     <div class="chuong-content__thongTin">
-                        <div class="chuong-content__titlePr block-icon text">
+                        <a href="<?=$USER_URL?>/truyen/index.php?idTruyen=<?=$idTruyen?>" class="chuong-content__titlePr block-icon text">
                             <i class="fas fa-book"></i>
-                            Đấu La Đại Lục IV
-                        </div>
+                            <?=$truyen['tenTruyen']?>
+                        </a>
                         <div class="chuong-content__tacGia block-icon text">
                             <i class="fas fa-user-edit"></i>
-                            Thiên Tằm Thổ Đậu
+                            <?=$truyen['tacGia']?>
                         </div>
                         <div class="chuong-content__soChu block-icon">
                             <i class="fas fa-bold"></i>
-                            1400 Chữ
+                            <?=$truyen['soChu']?> Chữ
                         </div>
                         <div class="chuong-content__danhDau block-icon">
                             <i class="fas fa-ticket"></i>
-                            12 Đánh Dấu
+                            <?=count(select_all("SELECT * FROM danhdau WHERE idTruyen=$idTruyen"))?> Đánh Dấu
                         </div>
                         <div class="chuong-content__dateChuong block-icon">
                             <i class="fas fa-clock"></i>
-                            12-10-2001
+                            <?=$truyen['dateTruyen']?>
                         </div>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="chuong-content__noiDung">
-                        Truyện được đăng tại https://sangtacviet.me/truyen/faloo/1/803629/16/
-                        hứ 16 chương; Bách hoa hóa hình, Yêu Tộc lập
-                        Từng cái Đại Đạo Pháp Tắc hiện ra tại trước mặt Hạo Thiên.
-                        Hạo Thiên trong lòng cuồng hỉ.
-                        Hắn không nghĩ tới, cái này Tạo Hóa Ngọc Điệp trong mảnh vỡ có hoàn chỉnh Đại Đạo Pháp Tắc một trong Đế Đạo pháp tắc.
-                        Còn có hắn một mực khát vọng sức mạnh pháp tắc, thời gian pháp tắc, không gian pháp tắc, nhân quả, Luân Hồi, tạo hóa,,,,,,
-                        Những thứ này hoàn chỉnh Đại Đạo Pháp Tắc, mỗi một đầu tu đến phần cuối, đều có thể chân chính để cho người ta thành đạo.
-                        Là chân chính thành đạo, mà không phải thành Thánh.
-                        Để bảo đảm không có sơ hở nào, Hạo Thiên không chút do dự đem cái này Tạo Hóa Ngọc Điệp mảnh vụn sáp nhập vào chính mình trong nguyên thần.
-                        Nguyên thần chấn động.
-                        Hạo Thiên nguyên thần thật giống như đắm chìm trong trong hải dương Đại Đạo Pháp Tắc, Hạo Thiên nguyên thần đang nhanh chóng phát sinh thuế biến.
-                        Lúc này những thứ này nhật nguyệt tinh thần, Hồng Hoang đại địa nguyên bản rất là mơ hồ, bây giờ lại từng điểm từng điểm trở nên rõ ràng.
-                        “Ông!”
-                        Truyện được đăng tại https://sangtacviet.me/truyen/faloo/1/803629/16/
-                        hứ 16 chương; Bách hoa hóa hình, Yêu Tộc lập
-                        Từng cái Đại Đạo Pháp Tắc hiện ra tại trước mặt Hạo Thiên.
-                        Hạo Thiên trong lòng cuồng hỉ.
-                        Hắn không nghĩ tới, cái này Tạo Hóa Ngọc Điệp trong mảnh vỡ có hoàn chỉnh Đại Đạo Pháp Tắc một trong Đế Đạo pháp tắc.
-                        Còn có hắn một mực khát vọng sức mạnh pháp tắc, thời gian pháp tắc, không gian pháp tắc, nhân quả, Luân Hồi, tạo hóa,,,,,,
-                        Những thứ này hoàn chỉnh Đại Đạo Pháp Tắc, mỗi một đầu tu đến phần cuối, đều có thể chân chính để cho người ta thành đạo.
-                        Là chân chính thành đạo, mà không phải thành Thánh.
-                        Để bảo đảm không có sơ hở nào, Hạo Thiên không chút do dự đem cái này Tạo Hóa Ngọc Điệp mảnh vụn sáp nhập vào chính mình trong nguyên thần.
-                        Nguyên thần chấn động.
-                        Hạo Thiên nguyên thần thật giống như đắm chìm trong trong hải dương Đại Đạo Pháp Tắc, Hạo Thiên nguyên thần đang nhanh chóng phát sinh thuế biến.
-                        Lúc này những thứ này nhật nguyệt tinh thần, Hồng Hoang đại địa nguyên bản rất là mơ hồ, bây giờ lại từng điểm từng điểm trở nên rõ ràng.
-                        “Ông!”
-                        Truyện được đăng tại https://sangtacviet.me/truyen/faloo/1/803629/16/
-                        hứ 16 chương; Bách hoa hóa hình, Yêu Tộc lập
-                        Từng cái Đại Đạo Pháp Tắc hiện ra tại trước mặt Hạo Thiên.
-                        Hạo Thiên trong lòng cuồng hỉ.
-                        Hắn không nghĩ tới, cái này Tạo Hóa Ngọc Điệp trong mảnh vỡ có hoàn chỉnh Đại Đạo Pháp Tắc một trong Đế Đạo pháp tắc.
-                        Còn có hắn một mực khát vọng sức mạnh pháp tắc, thời gian pháp tắc, không gian pháp tắc, nhân quả, Luân Hồi, tạo hóa,,,,,,
-                        Những thứ này hoàn chỉnh Đại Đạo Pháp Tắc, mỗi một đầu tu đến phần cuối, đều có thể chân chính để cho người ta thành đạo.
-                        Là chân chính thành đạo, mà không phải thành Thánh.
-                        Để bảo đảm không có sơ hở nào, Hạo Thiên không chút do dự đem cái này Tạo Hóa Ngọc Điệp mảnh vụn sáp nhập vào chính mình trong nguyên thần.
-                        Nguyên thần chấn động.
-                        Hạo Thiên nguyên thần thật giống như đắm chìm trong trong hải dương Đại Đạo Pháp Tắc, Hạo Thiên nguyên thần đang nhanh chóng phát sinh thuế biến.
-                        Lúc này những thứ này nhật nguyệt tinh thần, Hồng Hoang đại địa nguyên bản rất là mơ hồ, bây giờ lại từng điểm từng điểm trở nên rõ ràng.
-                        “Ông!”
-                        Truyện được đăng tại https://sangtacviet.me/truyen/faloo/1/803629/16/
-                        hứ 16 chương; Bách hoa hóa hình, Yêu Tộc lập
-                        Từng cái Đại Đạo Pháp Tắc hiện ra tại trước mặt Hạo Thiên.
-                        Hạo Thiên trong lòng cuồng hỉ.
-                        Hắn không nghĩ tới, cái này Tạo Hóa Ngọc Điệp trong mảnh vỡ có hoàn chỉnh Đại Đạo Pháp Tắc một trong Đế Đạo pháp tắc.
-                        Còn có hắn một mực khát vọng sức mạnh pháp tắc, thời gian pháp tắc, không gian pháp tắc, nhân quả, Luân Hồi, tạo hóa,,,,,,
-                        Những thứ này hoàn chỉnh Đại Đạo Pháp Tắc, mỗi một đầu tu đến phần cuối, đều có thể chân chính để cho người ta thành đạo.
-                        Là chân chính thành đạo, mà không phải thành Thánh.
-                        Để bảo đảm không có sơ hở nào, Hạo Thiên không chút do dự đem cái này Tạo Hóa Ngọc Điệp mảnh vụn sáp nhập vào chính mình trong nguyên thần.
-                        Nguyên thần chấn động.
-                        Hạo Thiên nguyên thần thật giống như đắm chìm trong trong hải dương Đại Đạo Pháp Tắc, Hạo Thiên nguyên thần đang nhanh chóng phát sinh thuế biến.
-                        Lúc này những thứ này nhật nguyệt tinh thần, Hồng Hoang đại địa nguyên bản rất là mơ hồ, bây giờ lại từng điểm từng điểm trở nên rõ ràng.
-                        “Ông!”
+                        <?=$chuong['noiDung']?>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="chuong-content__btn-bottom">
-                        <div class="chuong-content__btn-bottom-item disabled">
-                            <i class="fas fa-arrow-left"></i>
-                            Chương Trước
-                        </div>
-                        <div class="chuong-content__btn-bottom-item">
-                            Chương Sau
-                            <i class="fas fa-arrow-right"></i>
-                        </div>
+                        <?php if ($chuong['soChuong'] > 1) :?>
+                            <a href="<?=$USER_URL?>/chuong/index.php?idTruyen=<?=$idTruyen?>&idChuong=<?=select_idChuong($chuong['soChuong'],$chuongAll,false)?>" class="chuong-content__btn-bottom-item" style="color:var(--text);">
+                                <i class="fas fa-arrow-left"></i>
+                                Chương Trước
+                            </a>
+                        <?php endif?>
+                        <?php if (!($chuong['soChuong'] > 1)) :?>
+                            <div class="chuong-content__btn-bottom-item disabled" style="color:var(--text);">
+                                <i class="fas fa-arrow-left"></i>
+                                Chương Trước
+                            </div>
+                        <?php endif?>
+                        <?php if (($chuong['soChuong'] < $chuongAll[(count($chuongAll) - 1)]['soChuong'])) :?>
+                            <a href="<?=$USER_URL?>/chuong/index.php?idTruyen=<?=$idTruyen?>&idChuong=<?=select_idChuong($chuong['soChuong'],$chuongAll,true)?>" class="chuong-content__btn-bottom-item" style="color:var(--text);">
+                                Chương Sau
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        <?php endif?>
+                        <?php if (!($chuong['soChuong'] < $chuongAll[(count($chuongAll) - 1)]['soChuong'])) :?>
+                            <div class="chuong-content__btn-bottom-item disabled"  style="color:var(--text);">
+                                Chương Sau
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        <?php endif?>
                     </div>
                 </div>
             </div>

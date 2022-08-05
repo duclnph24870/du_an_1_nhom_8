@@ -9,5 +9,9 @@
     $pageName = "Trang chủ";
     $VIEW_NAME = "$USER_URL/trangchu/main.php";
     $link = "$USER_URL/trangchu/index.php";
+    require "$DAO_URL/pdo.php";
     require "../layout.php";
 ?>
+<script>
+    scrollNoDrifted('userMain');
+</script>

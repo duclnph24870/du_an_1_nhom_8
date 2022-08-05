@@ -47,3 +47,6 @@
     }
     require "../layout.php";
 ?>
+<script>
+    scrollNoDrifted('adminTruyen');
+</script>

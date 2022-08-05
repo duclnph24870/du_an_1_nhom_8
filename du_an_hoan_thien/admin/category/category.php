@@ -1,5 +1,5 @@
 <?php 
-    $sqlSelectAllCate = "SELECT * FROM danhMuc";      
+    $sqlSelectAllCate = "SELECT * FROM danhmuc";      
     $category = select_all($sqlSelectAllCate);
     $sqlSelectAllUser = "SELECT * FROM user";
     $user = select_all($sqlSelectAllUser);

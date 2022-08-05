@@ -9,5 +9,9 @@
     $pageName = "Lọc truyện";
     $link = "$USER_URL/loctruyen/index.php";
     $VIEW_NAME = "$USER_URL/loctruyen/fillterMain.php";
+    require "$DAO_URL/pdo.php";
     require "../layout.php";
 ?>
+<script>
+    scrollNoDrifted('userFillter');
+</script>

@@ -1,6 +1,32 @@
-<?php ?>
+<?php 
+    // lấy ra 5 truyện đang đọc gần nhất
+    $dangDoc = select_all("SELECT * FROM dangdoc WHERE idUser=$idUserPro ORDER BY dateDangDoc DESC LIMIT 0,5");
+    
+    // lấy ra các truyện đã đăng của user
+    $daDang = select_all("SELECT * FROM truyen WHERE idUser=$idUserPro ORDER BY dateTruyen DESC");
+
+    // lấy ra mảng danh mục
+    $category = select_all("SELECT * FROM danhmuc");
+
+    // lấy ra mảng đánh giá
+    $danhGias = select_all("SELECT * FROM danhgia WHERE idUser=$idUserPro ORDER BY dateDanhGia DESC");
+
+    // lấy ra mảng comment 
+    $comments = select_all("SELECT * FROM comment WHERE idUser=$idUserPro ORDER BY dateComment DESC");
+
+    // user all 
+    $userAll = select_all("SELECT * FROM user");
+
+    // rep comment
+    $repComments = select_all("SELECT * FROM replycomment");
+
+    // rep danh gia
+    $repDanhGias = select_all("SELECT * FROM replydanhgia");
+?>
 
 <script src="<?=$CONTENT_URL?>/JS/product.js"></script>
+<script src="<?=$CONTENT_URL?>/JS/userManager.js"></script>
+<script src="<?=$CONTENT_URL?>/JS/userProfile.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
@@ -24,14 +50,16 @@
                             <i class="fas fa-user"></i>
                             Thông Tin Cơ Bản
                         </div>
-                        <div class="admin-left-icon text">
-                            <i class="fas fa-comments"></i>
-                            Bình Luận
-                        </div>
-                        <div class="admin-left-icon text">
-                            <i class="fas fa-comment-alt-edit"></i>
-                            Đánh Giá
-                        </div>
+                        <?php if (isset($_SESSION['user']) && (int)$_SESSION['user']['quyenHan'] >= 3) :?>
+                            <div class="admin-left-icon text">
+                                <i class="fas fa-comments"></i>
+                                Bình Luận
+                            </div>
+                            <div class="admin-left-icon text">
+                                <i class="fas fa-comment-alt-edit"></i>
+                                Đánh Giá
+                            </div>
+                        <?php endif?>
                     </div>
                 </div>
                 <div class="col-12">
@@ -40,254 +68,134 @@
                         <div class="admin-right-item">
                             <div class="row"> 
                                 <div class="col-8">
-                                    <!-- truyện đã đọc  -->
-                                    <div class="userProfile__content-left-section1">
-                                        <div class="content__section-header">
-                                            <div class="content__section-title title">Truyện Đã Đọc</div>
-                                        </div>
-                                        <div class="userProfile__content-left-section1-content">
-                                            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                                                <ol class="carousel-indicators">
-                                                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                                                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                                                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                                                </ol>
+                                    <?php if (count($dangDoc) > 0) :?>
+                                        <!-- truyện đã đọc  -->
+                                        <div class="userProfile__content-left-section1">
+                                            <div class="content__section-header">
+                                                <div class="content__section-title title">Truyện Đã Đọc</div>
+                                            </div>
+                                            <div class="userProfile__content-left-section1-content">
+                                                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                                                    <ol class="carousel-indicators">
+                                                        <?php for ($i = 0;$i < count($dangDoc);$i++) :?>
+                                                            <li data-target="#carouselExampleIndicators" data-slide-to="<?=$i?>" class="<?=$i == 0 ? 'active' : ''?>"></li>
+                                                        <?php endfor?>
+                                                    </ol>
 
-                                                <div class="carousel-inner">
-                                                    <div class="carousel-item active">
-                                                        <div class="d-flex">
-                                                            <div class="carousel-item__left">
-                                                                <img src="https://static.cdnno.com/poster/duy-do-xam-thuc-gia/150.jpg?1585207998" alt="">
-                                                            </div>
-                                                            <div class="carousel-item__right">
-                                                                <a href="" class="carousel-item__right-title limit1 text">Duy độ xâm thực giả</a>
-                                                                <a href="" class="carousel-item__right-master block-icon">
-                                                                    <i class="fas fa-user-edit"></i>
-                                                                    <span class="limit1">Tàn khốc xí thiên sứ</span>
-                                                                </a>
-                                                                <div class="carousel-item__right-demo limit5">
-                                                                    Xa xưa trước đó, mục nát Chủ Thần Không Gian sụp đổ giải thể, hài cốt tản mát song song vũ trụ, dựng dục ra mới không gian. . .    Vô số bị chưởng khống 'Kịch bản thế giới' cũng rơi vào hư không khe hở, trùng hoạch tự do, bạo tẩu mất khống chế, thăng cấp thành chân thực, hóa thành hiện thực.    Ngay...
-                                                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero aliquid rerum est amet ex architecto, corporis hic praesentium asperiores odio atque, in, laborum cupiditate labore qui quia ipsam voluptatum placeat?
+                                                    <div class="carousel-inner">
+                                                        <?php foreach ($dangDoc as $k => $doc) :?>
+                                                            <?php 
+                                                                // Lấy ra truyện đang đọc
+                                                                $truyenDangDoc = select_one("SELECT * FROM truyen WHERE idTruyen=".$doc['idTruyen']."");
+                                                            ?>
+                                                            <div class="carousel-item <?=$k == 0 ? 'active' : '' ?>">
+                                                                <div class="d-flex">
+                                                                    <div class="carousel-item__left">
+                                                                        <img src="<?=$CONTENT_URL?>/IMG/<?=$truyenDangDoc['imgTruyen']?>" alt="">
+                                                                    </div>
+                                                                    <div class="carousel-item__right">
+                                                                        <a href="<?=$USER_URL?>/truyen/index.php?idTruyen=<?=$doc['idTruyen']?>" class="carousel-item__right-title limit1 text"><?=$truyenDangDoc['tenTruyen']?></a>
+                                                                        <div class="carousel-item__right-master block-icon">
+                                                                            <i class="fas fa-user-edit"></i>
+                                                                            <span class="limit1"><?=$truyenDangDoc['tacGia']?></span>
+                                                                        </div>
+                                                                        <div class="carousel-item__right-demo limit5">
+                                                                            <?=$truyenDangDoc['gioiThieu']?>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        <?php endforeach?>
                                                     </div>
-                                                    <div class="carousel-item">
-                                                        <div class="d-flex">
-                                                            <div class="carousel-item__left">
-                                                                <img src="https://static.cdnno.com/poster/de-ba/150.jpg?1585205580" alt="">
-                                                            </div>
-                                                            <div class="carousel-item__right">
-                                                                <a href="" class="carousel-item__right-title limit1 text">Đế Bá</a>
-                                                                <a href="" class="carousel-item__right-master block-icon">
-                                                                    <i class="fas fa-user-edit"></i>
-                                                                    <span class="limit1">Tàn khốc xí thiên sứ</span>
-                                                                </a>
-                                                                <div class="carousel-item__right-demo limit5">
-                                                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero aliquid rerum est amet ex architecto, corporis hic praesentium asperiores odio atque, in, laborum cupiditate labore qui quia ipsam voluptatum placeat?
-                                                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda quaerat ab esse distinctio dolores cum explicabo aspernatur! Veritatis atque saepe, ipsam natus voluptatum temporibus, labore at sint amet dolore ut!
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="carousel-item">
-                                                        <div class="d-flex">
-                                                            <div class="carousel-item__left">
-                                                                <img src="https://static.cdnno.com/poster/khung-bo-song-lai/150.jpg?1585205957" alt="">
-                                                            </div>
-                                                            <div class="carousel-item__right">
-                                                                <a href="" class="carousel-item__right-title limit1 text">Khủng bố sống lại</a>
-                                                                <a href="" class="carousel-item__right-master block-icon">
-                                                                    <i class="fas fa-user-edit"></i>
-                                                                    <span class="limit1">Tàn khốc xí thiên sứ</span>
-                                                                </a>
-                                                                <div class="carousel-item__right-demo limit5">
-                                                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero aliquid rerum est amet ex architecto, corporis hic praesentium asperiores odio atque, in, laborum cupiditate labore qui quia ipsam voluptatum placeat?
-                                                                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Exercitationem iusto veniam explicabo laudantium impedit quis ut, eos in aspernatur a. Ullam et reiciendis suscipit ipsam aliquid fuga officia autem doloremque!
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
 
-                                                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                                                    <span class="carousel-control-prev-icon" aria-hidden="true">
-                                                    <i class="fas fa-arrow-left"></i>
-                                                    </span>
-                                                    <span class="sr-only">Previous</span>
-                                                </a>
-                                                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                                                    <span class="carousel-control-next-icon" aria-hidden="true">
-                                                    <i class="fas fa-arrow-right"></i>
-                                                    </span>
-                                                    <span class="sr-only">Next</span>
-                                                </a>
-                                                </div>
+                                                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                                                        <span class="carousel-control-prev-icon" aria-hidden="true">
+                                                        <i class="fas fa-arrow-left"></i>
+                                                        </span>
+                                                        <span class="sr-only">Previous</span>
+                                                    </a>
+                                                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                                                        <span class="carousel-control-next-icon" aria-hidden="true">
+                                                        <i class="fas fa-arrow-right"></i>
+                                                        </span>
+                                                        <span class="sr-only">Next</span>
+                                                    </a>
+                                                    </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <!-- truyện đã đăng  -->
-                                    <div class="userProfile__content-left-section2">
-                                        <div class="content__section-header">
-                                            <div class="content__section-title title">Truyện Đã Đăng</div>
-                                        </div>
-                                        <div class="userProfile__content-left-section2-content">
-                                            <div class="userProfile__content-left-section2-content-list">
-                                                <div class="content__section1-main-item">
-                                                    <a href="../HTML/product.html" class="content__section1-main-item-img" style="background-image: url(https://static.cdnno.com/poster/tu-luyen-theo-dau-pha-thuong-khung-bat-dau/150.jpg?1585210461);"></a>
-                                                    <div class="content__section1-main-item-content">
-                                                        <a href="../HTML/product.html" class="content__section1-main-item-title text">Tu Luyện Theo Đấu Phá Thương Khung Bắt Đầu</a>
-                                                        <div class="content__section1-main-item-demo">
-                                                            Hệ thống nơi tay, thế giới ta có, thiếu niên người mang vạn năng hệ thống, theo Đấu Phá Thương Khung bắt đầu tu luyện, đây là một người hiện đại tại dị giới tu hành cố sự. . .
-                                                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nam fugit, officia tenetur magni necessitatibus architecto quia dolor porro reiciendis, quidem voluptate, asperiores magnam. Maiores, saepe eos architecto vero quas ab.
-                                                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Possimus pariatur neque accusamus molestiae tempore atque, consequuntur perspiciatis repellat tempora eaque voluptatem aperiam error autem, temporibus quidem, excepturi blanditiis veritatis ullam!
-                                                        </div>
-                                                        <div class="content__section1-main-item-footer">
-                                                            <div class="content__section1-main-item-master">
-                                                                <i class="fas fa-user-edit"></i>
-                                                                Giang Hồ Hữu Tửu
+                                    <?php endif?>
+                                    <?php if (count($daDang) > 0) :?>
+                                        <!-- truyện đã đăng  -->
+                                        <div class="userProfile__content-left-section2">
+                                            <div class="content__section-header">
+                                                <div class="content__section-title title">Truyện Đã Đăng</div>
+                                            </div>
+                                            <div class="userProfile__content-left-section2-content">
+                                                <!-- list truyện đã đăng  -->
+                                                <div class="userProfile__content-left-section2-content-list">
+
+                                                    <div class="content__section1-main-item">
+                                                        <a href="../HTML/product.html" class="content__section1-main-item-img" style="background-image: url(https://static.cdnno.com/poster/tu-luyen-theo-dau-pha-thuong-khung-bat-dau/150.jpg?1585210461);"></a>
+                                                        <div class="content__section1-main-item-content">
+                                                            <a href="../HTML/product.html" class="content__section1-main-item-title text">Tu Luyện Theo Đấu Phá Thương Khung Bắt Đầu</a>
+                                                            <div class="content__section1-main-item-demo">
+                                                                Hệ thống nơi tay, thế giới ta có, thiếu niên người mang vạn năng hệ thống, theo Đấu Phá Thương Khung bắt đầu tu luyện, đây là một người hiện đại tại dị giới tu hành cố sự. . .
+                                                                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nam fugit, officia tenetur magni necessitatibus architecto quia dolor porro reiciendis, quidem voluptate, asperiores magnam. Maiores, saepe eos architecto vero quas ab.
+                                                                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Possimus pariatur neque accusamus molestiae tempore atque, consequuntur perspiciatis repellat tempora eaque voluptatem aperiam error autem, temporibus quidem, excepturi blanditiis veritatis ullam!
                                                             </div>
-                                                            <div class="content__section1-main-item-chap d-flex">
-                                                                <i class="fas fa-book"></i>
-                                                                369 chương
-                                                            </div>
-                                                            <div class="content__section1-main-item-category btn">Đồng Nhân</div>
-                                                            <div class="content__section1-main-item-master userProfile__product-view">
-                                                                <i class="fas fa-glasses" aria-hidden="true"></i>
-                                                                123
-                                                            </div>
-                                                            <div class="content__section1-main-item-master userProfile__product-danhDau">
-                                                                <i class="fas fa-ticket-alt"></i>
-                                                                12
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="content__section1-main-item">
-                                                    <a href="../HTML/product.html" class="content__section1-main-item-img" style="background-image: url(https://static.cdnno.com/poster/tu-luyen-theo-dau-pha-thuong-khung-bat-dau/150.jpg?1585210461);"></a>
-                                                    <div class="content__section1-main-item-content">
-                                                        <a href="../HTML/product.html" class="content__section1-main-item-title text">Tu Luyện Theo Đấu Phá Thương Khung Bắt Đầu</a>
-                                                        <div class="content__section1-main-item-demo">
-                                                            Hệ thống nơi tay, thế giới ta có, thiếu niên người mang vạn năng hệ thống, theo Đấu Phá Thương Khung bắt đầu tu luyện, đây là một người hiện đại tại dị giới tu hành cố sự. . .
-                                                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nam fugit, officia tenetur magni necessitatibus architecto quia dolor porro reiciendis, quidem voluptate, asperiores magnam. Maiores, saepe eos architecto vero quas ab.
-                                                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Possimus pariatur neque accusamus molestiae tempore atque, consequuntur perspiciatis repellat tempora eaque voluptatem aperiam error autem, temporibus quidem, excepturi blanditiis veritatis ullam!
-                                                        </div>
-                                                        <div class="content__section1-main-item-footer">
-                                                            <div class="content__section1-main-item-master">
-                                                                <i class="fas fa-user-edit"></i>
-                                                                Giang Hồ Hữu Tửu
-                                                            </div>
-                                                            <div class="content__section1-main-item-chap d-flex">
-                                                                <i class="fas fa-book"></i>
-                                                                369 chương
-                                                            </div>
-                                                            <div class="content__section1-main-item-category btn">Đồng Nhân</div>
-                                                            <div class="content__section1-main-item-master userProfile__product-view">
-                                                                <i class="fas fa-glasses" aria-hidden="true"></i>
-                                                                123
-                                                            </div>
-                                                            <div class="content__section1-main-item-master userProfile__product-danhDau">
-                                                                <i class="fas fa-ticket-alt"></i>
-                                                                12
+                                                            <div class="content__section1-main-item-footer">
+                                                                <div class="content__section1-main-item-master">
+                                                                    <i class="fas fa-user-edit"></i>
+                                                                    Giang Hồ Hữu Tửu
+                                                                </div>
+                                                                <div class="content__section1-main-item-chap d-flex">
+                                                                    <i class="fas fa-book"></i>
+                                                                    369 chương
+                                                                </div>
+                                                                <div class="content__section1-main-item-category btn">Đồng Nhân</div>
+                                                                <div class="content__section1-main-item-master userProfile__product-view">
+                                                                    <i class="fas fa-glasses" aria-hidden="true"></i>
+                                                                    123
+                                                                </div>
+                                                                <div class="content__section1-main-item-master userProfile__product-danhDau">
+                                                                    <i class="far fa-leaf" aria-hidden="true"></i>
+                                                                    12
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="content__section1-main-item">
-                                                    <a href="../HTML/product.html" class="content__section1-main-item-img" style="background-image: url(https://static.cdnno.com/poster/tu-luyen-theo-dau-pha-thuong-khung-bat-dau/150.jpg?1585210461);"></a>
-                                                    <div class="content__section1-main-item-content">
-                                                        <a href="../HTML/product.html" class="content__section1-main-item-title text">Tu Luyện Theo Đấu Phá Thương Khung Bắt Đầu</a>
-                                                        <div class="content__section1-main-item-demo">
-                                                            Hệ thống nơi tay, thế giới ta có, thiếu niên người mang vạn năng hệ thống, theo Đấu Phá Thương Khung bắt đầu tu luyện, đây là một người hiện đại tại dị giới tu hành cố sự. . .
-                                                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nam fugit, officia tenetur magni necessitatibus architecto quia dolor porro reiciendis, quidem voluptate, asperiores magnam. Maiores, saepe eos architecto vero quas ab.
-                                                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Possimus pariatur neque accusamus molestiae tempore atque, consequuntur perspiciatis repellat tempora eaque voluptatem aperiam error autem, temporibus quidem, excepturi blanditiis veritatis ullam!
-                                                        </div>
-                                                        <div class="content__section1-main-item-footer">
-                                                            <div class="content__section1-main-item-master">
-                                                                <i class="fas fa-user-edit"></i>
-                                                                Giang Hồ Hữu Tửu
-                                                            </div>
-                                                            <div class="content__section1-main-item-chap d-flex">
-                                                                <i class="fas fa-book"></i>
-                                                                369 chương
-                                                            </div>
-                                                            <div class="content__section1-main-item-category btn">Đồng Nhân</div>
-                                                            <div class="content__section1-main-item-master userProfile__product-view">
-                                                                <i class="fas fa-glasses" aria-hidden="true"></i>
-                                                                123
-                                                            </div>
-                                                            <div class="content__section1-main-item-master userProfile__product-danhDau">
-                                                                <i class="fas fa-ticket-alt"></i>
-                                                                12
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="content__section1-main-item">
-                                                    <a href="../HTML/product.html" class="content__section1-main-item-img" style="background-image: url(https://static.cdnno.com/poster/tu-luyen-theo-dau-pha-thuong-khung-bat-dau/150.jpg?1585210461);"></a>
-                                                    <div class="content__section1-main-item-content">
-                                                        <a href="../HTML/product.html" class="content__section1-main-item-title text">Tu Luyện Theo Đấu Phá Thương Khung Bắt Đầu</a>
-                                                        <div class="content__section1-main-item-demo">
-                                                            Hệ thống nơi tay, thế giới ta có, thiếu niên người mang vạn năng hệ thống, theo Đấu Phá Thương Khung bắt đầu tu luyện, đây là một người hiện đại tại dị giới tu hành cố sự. . .
-                                                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nam fugit, officia tenetur magni necessitatibus architecto quia dolor porro reiciendis, quidem voluptate, asperiores magnam. Maiores, saepe eos architecto vero quas ab.
-                                                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Possimus pariatur neque accusamus molestiae tempore atque, consequuntur perspiciatis repellat tempora eaque voluptatem aperiam error autem, temporibus quidem, excepturi blanditiis veritatis ullam!
-                                                        </div>
-                                                        <div class="content__section1-main-item-footer">
-                                                            <div class="content__section1-main-item-master">
-                                                                <i class="fas fa-user-edit"></i>
-                                                                Giang Hồ Hữu Tửu
-                                                            </div>
-                                                            <div class="content__section1-main-item-chap d-flex">
-                                                                <i class="fas fa-book"></i>
-                                                                369 chương
-                                                            </div>
-                                                            <div class="content__section1-main-item-category btn">Đồng Nhân</div>
-                                                            <div class="content__section1-main-item-master userProfile__product-view">
-                                                                <i class="fas fa-glasses" aria-hidden="true"></i>
-                                                                123
-                                                            </div>
-                                                            <div class="content__section1-main-item-master userProfile__product-danhDau">
-                                                                <i class="fas fa-ticket-alt"></i>
-                                                                12
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                <!-- pagination đã đăng  -->
+                                                <div class="pagination pagiProfileDaDang">
+                                                    
                                                 </div>
                                             </div>
-                                            <form method="post" class="pagination">
-                                                <div class="pagination__item text"><</div>
-                                                <div class="pagination__item text active">1</div>
-                                                <div class="pagination__item text">2</div>
-                                                <div class="pagination__item text">3</div>
-                                                <div class="pagination__item text">4</div>
-                                                <div class="pagination__item text">></div>
-                                                <input type="text" value="1" class="pagination__input">
-                                                <input type="submit" value="Go" class="pagination__submit">
-                                            </form>
                                         </div>
-                                    </div>
+                                    <?php endif?>
                                 </div>
+                                <!-- thông tin  -->
                                 <div class="col-4">
                                     <div class="userProfile__content-right">
                                         <div class="userProfile__information">
                                             <div class="userProfile__information-avt">
-                                                <img src="https://static.cdnno.com/user/e66174c2d569a2e847a94f7d1042cbd3/100.jpg?1635993328" alt="">
-                                                <span>Tác Giả</span>
+                                                <img src="<?=$CONTENT_URL?>/IMG/<?=$userProfile['imgUser']?>" alt="">
+                                                <span><?=showQuyenHan($userProfile['quyenHan'])?></span>
                                             </div>
                                             <div class="userProfile__information-content">
-                                                <div class="userProfile__information-name limi1">Ngọc Đức</div>
-                                                <div class="userProfile__information-level">lv.3</div>
+                                                <div class="userProfile__information-name limi1"><?=$userProfile['trangThaiComment'] == 0 ? 'Một Bạn Đọc Ngại Ngùng' : $userProfile['userName']?></div>
+                                                <div class="userProfile__information-level">lv.<?=$userProfile['quyenHan']?></div>
                                                 <div class="userProfile__information-date block-icon">
                                                     <i class="far fa-clock"></i>
-                                                        2 năm trước
+                                                        <?=timeCount($userProfile['userDate'])?>
                                                 </div>
                                             </div>
                                             <div class="userProfile__information-description">
-                                                Boss của metruyenchu
+                                                <?=isset($userProfile['imgUser']) ? $userProfile['gioiThieu'] : 'Chưa có giới thiệu nào!'?>
                                             </div>
                                             <div class="expUser userProfile__information-exp">
                                                 <div class="expUser__content">
                                                     <div class="expUser__content-text">
-                                                    Exp: <span class="expUser__content-having">70</span> / <span class="expUser__content-required">1000</span>
+                                                    Exp: <span class="expUser__content-having"><?=$userProfile['exp']?></span> / <span class="expUser__content-required"><?=(int)$userProfile['quyenHan']*1000?></span>
                                                     </div>
                                                     <style>
                                                         .expUser::after {
@@ -302,12 +210,8 @@
                                                 <div class="userProfile__statistical-name">Đã Đọc</div>
                                                 <div class="userProfile__statistical-content">
                                                     <div class="userProfile__statistical-content-item">
-                                                        <b>76</b>
+                                                        <b><?=count($dangDoc)?></b>
                                                         truyện
-                                                    </div>
-                                                    <div class="userProfile__statistical-content-item">
-                                                        <b>706</b>
-                                                        chương
                                                     </div>
                                                 </div>
                                             </div>
@@ -315,11 +219,11 @@
                                                 <div class="userProfile__statistical-name">Xuất Bản</div>
                                                 <div class="userProfile__statistical-content">
                                                     <div class="userProfile__statistical-content-item">
-                                                        <b>286</b>
+                                                        <b><?=count($daDang)?></b>
                                                         truyện
                                                     </div>
                                                     <div class="userProfile__statistical-content-item">
-                                                        <b>1009</b>
+                                                        <b><?=count(select_all("SELECT * FROM chuong WHERE idUser=$idUserPro"))?></b>
                                                         chương
                                                     </div>
                                                 </div>
@@ -328,7 +232,7 @@
                                                 <div class="userProfile__statistical-name">Bình Luận</div>
                                                 <div class="userProfile__statistical-content">
                                                     <div class="userProfile__statistical-content-item">
-                                                        <b>561</b>
+                                                        <b><?=count(select_all("SELECT * FROM comment WHERE idUser=$idUserPro"))?></b>
                                                     </div>
                                                 </div>
                                             </div>
@@ -336,7 +240,7 @@
                                                 <div class="userProfile__statistical-name">Cất Giữ</div>
                                                 <div class="userProfile__statistical-content">
                                                     <div class="userProfile__statistical-content-item">
-                                                        <b>43</b>
+                                                        <b><?=count(select_all("SELECT * FROM danhdau WHERE idUser=$idUserPro"))?></b>
                                                     </div>
                                                 </div>
                                             </div>
@@ -345,448 +249,87 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- ==== bình luận === -->
-                        <div class="admin-right-item admin-right-item-comment userProfile__comment">
-                            <div class="admin-right-item-notify-header d-flex align-items-center title pb-2">
-                                <div class="checkbox-btn-block d-flex">
-                                    <span class="btn-category block-icon blue checkbox-btn-block-iconCheck">
-                                        <i class="fa-solid fa-x"></i>
-                                        <span>Chọn</span>
-                                        <span>Đóng</span>
-                                    </span>
-                                    <span class="btn-category cam btn-allCheck">
-                                        <span>Chọn Tất Cả</span>
-                                        <span> Bỏ Chọn Tất Cả</span>
-                                    </span>
-                                    
-                                    <a href="" class="btn-category block-icon toi checkbox-btn-block-delete">
-                                        <i class="fa-solid fa-trash"></i>
-                                        Xóa các mục đã chọn
-                                    </a>
+                        <?php if (isset($_SESSION['user']) && (int)$_SESSION['user']['quyenHan'] >= 3) :?>
+                            <!-- ==== bình luận === -->
+                            <form method="POST" action="<?=$USER_URL?>/usermanager/deleteComment.php" class="admin-right-item userProfile-comment">
+                                <input type="text" name="type" value="comment" hidden id="">
+                                <input type="text" name="link" value="<?=$link?>?idUser=<?=$userProfile['idUser']?>" hidden>
+                                <div class="admin-right-item-notify-header d-flex align-items-center title py-2 pt-4">
+                                    Bình Luận
+                                    <?php if (count($comments) > 0) :?>
+                                        <div class="checkbox-btn-block d-flex ml-auto">
+                                            <span class="btn-category block-icon blue checkbox-btn-block-iconCheck">
+                                                <i class="fa-solid fa-x"></i>
+                                                <span>Chọn</span>
+                                                <span>Đóng</span>
+                                            </span>
+                                            <span class="btn-category cam btn-allCheck">
+                                                <span>Chọn Tất Cả</span>
+                                                <span> Bỏ Chọn Tất Cả</span>
+                                            </span>
+                                            
+                                            <input type="submit" value="Xóa các mục đã chọn" class="btn-category block-icon toi checkbox-btn-block-delete">
+                                            
+                                        </div>
+                                    <?php endif?>
                                 </div>
-                            </div>
-                            <div class="admin-right-item-comment-content">
-                                <div class="product__navbar-item-comment-item border-bottom-1 border-top-0">
-                                    <div class="product__navbar-item-comment-item-img">
-                                        <img src="https://metruyenchu.com/images/avatar-profile.png?97b80827721f6116c3dbc797d11d629b" alt="">
-                                        <span>Cấp 0</span>
+                                <?php if (count($comments) > 0) :?>
+                                    <div class="admin-right-item-comment-content listComment-userMannager">
+                                        <!-- list comment  -->
                                     </div>
-                                    <div class="product__navbar-item-comment-item-right">
-                                        <div class="product__navbar-item-comment-item-name text limit1">Ngọc Đức</div>
-                                        <style>
-                                            .product__navbar-item-comment-item:nth-child(2) .product__navbar-item-comment-item-name::after {
-                                                content: "8 phút trước";
-                                            }
-                                        </style>
-                                        <div class="product__navbar-item-comment-item-icon">
-                                            Đấu Phá Thương Khung
-                                        </div>
-                                        <div class="product__navbar-item-comment-item-content">
-                                            Truyện rất hay!!
-                                        </div>
-                                        <!-- like ,trả lời,...  -->
-                                        <div class="product__navbar-item-comment-item-bottom">
-                                            <div class="product__navbar-item-comment-item-bottom-item showListRep">
-                                                Xem 1 câu trả lời
-                                            </div>
-                                            <div class="product__navbar-item-comment-item-bottom-item">
-                                                <i class="fas fa-thumbs-up"></i>
-                                                <span>20</span>
-                                            </div>
-                                            <div class="listRep w-100">
-                                                <div class="product__navbar-item-comment-item">
-                                                    <div class="product__navbar-item-comment-item-img">
-                                                        <img src="https://metruyenchu.com/images/avatar-profile.png?97b80827721f6116c3dbc797d11d629b" alt="">
-                                                        <span>Cấp 0</span>
-                                                    </div>
-                                                    <div class="product__navbar-item-comment-item-right">
-                                                        <div class="product__navbar-item-comment-item-name text limit1" style="font-size: 1.6rem;">Ngọc Đức</div>
-                                                        
-                                                        <div class="product__navbar-item-comment-item-content">
-                                                            Truyện rất hay!!
-                                                        </div>
-                                                        <div class="product__navbar-item-comment-item-bottom">
-                                                            <div class="product__navbar-item-comment-item-bottom-item">
-                                                                <i class="fas fa-thumbs-up"></i>
-                                                                <span>20</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="admin-right-item-comment-delete text"><i class="fas fa-trash"></i></div>
-                                                </div>
-                                            </div>
-                                            <div class="hidden-listRep">
-                                                Ẩn câu trả lời
-                                            </div>
+                                    <div class="col-12">
+                                        <div class="pagination pagiComment-userManager">
+                                            
                                         </div>
                                     </div>
-                                    <div class="admin-right-item-comment-delete text"><i class="fas fa-trash"></i></div>
-                                    <input type="checkbox" name="commentCheckBox" class="chonCheckBox ml-2">
+                                <?php endif?>
+                                <?php if (count($comments) == 0) :?>
+                                    <div class="emtyList w-100 d-flex" style="padding-left: 15px;justify-content: flex-start;">
+                                        <i class="fad fa-heart-broken"></i>
+                                        Danh sách trống
+                                    </div>
+                                <?php endif?>
+                            </form>
+                            <!-- ==== Đánh giá === -->
+                            <form method="POST" action="<?=$USER_URL?>/usermanager/deleteComment.php" class="admin-right-item userProfile-danhGia">
+                                <input type="text" name="type" value="danhGia" hidden id="">
+                                <input type="text" name="link" value="<?=$link?>?idUser=<?=$userProfile['idUser']?>" hidden>
+                                <div class="admin-right-item-notify-header pt-4 d-flex align-items-center title py-2">
+                                    Đánh Giá
+                                    <?php if (count($danhGias) > 0) :?>
+                                    <div class="checkbox-btn-block d-flex ml-auto">
+                                        <span class="btn-category block-icon blue checkbox-btn-block-iconCheck">
+                                            <i class="fa-solid fa-x"></i>
+                                            <span>Chọn</span>
+                                            <span>Đóng</span>
+                                        </span>
+                                        <span class="btn-category cam btn-allCheck">
+                                            <span>Chọn Tất Cả</span>
+                                            <span> Bỏ Chọn Tất Cả</span>
+                                        </span>
+                                        
+                                        <input type="submit" value="Xóa các mục đã chọn" class="btn-category block-icon toi checkbox-btn-block-delete">
+                                    </div>
+                                    <?php endif?>
                                 </div>
-                                <div class="product__navbar-item-comment-item border-bottom-1 border-top-0">
-                                    <div class="product__navbar-item-comment-item-img">
-                                        <img src="https://metruyenchu.com/images/avatar-profile.png?97b80827721f6116c3dbc797d11d629b" alt="">
-                                        <span>Cấp 0</span>
-                                    </div>
-                                    <div class="product__navbar-item-comment-item-right">
-                                        <div class="product__navbar-item-comment-item-name text limit1">Ngọc Đức</div>
-                                        <style>
-                                            .product__navbar-item-comment-item:nth-child(2) .product__navbar-item-comment-item-name::after {
-                                                content: "8 phút trước";
-                                            }
-                                        </style>
-                                        <div class="product__navbar-item-comment-item-icon">
-                                            Đấu Phá Thương Khung
-                                        </div>
-                                        <div class="product__navbar-item-comment-item-content">
-                                            Truyện rất hay!!
-                                        </div>
-                                        <!-- like ,trả lời,...  -->
-                                        <div class="product__navbar-item-comment-item-bottom">
-                                            <div class="product__navbar-item-comment-item-bottom-item showListRep">
-                                                Xem 1 câu trả lời
-                                            </div>
-                                            <div class="product__navbar-item-comment-item-bottom-item">
-                                                <i class="fas fa-thumbs-up"></i>
-                                                <span>20</span>
-                                            </div>
-                                            <div class="listRep w-100">
-                                                <div class="product__navbar-item-comment-item">
-                                                    <div class="product__navbar-item-comment-item-img">
-                                                        <img src="https://metruyenchu.com/images/avatar-profile.png?97b80827721f6116c3dbc797d11d629b" alt="">
-                                                        <span>Cấp 0</span>
-                                                    </div>
-                                                    <div class="product__navbar-item-comment-item-right">
-                                                        <div class="product__navbar-item-comment-item-name text limit1" style="font-size: 1.6rem;">Ngọc Đức</div>
-                                                        
-                                                        <div class="product__navbar-item-comment-item-content">
-                                                            Truyện rất hay!!
-                                                        </div>
-                                                        <div class="product__navbar-item-comment-item-bottom">
-                                                            <div class="product__navbar-item-comment-item-bottom-item">
-                                                                <i class="fas fa-thumbs-up"></i>
-                                                                <span>20</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="admin-right-item-comment-delete text"><i class="fas fa-trash"></i></div>
-                                                </div>
-                                            </div>
-                                            <div class="hidden-listRep">
-                                                Ẩn câu trả lời
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="admin-right-item-comment-delete text"><i class="fas fa-trash"></i></div>
-                                    <input type="checkbox" name="commentCheckBox" class="chonCheckBox ml-2">
-                                </div>
-                                <div class="product__navbar-item-comment-item border-bottom-1 border-top-0">
-                                    <div class="product__navbar-item-comment-item-img">
-                                        <img src="https://metruyenchu.com/images/avatar-profile.png?97b80827721f6116c3dbc797d11d629b" alt="">
-                                        <span>Cấp 0</span>
-                                    </div>
-                                    <div class="product__navbar-item-comment-item-right">
-                                        <div class="product__navbar-item-comment-item-name text limit1">Ngọc Đức</div>
-                                        <style>
-                                            .product__navbar-item-comment-item:nth-child(2) .product__navbar-item-comment-item-name::after {
-                                                content: "8 phút trước";
-                                            }
-                                        </style>
-                                        <div class="product__navbar-item-comment-item-icon">
-                                            Đấu Phá Thương Khung
-                                        </div>
-                                        <div class="product__navbar-item-comment-item-content">
-                                            Truyện rất hay!!
-                                        </div>
-                                        <!-- like ,trả lời,...  -->
-                                        <div class="product__navbar-item-comment-item-bottom">
-                                            <div class="product__navbar-item-comment-item-bottom-item showListRep">
-                                                Xem 1 câu trả lời
-                                            </div>
-                                            <div class="product__navbar-item-comment-item-bottom-item">
-                                                <i class="fas fa-thumbs-up"></i>
-                                                <span>20</span>
-                                            </div>
-                                            <div class="listRep w-100">
-                                                <div class="product__navbar-item-comment-item">
-                                                    <div class="product__navbar-item-comment-item-img">
-                                                        <img src="https://metruyenchu.com/images/avatar-profile.png?97b80827721f6116c3dbc797d11d629b" alt="">
-                                                        <span>Cấp 0</span>
-                                                    </div>
-                                                    <div class="product__navbar-item-comment-item-right">
-                                                        <div class="product__navbar-item-comment-item-name text limit1" style="font-size: 1.6rem;">Ngọc Đức</div>
-                                                        
-                                                        <div class="product__navbar-item-comment-item-content">
-                                                            Truyện rất hay!!
-                                                        </div>
-                                                        <div class="product__navbar-item-comment-item-bottom">
-                                                            <div class="product__navbar-item-comment-item-bottom-item">
-                                                                <i class="fas fa-thumbs-up"></i>
-                                                                <span>20</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="admin-right-item-comment-delete text"><i class="fas fa-trash"></i></div>
-                                                </div>
-                                            </div>
-                                            <div class="hidden-listRep">
-                                                Ẩn câu trả lời
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="admin-right-item-comment-delete text"><i class="fas fa-trash"></i></div>
-                                    <input type="checkbox" name="commentCheckBox" class="chonCheckBox ml-2">
+                                <?php if (count($danhGias) > 0) :?>
+                                <div class="admin-right-item-comment-content listUser-danhGia">
+                                    <!-- list đánh giá  -->
                                 </div>
                                 <div class="col-12">
-                                    <form method="post" class="pagination">
-                                        <div class="pagination__item text"><</div>
-                                        <div class="pagination__item text active">1</div>
-                                        <div class="pagination__item text">2</div>
-                                        <div class="pagination__item text">3</div>
-                                        <div class="pagination__item text">4</div>
-                                        <div class="pagination__item text">></div>
-                                        <input type="text" value="1" class="pagination__input">
-                                        <input type="submit" value="Go" class="pagination__submit">
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- ==== Đánh giá === -->
-                        <div class="admin-right-item admin-right-item-danhGia userProfile__danhGia">
-                            <div class="admin-right-item-notify-header d-flex align-items-center title pb-2">
-                                <div class="checkbox-btn-block d-flex ">
-                                    <span class="btn-category block-icon blue checkbox-btn-block-iconCheck">
-                                        <i class="fa-solid fa-x"></i>
-                                        <span>Chọn</span>
-                                        <span>Đóng</span>
-                                    </span>
-                                    <span class="btn-category cam btn-allCheck">
-                                        <span>Chọn Tất Cả</span>
-                                        <span> Bỏ Chọn Tất Cả</span>
-                                    </span>
-                                    
-                                    <a href="" class="btn-category block-icon toi checkbox-btn-block-delete">
-                                        <i class="fa-solid fa-trash"></i>
-                                        Xóa các mục đã chọn
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="admin-right-item-comment-content">
-                                <div class="product__navbar-item-comment-item border-bottom-1 border-top-0">
-                                    <div class="product__navbar-item-comment-item-img">
-                                        <img src="https://metruyenchu.com/images/avatar-profile.png?97b80827721f6116c3dbc797d11d629b" alt="">
-                                        <span>Cấp 0</span>
+                                    <div class="pagination danhGiaPagi-userManager">
+                                        
                                     </div>
-                                    <div class="product__navbar-item-comment-item-right">
-                                        <div class="product__navbar-item-comment-item-name text limit1">Ngọc Đức</div>
-                                        <style>
-                                            .product__navbar-item-comment-item:nth-child(2) .product__navbar-item-comment-item-name::after {
-                                                content: "8 phút trước";
-                                            }
-                                        </style>
-                                        <div class="d-flex align-items-center">
-                                            <div class="product__navbar-item-danhGia-item-start">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <span>3.5</span>
-                                            </div>
-                                            <div class="product__navbar-item-comment-item-icon">
-                                                Đấu Phá Thương Khung
-                                            </div>
-                                        </div>
-                                        <div class="product__navbar-item-comment-item-content">
-                                            Truyện rất hay!!
-                                        </div>
-                                        <!-- like ,trả lời,...  -->
-                                        <div class="product__navbar-item-comment-item-bottom">
-                                            <div class="product__navbar-item-comment-item-bottom-item showListRep">
-                                                Xem 1 câu trả lời
-                                            </div>
-                                            <div class="product__navbar-item-comment-item-bottom-item">
-                                                <i class="fas fa-thumbs-up"></i>
-                                                <span>20</span>
-                                            </div>
-                                            <div class="listRep w-100">
-                                                <div class="product__navbar-item-comment-item">
-                                                    <div class="product__navbar-item-comment-item-img">
-                                                        <img src="https://metruyenchu.com/images/avatar-profile.png?97b80827721f6116c3dbc797d11d629b" alt="">
-                                                        <span>Cấp 0</span>
-                                                    </div>
-                                                    <div class="product__navbar-item-comment-item-right">
-                                                        <div class="product__navbar-item-comment-item-name text limit1" style="font-size: 1.6rem;">Ngọc Đức</div>
-                                                        
-                                                        <div class="product__navbar-item-comment-item-content">
-                                                            Truyện rất hay!!
-                                                        </div>
-                                                        <div class="product__navbar-item-comment-item-bottom">
-                                                            <div class="product__navbar-item-comment-item-bottom-item">
-                                                                <i class="fas fa-thumbs-up"></i>
-                                                                <span>20</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="admin-right-item-comment-delete text"><i class="fas fa-trash"></i></div>
-                                                </div>
-                                            </div>
-                                            <div class="hidden-listRep">
-                                                Ẩn câu trả lời
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="admin-right-item-comment-delete text"><i class="fas fa-trash"></i></div>
-                                    <input type="checkbox" name="danhGiaCheckBox" class="chonCheckBox ml-2">
                                 </div>
-                                <div class="product__navbar-item-comment-item border-bottom-1 border-top-0">
-                                    <div class="product__navbar-item-comment-item-img">
-                                        <img src="https://metruyenchu.com/images/avatar-profile.png?97b80827721f6116c3dbc797d11d629b" alt="">
-                                        <span>Cấp 0</span>
+                                <?php endif?>
+                                <?php if (count($danhGias) == 0) :?>
+                                    <div class="emtyList w-100 d-flex" style="padding-left: 15px;justify-content: flex-start;">
+                                        <i class="fad fa-heart-broken"></i>
+                                        Danh sách trống
                                     </div>
-                                    <div class="product__navbar-item-comment-item-right">
-                                        <div class="product__navbar-item-comment-item-name text limit1">Ngọc Đức</div>
-                                        <style>
-                                            .product__navbar-item-comment-item:nth-child(2) .product__navbar-item-comment-item-name::after {
-                                                content: "8 phút trước";
-                                            }
-                                        </style>
-                                        <div class="d-flex align-items-center">
-                                            <div class="product__navbar-item-danhGia-item-start">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <span>3.5</span>
-                                            </div>
-                                            <div class="product__navbar-item-comment-item-icon">
-                                                Đấu Phá Thương Khung
-                                            </div>
-                                        </div>
-                                        <div class="product__navbar-item-comment-item-content">
-                                            Truyện rất hay!!
-                                        </div>
-                                        <!-- like ,trả lời,...  -->
-                                        <div class="product__navbar-item-comment-item-bottom">
-                                            <div class="product__navbar-item-comment-item-bottom-item showListRep">
-                                                Xem 1 câu trả lời
-                                            </div>
-                                            <div class="product__navbar-item-comment-item-bottom-item">
-                                                <i class="fas fa-thumbs-up"></i>
-                                                <span>20</span>
-                                            </div>
-                                            <div class="listRep w-100">
-                                                <div class="product__navbar-item-comment-item">
-                                                    <div class="product__navbar-item-comment-item-img">
-                                                        <img src="https://metruyenchu.com/images/avatar-profile.png?97b80827721f6116c3dbc797d11d629b" alt="">
-                                                        <span>Cấp 0</span>
-                                                    </div>
-                                                    <div class="product__navbar-item-comment-item-right">
-                                                        <div class="product__navbar-item-comment-item-name text limit1" style="font-size: 1.6rem;">Ngọc Đức</div>
-                                                        
-                                                        <div class="product__navbar-item-comment-item-content">
-                                                            Truyện rất hay!!
-                                                        </div>
-                                                        <div class="product__navbar-item-comment-item-bottom">
-                                                            <div class="product__navbar-item-comment-item-bottom-item">
-                                                                <i class="fas fa-thumbs-up"></i>
-                                                                <span>20</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="admin-right-item-comment-delete text"><i class="fas fa-trash"></i></div>
-                                                </div>
-                                            </div>
-                                            <div class="hidden-listRep">
-                                                Ẩn câu trả lời
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="admin-right-item-comment-delete text"><i class="fas fa-trash"></i></div>
-                                    <input type="checkbox" name="danhGiaCheckBox" class="chonCheckBox ml-2">
-                                </div>
-                                <div class="product__navbar-item-comment-item border-bottom-1 border-top-0">
-                                    <div class="product__navbar-item-comment-item-img">
-                                        <img src="https://metruyenchu.com/images/avatar-profile.png?97b80827721f6116c3dbc797d11d629b" alt="">
-                                        <span>Cấp 0</span>
-                                    </div>
-                                    <div class="product__navbar-item-comment-item-right">
-                                        <div class="product__navbar-item-comment-item-name text limit1">Ngọc Đức</div>
-                                        <style>
-                                            .product__navbar-item-comment-item:nth-child(2) .product__navbar-item-comment-item-name::after {
-                                                content: "8 phút trước";
-                                            }
-                                        </style>
-                                        <div class="d-flex align-items-center">
-                                            <div class="product__navbar-item-danhGia-item-start">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <span>3.5</span>
-                                            </div>
-                                            <div class="product__navbar-item-comment-item-icon">
-                                                Đấu Phá Thương Khung
-                                            </div>
-                                        </div>
-                                        <div class="product__navbar-item-comment-item-content">
-                                            Truyện rất hay!!
-                                        </div>
-                                        <!-- like ,trả lời,...  -->
-                                        <div class="product__navbar-item-comment-item-bottom">
-                                            <div class="product__navbar-item-comment-item-bottom-item showListRep">
-                                                Xem 1 câu trả lời
-                                            </div>
-                                            <div class="product__navbar-item-comment-item-bottom-item">
-                                                <i class="fas fa-thumbs-up"></i>
-                                                <span>20</span>
-                                            </div>
-                                            <div class="listRep w-100">
-                                                <div class="product__navbar-item-comment-item">
-                                                    <div class="product__navbar-item-comment-item-img">
-                                                        <img src="https://metruyenchu.com/images/avatar-profile.png?97b80827721f6116c3dbc797d11d629b" alt="">
-                                                        <span>Cấp 0</span>
-                                                    </div>
-                                                    <div class="product__navbar-item-comment-item-right">
-                                                        <div class="product__navbar-item-comment-item-name text limit1" style="font-size: 1.6rem;">Ngọc Đức</div>
-                                                        
-                                                        <div class="product__navbar-item-comment-item-content">
-                                                            Truyện rất hay!!
-                                                        </div>
-                                                        <div class="product__navbar-item-comment-item-bottom">
-                                                            <div class="product__navbar-item-comment-item-bottom-item">
-                                                                <i class="fas fa-thumbs-up"></i>
-                                                                <span>20</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="admin-right-item-comment-delete text"><i class="fas fa-trash"></i></div>
-                                                </div>
-                                            </div>
-                                            <div class="hidden-listRep">
-                                                Ẩn câu trả lời
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="admin-right-item-comment-delete text"><i class="fas fa-trash"></i></div>
-                                    <input type="checkbox" name="danhGiaCheckBox" class="chonCheckBox ml-2">
-                                </div>
-                                <div class="col-12">
-                                    <form method="post" class="pagination">
-                                        <div class="pagination__item text"><</div>
-                                        <div class="pagination__item text active">1</div>
-                                        <div class="pagination__item text">2</div>
-                                        <div class="pagination__item text">3</div>
-                                        <div class="pagination__item text">4</div>
-                                        <div class="pagination__item text">></div>
-                                        <input type="text" value="1" class="pagination__input">
-                                        <input type="submit" value="Go" class="pagination__submit">
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                                <?php endif?>
+                            </form>
+                        <?php endif?>
                     </div>
                 </div>
             </div>
@@ -828,8 +371,109 @@
     nextPage('.admin-right-item-content-read-delete-icon','.admin-right-item-content-read-delete-content');
     nextPage('div.admin-left-icon','.admin-right-item','page','profile')
     showExp();
-    checkAll('.admin-right-item-comment','.checkbox-btn-block-iconCheck','.btn-allCheck','input[name="commentCheckBox"]','.checkbox-btn-block-delete');
-    checkAll('.admin-right-item-danhGia','.checkbox-btn-block-iconCheck','.btn-allCheck','input[name="danhGiaCheckBox"]','.checkbox-btn-block-delete');
-    showRep('.showListRep','.hidden-listRep','.listRep');
-    starColor('.product__navbar-item-danhGia-item-start');
 </script>
+
+<script>
+    const optionProfileDaDang = {
+        subArr: phpArrayJs(<?=json_encode($category)?>), // mảng hiển thị phụ (mảng category) 
+        mainArr: phpArrayJs(<?=json_encode($daDang)?>), // mảng hiển thị chính (mảng truyện)
+        contentUrl: '<?=$CONTENT_URL?>',
+        userUrl: '<?=$USER_URL?>',
+        selectorList: '.userProfile__content-left-section2-content-list', // selector list chứa các truyện
+        selectorPagi: '.pagiProfileDaDang', // selector pagination
+        numberPagi : 10,// số item 1 page
+    };
+    // selector pagination phải là duy nhất
+    phanTrang(showDaDangProfile,optionProfileDaDang);
+</script>
+
+<?php if ((int)$userProfile['quyenHan'] >= 3) :?>
+<!-- Hiển thị comment và đánh giá  -->
+<?php if (count($danhGias) > 0) :?>
+<script>
+    const optionShowDanhGia = {
+        subArr: phpArrayJs(<?=json_encode($userAll)?>), 
+        mainArr: phpArrayJs(<?=json_encode($danhGias)?>), 
+        subArr2: phpArrayJs(<?=json_encode($repDanhGias)?>), 
+        subArr3: phpArrayJs(<?=json_encode(select_all("SELECT * FROM truyen"))?>),
+        userUrl: '<?=$USER_URL?>',
+        contentUrl: '<?=$CONTENT_URL?>',
+        <?php if (isset($_SESSION['user'])) :?>
+        idUser: <?=$_SESSION['user']['idUser']?>,
+        <?php endif?>
+        selectorList: '.listUser-danhGia', // selector list chứa các đánh giá
+        selectorItem: '.product__navbar-item-comment-item', // selector item đánh giá
+        selectorLike: '.product__navbar-item-comment-item-bottom-item.like', // selector nút like
+        selectorRep:'.product__navbar-item-comment-item-bottom-item.btn-commentRep',// selector nút mở form trả lời
+        selectorDelete: '.admin-right-item-comment-delete',// selector nút xóa đánh giá
+        numberPagi : 10,// số item 1 page
+        numberPagiChild:20, // số item 1 list rep
+        selectorPagi: '.danhGiaPagi-userManager',
+        arrange: function () {
+            // phương thức sắp xếp đánh giá
+        },
+        showListRep: function () {
+            //show list trả lời đánh giá
+        },
+        showColorStart: function () {
+            //show màu sao
+            starColor('.product__navbar-item-danhGia-item-start');
+        },
+        showRepFrom: function () {
+            //show form trả lời
+            showFormRep('.btn-commentRep');
+        },
+        checkAllCallback: function () {
+            checkAll('.userProfile-danhGia','.checkbox-btn-block-iconCheck','.btn-allCheck','input[name="danhGiaCheckBox[]"]','.checkbox-btn-block-delete');
+        },
+        linkPage: '<?=$link?>',
+        userManager: 'on',
+    };
+    phanTrangUserManager('danhGia',showListDanhGia,optionShowDanhGia);
+</script>
+<?php endif?>
+
+<?php if (count($comments) > 0) :?>
+    <script>
+        const optionShowComment = {
+            subArr: phpArrayJs(<?=json_encode($userAll)?>), 
+            mainArr: phpArrayJs(<?=json_encode($comments)?>), 
+            subArr2: phpArrayJs(<?=json_encode($repComments)?>), 
+            subArr3: phpArrayJs(<?=json_encode(select_all("SELECT * FROM truyen"))?>),
+            userUrl: '<?=$USER_URL?>',
+            contentUrl: '<?=$CONTENT_URL?>',
+            <?php if (isset($_SESSION['user'])) :?>
+            idUser: <?=$_SESSION['user']['idUser']?>,
+            <?php endif?>
+            selectorList: '.listComment-userMannager', // selector list chứa các đánh giá
+            selectorItem: '.product__navbar-item-comment-item', // selector item đánh giá
+            selectorLike: '.product__navbar-item-comment-item-bottom-item.like', // selector nút like
+            selectorRep:'.product__navbar-item-comment-item-bottom-item.btn-commentRep',// selector nút mở form trả lời
+            selectorDelete: '.admin-right-item-comment-delete',// selector nút xóa đánh giá
+            numberPagi : 10,// số item 1 page
+            numberPagiChild:20, // số item 1 list rep
+            selectorPagi: '.pagiComment-userManager',
+            arrange: function () {
+                // phương thức sắp xếp đánh giá
+            },
+            showListRep: function () {
+                //show list trả lời đánh giá
+            },
+            showColorStart: function () {
+                //show màu sao
+                starColor('.product__navbar-item-danhGia-item-start');
+            },
+            showRepFrom: function () {
+                //show form trả lời
+                showFormRep('.btn-commentRep');
+            },
+            checkAllCallback: function () {
+                checkAll('.userProfile-comment','.checkbox-btn-block-iconCheck','.btn-allCheck','input[name="commentCheckBox[]"]','.checkbox-btn-block-delete');
+            },
+            linkPage: '<?=$link?>',
+            userManager: 'on',
+        };
+        phanTrangUserManager('comment',showListDanhGia,optionShowComment);
+    </script>
+<?php endif?>
+<?php endif?>

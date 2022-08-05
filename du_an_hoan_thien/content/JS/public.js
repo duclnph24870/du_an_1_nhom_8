@@ -127,23 +127,25 @@ function nextPageAdmin (selectorBtn,selectorContent,selectorBtnChild = '',select
     const btnElements = document.querySelectorAll(selectorBtn);
     const contents = document.querySelectorAll(selectorContent);
 
-    const viTriI = sessionStorage.getItem('i');
-    const viTriJ = sessionStorage.getItem('j');
+    let viTriI = sessionStorage.getItem('i');
+    let viTriJ = sessionStorage.getItem('j');
 
     if (viTriI && viTriJ) {
         //page cha
         btnElements[viTriI].classList.add('active');
         contents[viTriI].classList.add('active');
         //page con
-        contents[viTriI].querySelectorAll(selectorBtnChild)[viTriJ].classList.add('active');
-        contents[viTriI].querySelectorAll(selectorContentChild)[viTriJ].classList.add('active');
+        if (contents[viTriI].querySelectorAll(selectorBtnChild)[viTriJ]) {
+            contents[viTriI].querySelectorAll(selectorBtnChild)[viTriJ].classList.add('active');
+            contents[viTriI].querySelectorAll(selectorContentChild)[viTriJ].classList.add('active');
+        }
     }else if (viTriI && !viTriJ) {
         //page cha
         btnElements[viTriI].classList.add('active');
         contents[viTriI].classList.add('active');
         //page con
-        contents[viTriI].querySelectorAll(selectorBtnChild)[0].classList.add('active');
-        contents[viTriI].querySelectorAll(selectorContentChild)[0].classList.add('active');
+        // contents[viTriI].querySelectorAll(selectorBtnChild)[0].classList.add('active');
+        // contents[viTriI].querySelectorAll(selectorContentChild)[0].classList.add('active');
     }else if (!viTriI && viTriJ) {
         //page cha
         btnElements[0].classList.add('active');
@@ -166,6 +168,9 @@ function nextPageAdmin (selectorBtn,selectorContent,selectorBtnChild = '',select
 
         btnElements[i].onclick = () => {
             sessionStorage.setItem('i',i); // lưu lại vị trí của page cha
+            if (!sessionStorage.getItem('j')) {
+                sessionStorage.setItem('j',0); // nếu j không tồn tại thì mặc định j = 0
+            }
 
                 for (let j = 0; j < btnElements.length;j++) {
                     btnElements[j].classList.remove('active');
@@ -323,12 +328,24 @@ function previewUpImg (selectorForm,selectorImg,selectorInput,selectorImgErr,sub
 }
 
 //show event sự kiện
-function showEvent (nameEvent,timeShow = 600000) {
-    setTimeout (function () {
-        const eventEl = document.querySelector('.event');
-        eventEl.classList.add(nameEvent);
+function showEvent (eventSelector,btnSelector,timeShow) {
+    const eventEl = document.querySelector(eventSelector);
+    if (!btnSelector) {
         eventEl.classList.add('active');
-    },timeShow); 
+        setTimeout(function () {
+            eventEl.classList.remove('active');
+        },60000);
+    }else {
+        const btn = document.querySelector(btnSelector);
+        if (btn) {
+            btn.onclick = () => {
+                eventEl.classList.add('active');
+                setTimeout(function () {
+                    eventEl.classList.remove('active');                
+                },5000);
+            }
+        }
+    }
 }
 
 //Kiểm lỗi thêm category
@@ -454,29 +471,29 @@ function showPagination (viTri,numberPagination,pagination) {
     if (numberPagination > 3) {
         if (viTri == 0) {
             htmls = `
-                <div class="pagination__item text numberPagi active">${viTri}</div>
-                <div class="pagination__item text numberPagi">${viTri+1}</div>
-                <div class="pagination__item text numberPagi">${viTri+2}</div>
-                <div class="pagination__item text next">></div>
+                <a href="#pagi" class="pagination__item text numberPagi active">${viTri}</a>
+                <a href="#pagi" class="pagination__item text numberPagi">${viTri+1}</a>
+                <a href="#pagi" class="pagination__item text numberPagi">${viTri+2}</a>
+                <a href="#pagi" class="pagination__item text next">></a>
                 <input type="text" value="${viTri}" class="pagination__input">
                 <input type="submit" value="Go" class="pagination__submit">
             `;
         }else if (viTri == numberPagination - 1) {
             htmls = `
-            <div class="pagination__item text pre"><</div>
-            <div class="pagination__item text numberPagi">${viTri-2}</div>
-            <div class="pagination__item text numberPagi">${viTri-1}</div>
-            <div class="pagination__item text numberPagi active">${viTri}</div>
+            <a href="#pagi" class="pagination__item text pre"><</div>
+            <a href="#pagi" class="pagination__item text numberPagi">${viTri-2}</a>
+            <a href="#pagi" class="pagination__item text numberPagi">${viTri-1}</a>
+            <a href="#pagi" class="pagination__item text numberPagi active">${viTri}</a>
             <input type="text" value="${viTri}" class="pagination__input">
             <input type="submit" value="Go" class="pagination__submit">
             `;
         }else {
             htmls = `
-            <div class="pagination__item text pre"><</div>
-            <div class="pagination__item text numberPagi">${viTri-1}</div>
-            <div class="pagination__item text numberPagi active">${viTri}</div>
-            <div class="pagination__item text numberPagi">${viTri+1}</div>
-            <div class="pagination__item text next">></div>
+            <a href="#pagi" class="pagination__item text pre"><</div>
+            <a href="#pagi" class="pagination__item text numberPagi">${viTri-1}</a>
+            <a href="#pagi" class="pagination__item text numberPagi active">${viTri}</a>
+            <a href="#pagi" class="pagination__item text numberPagi">${viTri+1}</a>
+            <a href="#pagi" class="pagination__item text next">></a>
             <input type="text" value="${viTri}" class="pagination__input">
             <input type="submit" value="Go" class="pagination__submit">
             `;
@@ -485,11 +502,11 @@ function showPagination (viTri,numberPagination,pagination) {
         for (let i = 0; i < numberPagination;i++) {
             if (i == viTri) {
                 htmls += `
-                <div class="pagination__item text numberPagi active">${i}</div>
+                <a href="#pagi" class="pagination__item text numberPagi active">${i}</a>
             `;
             }else {
                 htmls += `
-                <div class="pagination__item numberPagi text">${i}</div>
+                <a href="#pagi" class="pagination__item numberPagi text">${i}</a>
             `;
             }
         }
@@ -502,7 +519,7 @@ function showPagination (viTri,numberPagination,pagination) {
 }
 
 // Thay đổi database nhớ sửa lại key của mảng
-// show page dựa trên pagination
+// show page lọc truyện dựa trên pagination
 function showPagePagi (numberPagination,options) {
     const listEl = document.querySelector(options.selectorList);
     if (options.arrange) {
@@ -521,7 +538,7 @@ function showPagePagi (numberPagination,options) {
                 if (cateItem['idDanhMuc'] == options.mainArr[i]['nhom1']) {
                     return nameCate = cateItem['tenDanhMuc'];
                 }
-            });
+            }); 
             htmls += `
                     <div class="col-12 col-md-6 col-lg-6 col-xl-6 itemList-item">
                         <div class="content__section1-main-item">
@@ -560,6 +577,9 @@ function phanTrang (callback,options) {
     const listEl = document.querySelector(options.selectorList);
     const pagination = document.querySelector(options.selectorPagi);
     let numberPagination = Math.ceil(options.mainArr.length/options.numberPagi);
+    if (!pagination.matches('#pagi')) {
+        pagination.setAttribute('id','pagi');
+    }
 
     if (numberPagination >= 1) {
         showPagination(0,numberPagination,pagination);
@@ -906,14 +926,14 @@ function showPagePrAdd (numberPagination,options) {
             htmls += `
             <tr>
                 <td>${options.mainArr[i]['idTruyen']}</td>
-                <td>${options.mainArr[i]['tenTruyen']}</td>
+                <td><a href="${options.userUrl}/truyen/index.php?idTruyen=${options.mainArr[i]['idTruyen']}">${options.mainArr[i]['tenTruyen']}</a></td>
                 <td><a href="" class="text">${nameUser}</a></td>
                 <td>${time_distance_current(options.mainArr[i]['dateCapNhap'])}</td>
                 <td>${time_distance_current(options.mainArr[i]['dateTruyen'])}</td>
                 <td>${options.mainArr[i]['trangThai'] == 0 ? 'Chờ Xét Duyệt' : 'Đã Đăng'}</td>
                 <td>${options.mainArr[i]['soChuong']}</td>
                 <td>${options.mainArr[i]['viewTruyen']}</td>
-                <td><a href="indexAdminTruyen.php?editTruyen=0&idTruyen=${options.mainArr[i]['idTruyen']}" class="editTruyen" title="Sửa Truyện"><i class="fad fa-edit"></i></a><a href="indexAdminTruyen.php?addChuong=0" class="addChuong" title="Đăng Chương"><i class="fad fa-books-medical"></i></a><input type="checkbox" name="truyenCheckBox[]" value="${options.mainArr[i]['idTruyen']}" class="chonCheckBox"></td>
+                <td><a href="indexAdminTruyen.php?editTruyen=0&idTruyen=${options.mainArr[i]['idTruyen']}" class="editTruyen" title="Sửa Truyện"><i class="fad fa-edit"></i></a><a href="indexAdminTruyen.php?addChuong=0&idTruyen=${options.mainArr[i]['idTruyen']}" class="addChuong" title="Đăng Chương"><i class="fad fa-books-medical"></i></a><input type="checkbox" name="truyenCheckBox[]" value="${options.mainArr[i]['idTruyen']}" class="chonCheckBox"></td>
             </tr>
                 `;
         }else {
@@ -1014,7 +1034,7 @@ function showPageChuongAdd (numberPagination,options) {
                 <td><a href="" class="text">${nameUser}</a></td>
                 <td>${time_distance_current(options.mainArr[i]['dateChuong'])}</td>
                 <td>${options.mainArr[i]['viewChuong']}</td>
-                <td>${tenTruyen}</td>
+                <td><a href="${options.userUrl}/truyen/index.php?idTruyen=${options.subArr2[0]['idTruyen']}">${tenTruyen}</a></td>
                 <td><a href="indexAdminTruyen.php?editChuong=1&idChuong=${options.mainArr[i]['idChuong']}&idTruyen=${options.subArr2[0]['idTruyen']}" class="editTruyen" title="Sửa Chương"><i class="fad fa-edit"></i></a><input type="checkbox" name="chuongCheckBox[]" value="${options.mainArr[i]['idChuong']}" class="chonCheckBox"></td>
             </tr>
                 `;
@@ -1024,4 +1044,18 @@ function showPageChuongAdd (numberPagination,options) {
     }
     listEl.innerHTML = htmls;
 }
+
+// cố định vị trí thanh scroll khi load trang
+function scrollNoDrifted (nameVariable) {
+    window.onscroll = () => {
+        sessionStorage.setItem(nameVariable,document.querySelector('html').scrollTop);
+    }
+
+    setTimeout(function () {
+        if (sessionStorage.getItem(nameVariable)) {
+            document.documentElement.scrollTop = +sessionStorage.getItem(nameVariable);
+        }
+    },0);
+}
+  
 

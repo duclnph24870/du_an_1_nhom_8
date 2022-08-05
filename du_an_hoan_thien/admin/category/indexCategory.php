@@ -16,3 +16,6 @@
     $VIEW_NAME = "category.php";
     require "../layout.php";
 ?>
+<script>
+    scrollNoDrifted('adminCate');
+</script>

@@ -25,7 +25,7 @@
         }
 
         $idUserNhanNoti = implode(' ',$idUserDanhDau);
-        $sqlNoti = "INSERT INTO `notify`(`tieuDe`, `idUser`, `idTruyen`, `kieuNotify`) VALUES ('Truyện ".$truyen['tenTruyen']." vừa ra chương mới','$idUserNhanNoti',$idTruyen,1)";
+        $sqlNoti = "INSERT INTO `notify`(`tieuDe`, `idUser`, `idTruyen`, `kieuNotify`,`dateNotify`) VALUES ('Truyện ".$truyen['tenTruyen']." vừa ra chương mới','$idUserNhanNoti',$idTruyen,1,'$dateTimeHt')";
         pdo_execute($sqlNoti);// gửi thông báo đi
     }
 

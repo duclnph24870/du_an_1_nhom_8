@@ -13,6 +13,19 @@
         pdo_execute($sqlUpDateTruyen);
         // xóa chương
         pdo_execute("DELETE FROM `chuong` WHERE idChuong=$i");
+        // Kiểm tra xem chương có tồn tại trong chương đã đọc không và xác định số chương
+        $daDoc = select_one("SELECT * FROM dangdoc WHERE idChuong=$i");
+        if (count($daDoc) == 1) {
+            if ($chuong['soChuong'] == 1) { // nếu số chương bằng 1 thì xóa luôn đã đọc đi
+                pdo_execute("DELETE FROM dangdoc WHERE idTruyen=$idTruyen");
+            }elseif ($chuong['soChuong'] > 1) {
+                // Lấy ra số chương đứng sau của chương xóa
+                $numberChuongSau = select_one("SELECT * FROM chuong WHERE idTruyen=$idTruyen AND soChuong=".($chuong['soChuong'] - 1).""); 
+                // Thay thế chương đang đọc tới bằng chương sau
+                pdo_execute("UPDATE `dangdoc` SET `idChuong`='".($numberChuongSau['idChuong'])."' WHERE idTruyen=$idTruyen");
+            }
+        }
+
        
     }
 

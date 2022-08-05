@@ -1,7 +1,7 @@
 <?php 
     require "../../public.php";
     require "../../dao/pdo.php";
-    $sql = "SELECT * FROM danhMuc";
+    $sql = "SELECT * FROM danhmuc";
     $categorys = select_all($sql);
     
     $theLoai = $_POST['theLoai'];

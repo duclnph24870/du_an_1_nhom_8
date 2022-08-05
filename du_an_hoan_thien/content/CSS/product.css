@@ -3,13 +3,14 @@
 }
 
 .product__top {
-
+    margin-top: 8px;
 }
 
 .product__img {
-    width: 100%;
+    width: 210px;
     height: 290px;
     max-width: 250px;
+    margin-right: 25px;
 }
 
 .product__img img {
@@ -19,7 +20,7 @@
 }
 
 .product__main {
-
+    flex: 1;
 }
 
 .product__category-item {
@@ -377,7 +378,7 @@ div.font-weight-bold {
     position: relative;
 }
 
-.product__navbar-item-left-bottom form {
+.product__navbar-item-left-bottom .form-input {
     width: 99%;
     margin-bottom: 10px;
 }
@@ -544,7 +545,6 @@ label[for^="submit__danhGia"] i {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }
 
 /* .product__navbar-item-comment-item-img:hover span {
@@ -729,6 +729,10 @@ label[for^="submit__danhGia"] i {
     color: var(--primary) !important;
 }
 
+.hidden-listRep.active {
+    display: block;
+}
+
 .hidden-listRep {
     font-size: 1.5rem;
     margin-top: 12px;
@@ -835,4 +839,15 @@ label[for^="submit__danhGia"] i {
     font-size: 1.7rem;
     border-radius: 30px;
 
+}
+
+.btn-category:hover {
+    background: var(--color) !important;
+    color: white !important;
+    border-color: var(--color);
+}
+
+.form-input.invalid .danhGia-err {
+    font-size: 1.5rem;
+    color: #bf2c24;
 }
