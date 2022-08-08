@@ -3,7 +3,7 @@
     $dangDoc = select_all("SELECT * FROM dangdoc WHERE idUser=$idUserPro ORDER BY dateDangDoc DESC LIMIT 0,5");
     
     // lấy ra các truyện đã đăng của user
-    $daDang = select_all("SELECT * FROM truyen WHERE idUser=$idUserPro ORDER BY dateTruyen DESC");
+    $daDang = select_all("SELECT * FROM truyen WHERE idUser=$idUserPro AND trangThai=1 ORDER BY dateTruyen DESC");
 
     // lấy ra mảng danh mục
     $category = select_all("SELECT * FROM danhmuc");

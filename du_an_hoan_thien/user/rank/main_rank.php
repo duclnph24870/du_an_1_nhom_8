@@ -3,13 +3,13 @@
     $category = select_all("SELECT * FROM danhmuc");
 
     // lấy ra bảng thịnh hành 
-    $thinhHanh = select_all("SELECT * FROM truyen ORDER BY soChuong DESC");
+    $thinhHanh = select_all("SELECT * FROM truyen WHERE trangThai=1 ORDER BY soChuong DESC");
 
     // Đề cử
-    $deCu = select_all("SELECT * FROM truyen ORDER BY deCu DESC");
+    $deCu = select_all("SELECT * FROM truyen WHERE trangThai=1 ORDER BY deCu DESC");
 
     // view 
-    $truyenView = select_all("SELECT * FROM truyen ORDER BY viewTruyen DESC");
+    $truyenView = select_all("SELECT * FROM truyen WHERE trangThai=1 ORDER BY viewTruyen DESC");
 ?>
 <link rel="stylesheet" href="<?=$CONTENT_URL?>/CSS/product.css">
 <link rel="stylesheet" href="<?=$CONTENT_URL?>/CSS/admin.css">

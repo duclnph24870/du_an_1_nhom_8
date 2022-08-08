@@ -19,13 +19,18 @@
 
     if ($checkEmail) {
         $sqlInserUser = "INSERT INTO user (`userName`, `password`, `email`,`userDate`) VALUES ('$userName','$newpass','$email','$timePr')";
-        // khi email thỏa mãn điều kiện thì gửi mail cho người dùng xác minh
-        header("location: ../phpMailler/mailRegister.php?sql=".$sqlInserUser."&email=".$email."");
-        die;
+        if (isset($_POST['type']) && $_POST['type'] == 'boss') {
+            // trường hợp admin thêm user không cần qua xác minh
+            pdo_execute($sqlInserUser);
+            header("location: ".$link."?status=1&message='Thêm user thành công'");
+            die;
+        }else {
+            // khi email thỏa mãn điều kiện thì gửi mail cho người dùng xác minh
+            header("location: ../phpMailler/mailRegister.php?sql=".$sqlInserUser."&email=".$email."");
+            die;
+        }
     }else {
         header("location: ".$link."?status=0&message='Email bạn dùng đã tồn tại'");
         die;
     }
-    
-
 ?>

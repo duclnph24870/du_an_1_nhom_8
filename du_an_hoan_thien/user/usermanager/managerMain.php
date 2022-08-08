@@ -8,7 +8,7 @@
     $danhDaus = select_all("SELECT * FROM danhdau WHERE idUser=".$userLogin['idUser']."");
 
     // đã đăng
-    $daDangs = select_all("SELECT * FROM truyen WHERE idUser=".$userLogin['idUser']."");
+    $daDangs = select_all("SELECT * FROM truyen WHERE idUser=".$userLogin['idUser']." AND trangThai=1");
 
     // user all
     $userAll = select_all("SELECT * FROM user");
@@ -78,7 +78,7 @@
                             Nhiệm Vụ
                         </div>
                         <?php if ((int)$userLogin['quyenHan'] >= 3) :?>
-                            <a href="product__ql.html" class="admin-left-icon text">
+                            <a href="<?=$ADMIN_URL?>/trangchinh/index.php" class="admin-left-icon text">
                                 <i class="fas fa-book-reader"></i>
                                 Quản Trị Website
                             </a>
@@ -562,7 +562,7 @@
 
 
 <script>
-    nextPageAdmin('div.admin-left-icon','.admin-right-item','.admin-right-item-header-item','.admin-right-item-content-item');
+    nextPageAdmin('div.admin-left-icon','.admin-right-item','.admin-right-item-header-item','.admin-right-item-content-item','userManagerI','userManagerJ');
     nextPage('.admin-right-item-content-read-delete-icon','.admin-right-item-content-read-delete-content');
     checkAll('.admin-right-item-notify','.checkbox-btn-block-iconCheck','.btn-allCheck','input[name="notifyCheckBox[]"]','.checkbox-btn-block-delete');
     checkAll('.admin-right-item-comment','.checkbox-btn-block-iconCheck','.btn-allCheck','input[name="commentCheckBox"]','.checkbox-btn-block-delete');

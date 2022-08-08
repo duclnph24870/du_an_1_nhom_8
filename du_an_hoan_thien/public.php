@@ -88,6 +88,7 @@
         return $str;
     }
 
+    // chênh lệch theo phút
     function timeDate($startdate,$enddate){ 
         $starttimestamp = strtotime($startdate); 
         $endtimestamp = strtotime($enddate); 
@@ -95,13 +96,15 @@
         return floor($difference); 
     }
 
+    // chênh lệch tg theo s
     function timeDateS($startdate,$enddate){ 
         $starttimestamp = strtotime($startdate); 
         $endtimestamp = strtotime($enddate); 
         $difference = abs($endtimestamp - $starttimestamp); 
         return floor($difference); 
     }
-    
+ 
+    // tính độ chênh lệnh thời gian giữa 1 dateTime đến hiện tại
     function timeCount($timeC) {
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $dateTimePersent = date("Y-m-d H:i:s");
@@ -124,6 +127,7 @@
         return $result;
     }
 
+    // show tên quyền hạn theo cấp quyền hạn
     function showQuyenHan ($quyenHan) {
         $result = '';
         if ($quyenHan == 1) {
@@ -140,6 +144,7 @@
         return $result;
     }
 
+    // lấy ra id chương trước hoặc sau 1 chương nào đó
     function select_idChuong($numberChuong,$chuongArr,$bo) {
         $idChuong = null;
         //true lấy chuong sau
@@ -162,6 +167,7 @@
         return $idChuong;
     }
 
+    // check tiến độ hoàn thành nhiệm vụ
     function checkMission ($type,$idUser) {
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $y = date("Y");
@@ -206,6 +212,7 @@
         }
     }
 
+    // so sánh 1 date so với date hiện tại
     function compareDate ($date) {
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $dateTimePersent = date("Y-m-d");
@@ -216,6 +223,7 @@
         }
     }
 
+    // lấy ra tất cả id của user trên website
     function selectAllIdUser () {
         $users = select_all("SELECT * FROM user");
         $idUser = [];
@@ -225,11 +233,13 @@
         return trim(implode(' ',$idUser));
     }
 
+    // lấy ra tên của danh mục qua id
     function selectNameCate ($idCate) {
         $sql = "SELECT * FROM danhmuc WHERE idDanhMuc=$idCate";
         return select_one($sql)['tenDanhMuc'];
     }
 
+    // kiểm tra thời gian comment
     function checkTimeComment ($nameVariable) {
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $dateTimePersent = date("Y-m-d H:i:s");
@@ -245,11 +255,12 @@
         }
     }
 
+    // check xem view đã thỏa mãn thời gian chưa
     function checkView ($nameVariable) {
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $dateTimePersent = date("Y-m-d H:i:s");
-        $timeCheck = $_SESSION[$nameVariable];
-        if (isset($timeCheck)) {
+        if (isset($_SESSION[$nameVariable])) {
+            $timeCheck = $_SESSION[$nameVariable];
             if (timeDateS($timeCheck,$dateTimePersent) >= 30) {
                 return true;
             }else {
@@ -258,5 +269,66 @@
         }else {
             return true;
         }
+    }
+
+    // chuyển từ dateTime(string) => [day,month,year]
+    function convert_date_to_number ($dateTime) {
+        $dateObj = explode('-',explode(' ',$dateTime)[0]);
+        return [
+            'day' => $dateObj[2],
+            'month' => $dateObj[1],
+            'year' => $dateObj[0],
+        ];
+    }
+
+    // delete user
+    function delete_user ($idUser,$idDelete) {
+        // xóa user
+        pdo_execute("DELETE FROM user WHERE idUser=$idUser");
+
+        // xóa đang đọc
+        pdo_execute("DELETE FROM dangdoc WHERE idUser=$idUser");
+
+        // xóa đánh dấu
+        pdo_execute("DELETE FROM danhdau WHERE idUser=$idUser");
+
+        // xóa comment 
+        pdo_execute("DELETE FROM comment WHERE idUser=$idUser");
+
+        // xóa repComment
+        pdo_execute("DELETE FROM replycomment WHERE idUser=$idUser");
+
+        // xóa rep đánh giá
+        pdo_execute("DELETE FROM replydanhgia WHERE idUser=$idUser");
+
+        // xóa đánh giá
+        pdo_execute("DELETE FROM danhgia WHERE idUser=$idUser");
+
+        //xóa sự kiện
+        pdo_execute("DELETE FROM sukien WHERE idUser=$idUser");
+
+        // xóa notify
+        // lấy các notify có id user ra
+        $notify = select_all("SELECT * FROM notify WHERE idUser LIKE '%$idUser%'");
+        if (count($notify) > 0) {
+            for ($i = 0; $i < count($notify);$i++) {
+                $idNotiXoa = $notify[$i]['idUserXoa'];
+                $newIdUserXoa = str_replace('-1 ','',trim($idNotiXoa).' '.$idUser);
+                if (trim($newIdUserXoa) == trim($notify['idUser'])) {
+                    pdo_execute("DELETE FROM notify WHERE idNotify=".$notify[$i]['idNotify']."");
+                }else {
+                    pdo_execute("UPDATE `notify` SET`idUserXoa`='$newIdUserXoa' WHERE idNotify=".$notify[$i]['idNotify']."");
+                }
+            }
+        }
+
+        // chuyển người đăng phần danh mục thành admin
+        pdo_execute("UPDATE `danhmuc` SET `idUser`=$idDelete WHERE idUser=$idUser");
+
+        // chuyển truyện
+        pdo_execute("UPDATE `truyen` SET `idUser`=$idDelete WHERE idUser=$idUser");
+
+        // chuyển chương
+        pdo_execute("UPDATE `chuong` SET `idUser`=$idDelete WHERE idUser=$idUser");
     }
 ?>

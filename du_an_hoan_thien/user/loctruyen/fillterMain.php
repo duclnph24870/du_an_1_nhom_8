@@ -37,12 +37,12 @@
 
     $sqlSelect = "";
     if (count($sqlFillter) > 0) {
-        $sqlSelect = "SELECT * FROM truyen WHERE ";
+        $sqlSelect = "SELECT * FROM truyen WHERE trangThai=1 AND ";
         foreach ($sqlFillter as $sqlF) {
             $sqlSelect .= $sqlF." AND ";
         }
     }else {
-        $sqlSelect = "SELECT * FROM truyen"; 
+        $sqlSelect = "SELECT * FROM truyen WHERE trangThai=1"; 
     }
 
     // echo trim($sqlSelect,' AND ');

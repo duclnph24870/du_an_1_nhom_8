@@ -1,9 +1,9 @@
 <?php 
     $idTruyen = $_GET['idTruyen'];
-    $truyenShow = select_one("SELECT * FROM truyen WHERE idTruyen=$idTruyen");
+    $truyenShow = select_one("SELECT * FROM truyen WHERE idTruyen=$idTruyen AND trangThai=1");
 
     $userUpTruyen = select_one("SELECT * FROM user WHERE idUser=".$truyenShow['idUser']."");
-    $truyenCungUser = select_all("SELECT * FROM truyen WHERE idUser=".$truyenShow['idUser']."");
+    $truyenCungUser = select_all("SELECT * FROM truyen WHERE idUser=".$truyenShow['idUser']." AND trangThai=1");
     $userAll = select_all("SELECT * FROM user");
     $repDanhGias = select_all("SELECT * FROM replydanhgia WHERE idTruyen=$idTruyen");
     $repComments = select_all("SELECT * FROM replycomment WHERE idTruyen=$idTruyen");

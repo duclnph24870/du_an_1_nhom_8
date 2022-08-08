@@ -16,19 +16,28 @@
             // nếu chưa tồn tại
             pdo_execute("INSERT INTO `dangdoc`(`idTruyen`, `idUser`, `idChuong`,`soChuong`,`dateDangDoc`) VALUES ($idTruyen,".$_SESSION['user']['idUser'].",$idChuong,".$chuong['soChuong'].",'$timePr')");
         }
-        if (checkView('view')) {
-            // tăng view chương lên 1 và cập nhập lại
-            $view = $chuong['viewChuong'] + 1;
-            pdo_execute("UPDATE `chuong` SET `viewChuong`=$view WHERE idChuong=$idChuong");
-            $viewAll = 1;
-            foreach ($chuongAll as $c) {
-                $viewAll += $c['viewChuong'];
-            }
-            // cập nhập lại view chương cho truyện
-            pdo_execute("UPDATE `truyen` SET `viewTruyen`=$viewAll WHERE idTruyen=$idTruyen");
-            // thêm thời gian nhận view của chương
-            $_SESSION['view'] = $timePr;
+    }
+    if (checkView('view')) {
+        // tăng view chương lên 1 và cập nhập lại
+        $view = $chuong['viewChuong'] + 1;
+        pdo_execute("UPDATE `chuong` SET `viewChuong`=$view WHERE idChuong=$idChuong");
+        $viewAll = 1;
+        foreach ($chuongAll as $c) {
+            $viewAll += $c['viewChuong'];
         }
+        // thêm view hiện tại vào view chung của web
+        $viewAllWeb = select_one("SELECT * FROM viewall WHERE dateView = '$timePrDate'");
+        if (isset($viewAllWeb['dateView'])) {
+            // nếu đã tồn tại thì cộng thêm 1
+            pdo_execute("UPDATE `viewall` SET `numberView`=".($viewAllWeb['numberView'] + 1)."  WHERE dateView='$timePrDate'");
+        }else {
+            // nếu view của hôm nay chưa tồn tại thì thêm vào
+            pdo_execute("INSERT INTO `viewall`(`numberView`, `dateView`) VALUES (1,'$timePrDate')");
+        }
+        // cập nhập lại view chương cho truyện
+        pdo_execute("UPDATE `truyen` SET `viewTruyen`=$viewAll WHERE idTruyen=$idTruyen");
+        // thêm thời gian nhận view của chương
+        $_SESSION['view'] = $timePr;
     }
 
 ?>

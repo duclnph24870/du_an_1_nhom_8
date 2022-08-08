@@ -1,6 +1,6 @@
 <?php
     // Lấy ra mảng truyện hiển thi phần biên tập viên đề cử 8 item
-    $deCu = select_all("SELECT * FROM truyen ORDER BY deCu DESC LIMIT 0,8");
+    $deCu = select_all("SELECT * FROM truyen WHERE trangThai=1 ORDER BY deCu DESC LIMIT 0,8");
 
     // lấy ra mảng truyện đang đọc, 5 item
     if (isset($_SESSION['user'])) {
@@ -8,19 +8,19 @@
     }
 
     // lấy ra truyện mới cập nhập, 8 item
-    $moiCapNhap = select_all("SELECT * FROM truyen ORDER BY dateCapNhap DESC LIMIT 0,8");
+    $moiCapNhap = select_all("SELECT * FROM truyen WHERE trangThai=1 ORDER BY dateCapNhap DESC LIMIT 0,8");
 
     //lấy ra bảng đọc nhiều của tuần
-    $docNhieu = select_all("SELECT * FROM truyen ORDER BY viewTruyen DESC LIMIT 0,10");
+    $docNhieu = select_all("SELECT * FROM truyen WHERE trangThai=1 ORDER BY viewTruyen DESC LIMIT 0,10");
 
     // lấy ra bảng thịnh hành của tuần
-    $thinhHanh = select_all("SELECT * FROM truyen ORDER BY soChuong DESC LIMIT 0,10");
+    $thinhHanh = select_all("SELECT * FROM truyen WHERE trangThai=1 ORDER BY soChuong DESC LIMIT 0,10");
 
     // Đề cử tuần
-    $deCu = select_all("SELECT * FROM truyen ORDER BY deCu DESC LIMIT 0,10");
+    $deCu = select_all("SELECT * FROM truyen WHERE trangThai=1 ORDER BY deCu DESC LIMIT 0,10");
 
     // mới đăng
-    $moiDang = select_all("SELECT * FROM truyen ORDER BY dateTruyen DESC LIMIT 0,8");
+    $moiDang = select_all("SELECT * FROM truyen WHERE trangThai=1 ORDER BY dateTruyen DESC LIMIT 0,8");
 
     // đánh giá điểm cao
     $danhGia = select_all("SELECT * FROM danhgia ORDER BY tongHop DESC LIMIT 0,3");

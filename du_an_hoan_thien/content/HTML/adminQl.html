@@ -8,11 +8,14 @@
     <link rel="icon" href="https://metruyenchu.com/assets/images/logo.png?260329">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/cf5472ea14.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v5.15.4/css/all.css">
     <link rel="stylesheet" href="../CSS/public.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="../CSS/index.css">
     <link rel="stylesheet" href="../CSS/home-content.css">
     <link rel="stylesheet" href="../CSS/product.css">
     <link rel="stylesheet" href="../CSS/admin.css">
+    <link rel="stylesheet" href="../CSS/adminQl.css">
     <link rel="stylesheet" href="../CSS/responsive.css">
 </head>
 <body>
@@ -295,7 +298,7 @@
             </div>
         </div>
 
-        <div class="content">
+        <div class="content adminQl">
             <!-- ===== banner ====== -->
             <div class="banner d-none d-md-block">
                 <div class="banner__img"></div>
@@ -304,114 +307,605 @@
             <div class="container-fluid p-0">
                 <div class="container block-content">
                     <div class="row">
-                        <div class="col-3">
+                        <div class="col-2 px-0">
                             <div class="admin-left">
-                                <div class="admin-left-icon text active">
-                                    <i class="fas fa-user"></i>
+                                <div class="admin-left-icon text">
+                                    <i class="fad fa-abacus"></i>
                                     Thống Kê
                                 </div>
                                 <div class="admin-left-icon text">
-                                    <i class="fas fa-book"></i>
+                                    <i class="fad fa-bell-plus"></i>
                                     Soạn Mới Thông Báo
                                 </div>
                                 <div class="admin-left-icon text">
-                                    <i class="fas fa-bell"></i>
-                                    Câu hỏi
-                                </div>
-                                <div class="admin-left-icon text">
-                                    <i class="fas fa-info-circle"></i>
+                                    <i class="fad fa-users"></i>
                                     Danh Sách User
                                 </div>
                                 <div class="admin-left-icon text">
-                                    <i class="fas fa-cogs"></i>
-                                    Đánh Giá
-                                </div>
-                                <div class="admin-left-icon text">
-                                    <i class="fas fa-comment"></i>
-                                    Bình Luận
+                                    <i class="fad fa-shield"></i>
+                                    Duyệt Truyện
                                 </div>
                                 <a href="product__ql.html" class="admin-left-icon text">
-                                    <i class="fas fa-book-reader"></i>
+                                    <i class="fad fa-books"></i>
                                     Quản Lí Truyện
                                 </a>
                                 <a href="product__ql.html" class="admin-left-icon text">
-                                    <i class="fas fa-book-reader"></i>
+                                    <i class="fad fa-star"></i>
                                     Quản Lí Thể Loại
                                 </a>
                             </div>
                         </div>
-                        <div class="col-9">
+                        <div class="col-10">
                             <div class="admin-right">
                                 <!-- == Thống kê === -->
-                                <div class="admin-right-item active">
+                                <div class="admin-right-item">
                                     <div class="admin-right-item-header">
-                                        <div class="admin-right-item-header-item active">Bình Luận</div>
+                                        <div class="admin-right-item-header-item">Bình Luận</div>
                                         <div class="admin-right-item-header-item">Đánh Giá</div>
                                         <div class="admin-right-item-header-item">User</div>
                                         <div class="admin-right-item-header-item">View</div>
                                     </div>
                                     <div class="admin-right-item-content">
                                         <!-- == thống kê bình luận === -->
-                                        <div class="admin-right-item-content-item active">
-                                            Thống kê bình luận
+                                        <div class="admin-right-item-content-item adminQl-statistical">
+                                            <div class="adminQl-statistical-header">
+                                                Tổng Quan
+                                            </div>
+
+                                            <div class="adminQl-statistical-overview">
+                                                <div class="adminQl-statistical-overview-item">
+                                                    <div class="adminQl-statistical-overview-item-text">
+                                                        Bình Luận Hôm Nay
+                                                        <span class="title">55,000</span>
+                                                    </div>
+                                                    <div class="adminQl-statistical-overview-item-icon green">
+                                                        <i class="fas fa-sun"></i>
+                                                    </div>
+                                                    <div class="adminQl-statistical-overview-item-other">
+                                                        <span class="green">+5%</span> so với hôm qua
+                                                    </div>
+                                                </div>
+                                                <div class="adminQl-statistical-overview-item">
+                                                    <div class="adminQl-statistical-overview-item-text">
+                                                        Bình Luận Tháng Này
+                                                        <span class="title">55,000</span>
+                                                    </div>
+                                                    <div class="adminQl-statistical-overview-item-icon cam">
+                                                        <i class="fas fa-moon-stars"></i>
+                                                    </div>
+                                                    <div class="adminQl-statistical-overview-item-other">
+                                                        <span class="green">+5%</span> so với tháng trước
+                                                    </div>
+                                                </div>
+                                                <div class="adminQl-statistical-overview-item">
+                                                    <div class="adminQl-statistical-overview-item-text">
+                                                        Bình Luận Năm Nay
+                                                        <span class="title">55,000</span>
+                                                    </div>
+                                                    <div class="adminQl-statistical-overview-item-icon vang">
+                                                        <i class="fas fa-planet-moon"></i>
+                                                    </div>
+                                                    <div class="adminQl-statistical-overview-item-other">
+                                                        <span class="green">+5%</span> so với năm trước
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+
+                                            <!-- tháng  -->
+                                            <div class="adminQl-statistical-header mt-5">
+                                                Tháng 
+                                                <select name="" id="">
+                                                    <option value="">8</option>
+                                                    <option value="">9</option>
+                                                    <option value="">10</option>
+                                                </select>
+                                            </div>
+                                            <!-- biểu đồ bình luận -->
+                                            <canvas id="myChartMonthComment" width="400" height="100"></canvas>
+
+                                            <!-- năm  -->
+                                            <div class="adminQl-statistical-header mt-5">
+                                                Năm 
+                                                <select name="" id="">
+                                                    <option value="">2021</option>
+                                                    <option value="">2022</option>
+                                                    <option value="">2023</option>
+                                                </select>
+                                            </div>
+                                            <canvas id="myChartYearComment" width="400" height="100"></canvas>
                                         </div>
                                         <!-- === thống kê đánh giá ==== -->
-                                        <div class="admin-right-item-content-item">
-                                            Thống kê đánh giá
+                                        <div class="admin-right-item-content-item adminQl-statistical">
+                                            <div class="adminQl-statistical-header">
+                                                Tổng Quan
+                                            </div>
+
+                                            <div class="adminQl-statistical-overview">
+                                                <div class="adminQl-statistical-overview-item">
+                                                    <div class="adminQl-statistical-overview-item-text">
+                                                        Bình Luận Hôm Nay
+                                                        <span class="title">55,000</span>
+                                                    </div>
+                                                    <div class="adminQl-statistical-overview-item-icon green">
+                                                        <i class="fas fa-sun"></i>
+                                                    </div>
+                                                    <div class="adminQl-statistical-overview-item-other">
+                                                        <span class="green">+5%</span> so với hôm qua
+                                                    </div>
+                                                </div>
+                                                <div class="adminQl-statistical-overview-item">
+                                                    <div class="adminQl-statistical-overview-item-text">
+                                                        Bình Luận Tháng Này
+                                                        <span class="title">55,000</span>
+                                                    </div>
+                                                    <div class="adminQl-statistical-overview-item-icon cam">
+                                                        <i class="fas fa-moon-stars"></i>
+                                                    </div>
+                                                    <div class="adminQl-statistical-overview-item-other">
+                                                        <span class="green">+5%</span> so với tháng trước
+                                                    </div>
+                                                </div>
+                                                <div class="adminQl-statistical-overview-item">
+                                                    <div class="adminQl-statistical-overview-item-text">
+                                                        Bình Luận Năm Nay
+                                                        <span class="title">55,000</span>
+                                                    </div>
+                                                    <div class="adminQl-statistical-overview-item-icon vang">
+                                                        <i class="fas fa-planet-moon"></i>
+                                                    </div>
+                                                    <div class="adminQl-statistical-overview-item-other">
+                                                        <span class="green">+5%</span> so với năm trước
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+
+                                            <!-- tháng  -->
+                                            <div class="adminQl-statistical-header mt-5">
+                                                Tháng 
+                                                <select name="" id="">
+                                                    <option value="">8</option>
+                                                    <option value="">9</option>
+                                                    <option value="">10</option>
+                                                </select>
+                                            </div>
+                                            <!-- biểu đồ bình luận -->
+                                            <canvas id="myChartMonthDanhGia" width="400" height="100"></canvas>
+
+                                            <!-- năm  -->
+                                            <div class="adminQl-statistical-header mt-5">
+                                                Năm 
+                                                <select name="" id="">
+                                                    <option value="">2021</option>
+                                                    <option value="">2022</option>
+                                                    <option value="">2023</option>
+                                                </select>
+                                            </div>
+                                            <canvas id="myChartYearDanhGia" width="400" height="100"></canvas>
                                         </div>
                                         <!-- === thống kê user ==== -->
-                                        <div class="admin-right-item-content-item">
-                                            Thống kê user
+                                        <div class="admin-right-item-content-item adminQl-statistical">
+                                            <div class="adminQl-statistical-header">
+                                                Tổng Quan
+                                            </div>
+
+                                            <div class="adminQl-statistical-overview">
+                                                <div class="adminQl-statistical-overview-item">
+                                                    <div class="adminQl-statistical-overview-item-text">
+                                                        Bình Luận Hôm Nay
+                                                        <span class="title">55,000</span>
+                                                    </div>
+                                                    <div class="adminQl-statistical-overview-item-icon green">
+                                                        <i class="fas fa-sun"></i>
+                                                    </div>
+                                                    <div class="adminQl-statistical-overview-item-other">
+                                                        <span class="green">+5%</span> so với hôm qua
+                                                    </div>
+                                                </div>
+                                                <div class="adminQl-statistical-overview-item">
+                                                    <div class="adminQl-statistical-overview-item-text">
+                                                        Bình Luận Tháng Này
+                                                        <span class="title">55,000</span>
+                                                    </div>
+                                                    <div class="adminQl-statistical-overview-item-icon cam">
+                                                        <i class="fas fa-moon-stars"></i>
+                                                    </div>
+                                                    <div class="adminQl-statistical-overview-item-other">
+                                                        <span class="green">+5%</span> so với tháng trước
+                                                    </div>
+                                                </div>
+                                                <div class="adminQl-statistical-overview-item">
+                                                    <div class="adminQl-statistical-overview-item-text">
+                                                        Bình Luận Năm Nay
+                                                        <span class="title">55,000</span>
+                                                    </div>
+                                                    <div class="adminQl-statistical-overview-item-icon vang">
+                                                        <i class="fas fa-planet-moon"></i>
+                                                    </div>
+                                                    <div class="adminQl-statistical-overview-item-other">
+                                                        <span class="green">+5%</span> so với năm trước
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+
+                                            <!-- tháng  -->
+                                            <div class="adminQl-statistical-header mt-5">
+                                                Tháng 
+                                                <select name="" id="">
+                                                    <option value="">8</option>
+                                                    <option value="">9</option>
+                                                    <option value="">10</option>
+                                                </select>
+                                            </div>
+                                            <!-- biểu đồ bình luận -->
+                                            <canvas id="myChartMonthUser" width="400" height="100"></canvas>
+
+                                            <!-- năm  -->
+                                            <div class="adminQl-statistical-header mt-5">
+                                                Năm 
+                                                <select name="" id="">
+                                                    <option value="">2021</option>
+                                                    <option value="">2022</option>
+                                                    <option value="">2023</option>
+                                                </select>
+                                            </div>
+                                            <canvas id="myChartYearUser" width="400" height="100"></canvas>
                                         </div>
                                         <!-- === thống kê lượt view==== -->
-                                        <div class="admin-right-item-content-item">
-                                            Thống kê lượt view
+                                        <div class="admin-right-item-content-item adminQl-statistical">
+                                            <div class="adminQl-statistical-header">
+                                                Tổng Quan
+                                            </div>
+
+                                            <div class="adminQl-statistical-overview">
+                                                <div class="adminQl-statistical-overview-item">
+                                                    <div class="adminQl-statistical-overview-item-text">
+                                                        Bình Luận Hôm Nay
+                                                        <span class="title">55,000</span>
+                                                    </div>
+                                                    <div class="adminQl-statistical-overview-item-icon green">
+                                                        <i class="fas fa-sun"></i>
+                                                    </div>
+                                                    <div class="adminQl-statistical-overview-item-other">
+                                                        <span class="green">+5%</span> so với hôm qua
+                                                    </div>
+                                                </div>
+                                                <div class="adminQl-statistical-overview-item">
+                                                    <div class="adminQl-statistical-overview-item-text">
+                                                        Bình Luận Tháng Này
+                                                        <span class="title">55,000</span>
+                                                    </div>
+                                                    <div class="adminQl-statistical-overview-item-icon cam">
+                                                        <i class="fas fa-moon-stars"></i>
+                                                    </div>
+                                                    <div class="adminQl-statistical-overview-item-other">
+                                                        <span class="green">+5%</span> so với tháng trước
+                                                    </div>
+                                                </div>
+                                                <div class="adminQl-statistical-overview-item">
+                                                    <div class="adminQl-statistical-overview-item-text">
+                                                        Bình Luận Năm Nay
+                                                        <span class="title">55,000</span>
+                                                    </div>
+                                                    <div class="adminQl-statistical-overview-item-icon vang">
+                                                        <i class="fas fa-planet-moon"></i>
+                                                    </div>
+                                                    <div class="adminQl-statistical-overview-item-other">
+                                                        <span class="green">+5%</span> so với năm trước
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+
+                                            <!-- tháng  -->
+                                            <div class="adminQl-statistical-header mt-5">
+                                                Tháng 
+                                                <select name="" id="">
+                                                    <option value="">8</option>
+                                                    <option value="">9</option>
+                                                    <option value="">10</option>
+                                                </select>
+                                            </div>
+                                            <!-- biểu đồ bình luận -->
+                                            <canvas id="myChartMonthView" width="400" height="100"></canvas>
+
+                                            <!-- năm  -->
+                                            <div class="adminQl-statistical-header mt-5">
+                                                Năm 
+                                                <select name="" id="">
+                                                    <option value="">2021</option>
+                                                    <option value="">2022</option>
+                                                    <option value="">2023</option>
+                                                </select>
+                                            </div>
+                                            <canvas id="myChartYearView" width="400" height="100"></canvas>
                                         </div>
                                     </div>
                                 </div>
                                 <!-- == soạn thông báo === -->
                                 <div class="admin-right-item">
-                                    <!-- <div class="admin-right-item-header">
-                                        <div class="admin-right-item-header-item active">Đang Đọc</div>
-                                    </div> -->
-                                    <div class="admin-right-item-content">
-                                        Soạn mới thông báo
-                                    </div>
-                                </div>
-                                <!-- === câu hỏi === -->
-                                <div class="admin-right-item">
-                                    <!-- <div class="admin-right-item-header">
-                                        <div class="admin-right-item-header-item active">Đang Đọc</div>
-                                    </div> -->
-                                    <div class="admin-right-item-content">
-                                        Câu hỏi user
-                                    </div>
+                                    <form method="post" id="addNotify-from" class="admin-right-item-content">
+                                        <div class="addNotify-form-block-input">
+                                            <div class="addNotify-form-block-input-text">Tiêu đề</div>
+                                            <input type="text" class="addNotify-form-block-input-title" placeholder="Tiêu Đề Thông Báo">
+                                        </div>
+                                        <div class="gach-ngang"><span>Gửi cho</span></div>
+
+                                        <!-- table user  -->
+                                        <div class="table-list addNotify-user">
+                                            <!-- === header === -->
+                                            <div class="table-list__header">
+                                                <div class="table-list__header-input-block">
+                                                    <input type="text" placeholder="Search User">
+                                                    <i class="fas fa-search"></i>
+                                                </div>
+                                                <div class="checkbox-btn-block d-flex ml-auto">
+                                                    <label for="guiAll" class="guiAll mr-3">
+                                                        <input type="checkbox" name="userAddNotifyCheckbox[]" id="guiAll">
+                                                        Tất Cả
+                                                    </label>            
+                                                    <span class="btn-category block-icon blue checkbox-btn-block-iconCheck">
+                                                        <i class="fa-solid fa-x"></i>
+                                                        <span>Chọn</span>
+                                                        <span>Đóng</span>
+                                                    </span>
+                                                    <span class="btn-category cam btn-allCheck">
+                                                        <span>Chọn Tất Cả</span>
+                                                        <span> Bỏ Chọn Tất Cả</span>
+                                                    </span>
+                                                    <input type="submit" value="Gửi" class="submitAddNotify">
+                                                </div>
+                                            </div>
+
+                                            <!-- === table ==== -->
+                                            <div class="addNotify-userList">
+                                                <div class="addNotify-user-item">
+                                                    <input type="checkbox" name="userAddNotifyCheckbox[]" class="chonCheckBox">
+                                                    Ngọc Đức 
+                                                </div>
+                                                <div class="addNotify-user-item le">
+                                                    <input type="checkbox" name="userAddNotifyCheckbox[]" class="chonCheckBox">
+                                                    Ngọc Đức Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo voluptas, rem eligendi illum nemo eius nihil rerum velit ratione laborum, tenetur eum. Blanditiis voluptate velit, tenetur maiores quaerat aliquam debitis! 
+                                                </div>
+                                                <div class="addNotify-user-item">
+                                                    <input type="checkbox" name="userAddNotifyCheckbox[]" class="chonCheckBox">
+                                                    Ngọc Đức 
+                                                </div>
+                                                <div class="addNotify-user-item">
+                                                    <input type="checkbox" name="userAddNotifyCheckbox[]" class="chonCheckBox">
+                                                    Ngọc Đức 
+                                                </div>
+                                                <div class="addNotify-user-item">
+                                                    <input type="checkbox" name="userAddNotifyCheckbox[]" class="chonCheckBox">
+                                                    Ngọc Đức 
+                                                </div>
+                                                <div class="addNotify-user-item">
+                                                    <input type="checkbox" name="userAddNotifyCheckbox[]" class="chonCheckBox">
+                                                    Ngọc Đức 
+                                                </div>
+                                                <div class="addNotify-user-item">
+                                                    <input type="checkbox" name="userAddNotifyCheckbox[]" class="chonCheckBox">
+                                                    Ngọc Đức Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo voluptas, rem eligendi illum nemo eius nihil rerum velit ratione laborum, tenetur eum. Blanditiis voluptate velit, tenetur maiores quaerat aliquam debitis! 
+                                                </div>
+                                                <div class="addNotify-user-item">
+                                                    <input type="checkbox" name="userAddNotifyCheckbox[]" class="chonCheckBox">
+                                                    Ngọc Đức 
+                                                </div>
+                                                <div class="addNotify-user-item">
+                                                    <input type="checkbox" name="userAddNotifyCheckbox[]" class="chonCheckBox">
+                                                    Ngọc Đức 
+                                                </div>
+                                                <div class="addNotify-user-item">
+                                                    <input type="checkbox" name="userAddNotifyCheckbox[]" class="chonCheckBox">
+                                                    Ngọc Đức 
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="pagination">
+                                            <div class="pagination__item text"></div>
+                                            <div class="pagination__item text active">1</div>
+                                            <div class="pagination__item text">2</div>
+                                            <div class="pagination__item text">3</div>
+                                            <div class="pagination__item text">4</div>
+                                            <div class="pagination__item text">></div>
+                                            <input type="text" value="1" class="pagination__input">
+                                            <input type="submit" value="Go" class="pagination__submit">
+                                        </div>
+
+                                    </form>
                                 </div>
                                 <!-- === Danh sách user === -->
                                 <div class="admin-right-item">
-                                    <!-- <div class="admin-right-item-header">
-                                        <div class="admin-right-item-header-item active">Đang Đọc</div>
-                                    </div> -->
                                     <div class="admin-right-item-content">
-                                        Danh sách user
+                                        <div class="table-list userList">
+                                            <!-- === header === -->
+                                            <div class="table-list__header">
+                                                <div class="table-list__header-input-block">
+                                                    <input type="text" placeholder="Search User">
+                                                    <i class="fas fa-search"></i>
+                                                </div>
+                                                <div class="checkbox-btn-block d-flex ml-auto">
+                                                    <span class="btn-category block-icon blue checkbox-btn-block-iconCheck">
+                                                        <i class="fa-solid fa-x"></i>
+                                                        <span>Chọn</span>
+                                                        <span>Đóng</span>
+                                                    </span>
+                                                    <span class="btn-category cam btn-allCheck">
+                                                        <span>Chọn Tất Cả</span>
+                                                        <span> Bỏ Chọn Tất Cả</span>
+                                                    </span>
+                                                    <input type="submit" value="Xóa các mục đã chọn" class="btn-category block-icon toi checkbox-btn-block-delete">                                        
+                                                    <div class="adminQl-content-addUser text" title="Thêm user">
+                                                        <i class="fad fa-user-plus"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- === table ==== -->
+                                            <table class="table-list__content">
+                                                <thead>
+                                                    <th>ID <i class="fad fa-sort-up"></i></th>
+                                                    <th>Username <i class="fad fa-sort-up"></i></th>
+                                                    <th>Email<i class="fad fa-sort-up"></i></th>
+                                                    <th>Quyền Hạn <i class="fad fa-sort-up"></i></th>
+                                                    <th class="active">Ngày Gia Nhập <i class="fad fa-sort-up"></i></th>
+                                                    <th>Giới Tính <i class="fad fa-sort-up"></i></th>
+                                                    <th></th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>Ngọc Đức</td>
+                                                        <td>zerotwo13102001@gmail.com</td>
+                                                        <td>Người đăng truyện</td>
+                                                        <td>13/10/2001 00:13:12</td>
+                                                        <td>Nam</td>
+                                                        <td>
+                                                            <a href="" class="editTruyen" title="Khóa tài khoản"><i class="fad fa-lock-alt"></i></a>
+                                                            <a href="" class="addChuong" title="Bổ nhiệm"><i class="fad fa-sort-size-up"></i></a>
+                                                            <a href="" class="addChuong" title="Giáng chức"><i class="fad fa-sort-size-down-alt"></i></a>
+                                                            <input type="checkbox" name="userCheckbox[]" class="chonCheckBox">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>Ngọc Đức</td>
+                                                        <td>zerotwo13102001@gmail.com</td>
+                                                        <td>Người đăng truyện</td>
+                                                        <td>13/10/2001 00:13:12</td>
+                                                        <td>Nam</td>
+                                                        <td>
+                                                            <a href="" class="editTruyen" title="Khóa tài khoản"><i class="fad fa-lock-alt"></i></a>
+                                                            <a href="" class="addChuong" title="Bổ nhiệm"><i class="fad fa-sort-size-up"></i></a>
+                                                            <a href="" class="addChuong" title="Giáng chức"><i class="fad fa-sort-size-down-alt"></i></a>
+                                                            <input type="checkbox" name="userCheckbox[]" class="chonCheckBox">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>Ngọc Đức</td>
+                                                        <td>zerotwo13102001@gmail.com</td>
+                                                        <td>Người đăng truyện</td>
+                                                        <td>13/10/2001 00:13:12</td>
+                                                        <td>Nam</td>
+                                                        <td>
+                                                            <a href="" class="editTruyen" title="Khóa tài khoản"><i class="fad fa-lock-alt"></i></a>
+                                                            <a href="" class="addChuong" title="Bổ nhiệm"><i class="fad fa-sort-size-up"></i></a>
+                                                            <a href="" class="addChuong" title="Giáng chức"><i class="fad fa-sort-size-down-alt"></i></a>
+                                                            <input type="checkbox" name="userCheckbox[]" class="chonCheckBox">
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="pagination">
+                                                <div class="pagination__item text"></div>
+                                                <div class="pagination__item text active">1</div>
+                                                <div class="pagination__item text">2</div>
+                                                <div class="pagination__item text">3</div>
+                                                <div class="pagination__item text">4</div>
+                                                <div class="pagination__item text">></div>
+                                                <input type="text" value="1" class="pagination__input">
+                                                <input type="submit" value="Go" class="pagination__submit">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <!-- === Đánh giá === -->
+                                <!-- == duyệt truyện === -->
                                 <div class="admin-right-item">
-                                    <!-- <div class="admin-right-item-header">
-                                        <div class="admin-right-item-header-item active">Đang Đọc</div>
-                                    </div> -->
                                     <div class="admin-right-item-content">
-                                        tổng hợp Đánh giá
-                                    </div>
-                                </div>
-                                <!-- ==== bình luận === -->
-                                <div class="admin-right-item">
-                                    <!-- <div class="admin-right-item-header">
-                                        <div class="admin-right-item-header-item active">Đang Đọc</div>
-                                    </div> -->
-                                    <div class="admin-right-item-content">
-                                        Tổng hợp bình luận
+                                        <!-- list  -->
+                                        <div class="adminQl-censorship">
+                                            <!-- item  -->
+                                            <div class="adminQl-censorship-item">
+                                                <div class="adminQl-censorship-item-left">
+                                                    <img src="../IMG/150 (1).jpg" alt="">
+                                                    <div>
+                                                        <a href="" class="adminQl-censorship-item-title text">Đấu phá thương khung</a>
+                                                        <a href="" class="adminQl-censorship-item-userUp text">
+                                                            <i class="fad fa-cloud-upload-alt mr-2"></i>
+                                                            Ngọc Đức
+                                                        </a>
+                                                        <span class="adminQl-censorship-item-timeUp"><i class="fad fa-clock mr-2"></i> 13 giờ trước</span>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="adminQl-censorship-item-right">
+                                                    <a href="" class="adminQl-censorship-item-right-duyet adminQl-censorship-item-btn">Thông Qua</a>
+                                                    <a href="" class="adminQl-censorship-item-right-delete adminQl-censorship-item-btn">Xóa</a>
+                                                </div>
+                                            </div>
+                                            <div class="adminQl-censorship-item">
+                                                <div class="adminQl-censorship-item-left">
+                                                    <img src="../IMG/150 (1).jpg" alt="">
+                                                    <div>
+                                                        <a href="" class="adminQl-censorship-item-title text">Đấu phá thương khung</a>
+                                                        <a href="" class="adminQl-censorship-item-userUp text">
+                                                            <i class="fad fa-cloud-upload-alt mr-2"></i>
+                                                            Ngọc Đức
+                                                        </a>
+                                                        <span class="adminQl-censorship-item-timeUp"><i class="fad fa-clock mr-2"></i> 13 giờ trước</span>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="adminQl-censorship-item-right">
+                                                    <a href="" class="adminQl-censorship-item-right-duyet adminQl-censorship-item-btn">Thông Qua</a>
+                                                    <a href="" class="adminQl-censorship-item-right-delete adminQl-censorship-item-btn">Xóa</a>
+                                                </div>
+                                            </div>
+                                            <div class="adminQl-censorship-item">
+                                                <div class="adminQl-censorship-item-left">
+                                                    <img src="../IMG/150 (1).jpg" alt="">
+                                                    <div>
+                                                        <a href="" class="adminQl-censorship-item-title text">Đấu phá thương khung</a>
+                                                        <a href="" class="adminQl-censorship-item-userUp text">
+                                                            <i class="fad fa-cloud-upload-alt mr-2"></i>
+                                                            Ngọc Đức
+                                                        </a>
+                                                        <span class="adminQl-censorship-item-timeUp"><i class="fad fa-clock mr-2"></i> 13 giờ trước</span>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="adminQl-censorship-item-right">
+                                                    <a href="" class="adminQl-censorship-item-right-duyet adminQl-censorship-item-btn">Thông Qua</a>
+                                                    <a href="" class="adminQl-censorship-item-right-delete adminQl-censorship-item-btn">Xóa</a>
+                                                </div>
+                                            </div>
+                                            <div class="adminQl-censorship-item">
+                                                <div class="adminQl-censorship-item-left">
+                                                    <img src="../IMG/150 (1).jpg" alt="">
+                                                    <div>
+                                                        <a href="" class="adminQl-censorship-item-title text">Đấu phá thương khung</a>
+                                                        <a href="" class="adminQl-censorship-item-userUp text">
+                                                            <i class="fad fa-cloud-upload-alt mr-2"></i>
+                                                            Ngọc Đức
+                                                        </a>
+                                                        <span class="adminQl-censorship-item-timeUp"><i class="fad fa-clock mr-2"></i> 13 giờ trước</span>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="adminQl-censorship-item-right">
+                                                    <a href="" class="adminQl-censorship-item-right-duyet adminQl-censorship-item-btn">Thông Qua</a>
+                                                    <a href="" class="adminQl-censorship-item-right-delete adminQl-censorship-item-btn">Xóa</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="pagination">
+                                            <div class="pagination__item text"></div>
+                                            <div class="pagination__item text active">1</div>
+                                            <div class="pagination__item text">2</div>
+                                            <div class="pagination__item text">3</div>
+                                            <div class="pagination__item text">4</div>
+                                            <div class="pagination__item text">></div>
+                                            <input type="text" value="1" class="pagination__input">
+                                            <input type="submit" value="Go" class="pagination__submit">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -467,7 +961,7 @@
                 <input type="submit" value="Gửi đi" class="admin-chat-submit">
             </form>
         <div class="admin-chat-icon">
-            <div class="admin-chat-icon-item"><i class="fas fa-comment"></i></div>
+            <div class="admin-chat-icon-item"><i class="fas fa"></i></div>
             <div class="admin-chat-icon-item"><i class="fas fa-times"></i></div>
         </div>
     </div>
@@ -602,16 +1096,201 @@
             </div>
         </div>
     </div>
+    <!-- modal add user  -->
+    <div class="modal-addUser">
+        <div class="addUser-overlay"></div>
+        <div class="addUser-content">
+            <form method="post" id="adminQl-form-addUser" class="modal__form-content-main modal-addUser-from">
+                <div class="modal__form-input">
+                    <div class="modal__form-input-text">
+                        <span>Email</span>
+                    </div>
+                    <input type="email" name="registerEmail" placeholder="Nhập Email">
+                    <span class="modal__form-err"></span>
+                </div>
+                <div class="modal__form-input">
+                    <div class="modal__form-input-text">
+                        <span>Username</span>
+                    </div>
+                    <input type="text" name="registerUsername" placeholder="Nhập username">
+                    <span class="modal__form-err"></span>
+                </div>
+                <div class="modal__form-input">
+                    <div class="modal__form-input-text">
+                        <span>Password</span>
+                    </div>
+                    <input type="text" name="registerPass" placeholder="Nhập Mật Khẩu">
+                    <span class="modal__form-err"></span>
+                </div>
+
+                <div class="modal__form-input">
+                    <div class="modal__form-input-text">
+                        <span>Nhập Lại Password</span>
+                    </div>
+                    <input type="text" name="registerPassConfirmed" placeholder="Nhập Mật Khẩu">
+                    <span class="modal__form-err"></span>
+                </div>
+
+                <input type="submit" value="Thêm User" class="modal__form-submit">
+            </form>
+        </div>
+    </div>
 </div>
     <script src="../JS/public.js"></script>
-    <script src="../JS/login.js"></script>
     <script src="../JS/validation.js"></script>
+    <script src="../JS/adminQl.js"></script>
 
 
     <script>
         nextPageAdmin('div.admin-left-icon','.admin-right-item','.admin-right-item-header-item','.admin-right-item-content-item');
-        nextPage('.admin-right-item-content-read-delete-icon','.admin-right-item-content-read-delete-content');
-        // checkAll('.admin-right-item-notify','.checkbox-btn-block-iconCheck','.btn-allCheck','input[name="notifyCheckBox"]','.checkbox-btn-block-delete');
+        checkAll('.userList','.checkbox-btn-block-iconCheck','.btn-allCheck','input[name="userCheckbox[]"]','.checkbox-btn-block-delete');
+        checkAll('.addNotify-user','.checkbox-btn-block-iconCheck','.btn-allCheck','input[name="userAddNotifyCheckbox[]"]','.submitAddNotify');
+        modalShow('.adminQl-content-addUser','.modal-addUser','.addUser-overlay');
+    </script>
+    <script>
+        validator({
+            form: '#adminQl-form-addUser',
+            errSelector: '.modal__form-err',
+            rules: [
+                validator.isRequied('input[name="registerEmail"]','Trường email không được bỏ trống'),
+                validator.isEmail('input[name="registerEmail"]','Bạn chưa nhập đúng định dạng email'),
+                validator.maxLength('input[name="registerEmail"]',100,'Email dài tối đa 100 ký tự'),
+                validator.isRequied('input[name="registerPass"]','Trường mật khẩu không được bỏ trống'),
+                validator.maxLength('input[name="registerPass"]',30,'Trường mật khẩu dài không quá 50 ký tự'),
+                validator.maxLength('input[name="registerUsername"]',30,'Username dài không quá 50 ký tự'),
+                validator.isRequied('input[name="registerUsername"]','Không được bỏ trống Username'),
+                validator.minLength('input[name="registerUsername"]',5,'Username dài tối thiểu 5 ký tự'),
+                validator.minLength('input[name="registerPass"]',5,'Mật khẩu dài tối thiểu 5 ký tự'),
+                validator.isRequied('input[name="registerPassConfirmed"]','Trường này không được bỏ trống'),
+                validator.confirmed('input[name="registerPassConfirmed"]',function () {
+                return document.querySelector('#adminQl-form-addUser input[name="registerPass"]').value;
+                },'Mật khẩu nhập lại không chính xác'),
+            ]
+        });
+    </script>
+    <!-- chart coment -->
+
+    <script>
+        // chart comment month
+        const myChartMonthComment = document.getElementById('myChartMonthComment').getContext('2d');
+        const chartMonthComment = new Chart(myChartMonthComment, {
+            type: 'line',
+            data: {
+                labels: [
+                0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30
+                ],
+                datasets: [{
+                    label: 'Tháng 8',
+                    data: [65, 59, 80, 81, 56, 55, 40],
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+                            },
+            options: {}
+        });
+        // chart comment year
+        const myChartYearComment = document.getElementById('myChartYearComment').getContext('2d');
+        const chartYearComment = new Chart(myChartYearComment, {
+            type: 'bar',
+            data: {
+                labels: [
+                0,1,2,3,4,5,6,7,8,9,10,11,12
+                ],
+                datasets: [{
+                    label: 'Năm 2021',
+                    data: [65, 59, 80, 81, 56, 55, 40],
+                    backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 205, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(201, 203, 207, 0.2)'
+                    ],
+                    borderColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(255, 159, 64)',
+                    'rgb(255, 205, 86)',
+                    'rgb(75, 192, 192)',
+                    'rgb(54, 162, 235)',
+                    'rgb(153, 102, 255)',
+                    'rgb(201, 203, 207)'
+                    ],
+                    borderWidth: 1
+                }]
+                            },
+            options: {
+                scales: {
+                y: {
+                    beginAtZero: true
+                }
+                }
+            },
+        });
+    </script>
+
+    <!-- dánh giá  -->
+    <script>
+        // chart comment month
+        const myChartMonthDanhGia = document.getElementById('myChartMonthDanhGia').getContext('2d');
+        const chartMonthDanhGia = new Chart(myChartMonthDanhGia, {
+            type: 'line',
+            data: {
+                labels: [
+                0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30
+                ],
+                datasets: [{
+                    label: 'Tháng 8',
+                    data: [65, 59, 80, 81, 56, 55, 40],
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+                            },
+            options: {}
+        });
+        // chart DanhGia year
+        const myChartYearDanhGia = document.getElementById('myChartYearDanhGia').getContext('2d');
+        const chartYearDanhGia = new Chart(myChartYearDanhGia, {
+            type: 'bar',
+            data: {
+                labels: [
+                0,1,2,3,4,5,6,7,8,9,10,11,12
+                ],
+                datasets: [{
+                    label: 'Năm 2021',
+                    data: [65, 59, 80, 81, 56, 55, 40],
+                    backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 205, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(201, 203, 207, 0.2)'
+                    ],
+                    borderColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(255, 159, 64)',
+                    'rgb(255, 205, 86)',
+                    'rgb(75, 192, 192)',
+                    'rgb(54, 162, 235)',
+                    'rgb(153, 102, 255)',
+                    'rgb(201, 203, 207)'
+                    ],
+                    borderWidth: 1
+                }]
+                            },
+            options: {
+                scales: {
+                y: {
+                    beginAtZero: true
+                }
+                }
+            },
+        });
     </script>
 </body>
 </html>

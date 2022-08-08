@@ -1,7 +1,7 @@
 <?php 
     require "$DAO_URL/pdo.php";
     require "$DAO_URL/sign_up_login/login.php";
-    $sql = "SELECT * FROM truyen";      
+    $sql = "SELECT * FROM truyen WHERE trangThai=1";      
     $truyen = select_all ($sql);   
     date_default_timezone_set('Asia/Ho_Chi_Minh');
     $timePr = date("Y-m-d H:i:s");  
@@ -590,118 +590,6 @@
             <!-- ==== btn show event === -->
             <div class="btn-showEvent"><i class="fas fa-moon-cloud"></i></div>
         <?php endif?> 
-
-        <!-- =======modal====== -->
-        <div class="modal">
-            <div class="modal__overlay"></div>
-            <div class="modal__content">
-                <div class="modal__form modal__form-login">
-                    <div class="modal__form-header">
-                        <div class="modal__form-header-text active" id="modal__form-login">Đăng Nhập</div>
-                        <div class="modal__form-header-text" id="modal__form-register">Đăng Ký</div>
-                    </div>
-                    <div class="modal__form-content">
-                        <form method="post" id="formLogin" class="modal__form-content-main">
-                            <input type="text" name="link" value="<?=$link?>" hidden>
-                            <div class="modal__form-input">
-                                <div class="modal__form-input-text">
-                                    <span style="color: var(--text)">Email</span>
-                                </div>
-                                <input type="email" placeholder="Nhập Email" name="login__email">
-                                <span class="modal__form-err"></span>
-                            </div>
-                            <div class="modal__form-input form-err">
-                                <div class="modal__form-input-text">
-                                    <span>Password</span>
-                                    <span class="modal__form-forgotPassBtn">Quên Mật Khẩu?</span>
-                                </div>
-                                <input type="password" placeholder="Nhập Mật Khẩu" name="login__pass">
-                                <span class="modal__form-err"></span>
-                            </div>
-
-                            <div class="modal__form-checkbox">
-                                <input type="checkbox" id="modal__form-checkbox" hidden>
-                                <label for="modal__form-checkbox" class="modal__form-checkbox">
-                                    <div class="modal__form-checkbox-block">
-                                        <i class="fas fa-check"></i>
-                                    </div>
-                                    <div class="modal__form-checkbox-text">Nhớ Mật Khẩu?</div>
-                                </label>
-                            </div>
-
-                            <input type="submit" name="submitLogin" value="Đăng Nhập" class="modal__form-submit">
-                        </form>
-                    </div>
-                    <div class="modal__form-footer">
-                        <div class="modal__form-footer-text">Bạn chưa có tài khoản?</div>
-                        <label for="modal__form-register">Đăng Ký Ngay</label>
-                    </div>
-                </div>
-                <div class="modal__form modal__form-register">
-                    <div class="modal__form-header">
-                        <div class="modal__form-header-text active" id="modal__form-register">Đăng Ký</div>
-                        <div class="modal__form-header-text" id="modal__form-login">Đăng Nhập</div>
-                    </div>
-                    <div class="modal__form-content">
-                        <form method="POST" id="formRegister" action="<?=$DAO_URL?>/sign_up_login/register.php" class="modal__form-content-main">
-                            <div class="modal__form-input">
-                                <div class="modal__form-input-text">
-                                    <span>Email</span>
-                                </div>
-                                <input type="email" name="registerEmail" placeholder="Nhập Email">
-                                <span class="modal__form-err"></span>
-                            </div>
-                            <div class="modal__form-input">
-                                <div class="modal__form-input-text">
-                                    <span>Username</span>
-                                </div>
-                                <input type="text" name="registerUsername" placeholder="Nhập username">
-                                <span class="modal__form-err"></span>
-                            </div>
-                            <div class="modal__form-input">
-                                <div class="modal__form-input-text">
-                                    <span>Password</span>
-                                </div>
-                                <input type="text" name="registerPass" placeholder="Nhập Mật Khẩu">
-                                <span class="modal__form-err"></span>
-                            </div>
-
-                            <div class="modal__form-input">
-                                <div class="modal__form-input-text">
-                                    <span>Nhập Lại Password</span>
-                                </div>
-                                <input type="text" name="registerPassConfirmed" placeholder="Nhập Mật Khẩu">
-                                <span class="modal__form-err"></span>
-                            </div>
-                            <input type="text" name="link" hidden value="<?=$link?>">
-
-                            <input type="submit" value="Đăng Ký" name="registerSubmit" class="modal__form-submit">
-                        </form>
-                    </div>
-                    <div class="modal__form-footer">
-                        <div class="modal__form-footer-text">Bạn đã có tài khoản?</div>
-                        <label for="modal__form-login">Đăng Nhâp Ở Đây</label>
-                    </div>
-                </div>
-                <div class="modal__form modal__form-forgotPass">
-                    <div class="modal__form-header">
-                        <div class="modal__form-header-text">Quên Mật Khẩu</div>
-                    </div>
-                    <div class="modal__form-content">
-                        <form action="<?=$DAO_URL?>/phpMailler/forget_pass.php" method="post" id="forgotPass" class="modal__form-content-main">
-                            <div class="modal__form-input">
-                                <div class="modal__form-input-text">
-                                    <span style="color: var(--text)">Email</span>
-                                </div>
-                                <input type="email" name="forgotPass-email" placeholder="Nhập Email">
-                                <span class="modal__form-err"></span>
-                            </div>
-                            <input type="submit" value="Lấy Mật Khẩu" class="modal__form-submit">
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- function này sẽ bật khi sự kiện diễn ra -->
@@ -763,45 +651,6 @@
             }
         }
     ?>
-
-    <!-- validate form  -->
-    <script>
-        validator({
-            form: '#formLogin',
-            errSelector: '.modal__form-err',
-            rules: [
-                validator.isRequied('input[name="login__email"]','Trường email không được bỏ trống'),
-                validator.isEmail('input[name="login__email"]','Bạn chưa nhập đúng định dạng email'),
-                validator.isRequied('input[name="login__pass"]','Trường mật khẩu không được bỏ trống'),
-                validator.minLength('input[name="login__pass"]',5,'Mật khẩu dài tối thiểu 5 ký tự'),
-            ]
-        });
-
-        validator({
-            form: '#formRegister',
-            errSelector: '.modal__form-err',
-            rules: [
-                validator.isRequied('input[name="registerEmail"]','Trường email không được bỏ trống'),
-                validator.isEmail('input[name="registerEmail"]','Bạn chưa nhập đúng định dạng email'),
-                validator.isRequied('input[name="registerPass"]','Trường mật khẩu không được bỏ trống'),
-                validator.isRequied('input[name="registerUsername"]','Không được bỏ trống Username'),
-                validator.minLength('input[name="registerUsername"]',5,'Username dài tối thiểu 5 ký tự'),
-                validator.minLength('input[name="registerPass"]',5,'Mật khẩu dài tối thiểu 5 ký tự'),
-                validator.isRequied('input[name="registerPassConfirmed"]','Trường này không được bỏ trống'),
-                validator.confirmed('input[name="registerPassConfirmed"]',function () {
-                return document.querySelector('#formRegister input[name="registerPass"]').value;
-                },'Mật khẩu nhập lại không chính xác'),
-            ]
-        });
-        validator({
-            form: '#forgotPass',
-            errSelector: '.modal__form-err',
-            rules: [
-                validator.isRequied('input[name="forgotPass-email"]','Trường email không được bỏ trống'),
-                validator.isEmail('input[name="forgotPass-email"]','Bạn chưa nhập đúng định dạng email'),
-            ]
-        });
-    </script>
     <script>
         nextPage('.header__search-input','.header__search-history');
         const newArr = phpArrayJs(<?=json_encode($truyen)?>);

@@ -24,9 +24,6 @@
     <div class="col-12">
         <div class="admin-right">
             <div class="admin-right-item active admin-right-item-productList">
-                <!-- <div class="admin-right-item-header">
-                    <div class="admin-right-item-header-item active">Sửa Truyện</div>
-                </div> -->
                 <div class="admin-right-item-content">
                     <!-- === Sửa truyện === -->
                     <form method="POST" action="editTruyen/updateTruyen.php" enctype="multipart/form-data" id="product__qlAdd" class="admin-right-item-content-item active">

@@ -1,0 +1,293 @@
+.adminQl .container.block-content {
+    width: 98% !important;
+    max-width: unset !important;
+}
+
+.adminQl-content-addUser {
+    font-size: 1.5rem;
+    padding: 15px ;
+}
+
+.modal-addUser {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    animation: show ease-in 0.2s;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-addUser.active {
+    display: flex;
+}
+
+.addUser-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.addUser-content {
+    position: absolute;
+    z-index: 3;
+}
+
+.modal-addUser-from {
+    display: block;
+    background-color: var(--white);
+    padding: 30px;
+    border-radius: 3px;
+    box-shadow: 0 0 10px rgba(0, 0,0,0.2);
+}
+
+.addNotify-form-block-input {
+    width: 100%;
+    padding-left: 0;
+}
+
+.addNotify-form-block-input-text {
+    font-size: 2rem;
+    color: var(--text);
+}
+
+.addNotify-form-block-input-title {
+    outline: none;
+    border: 1px solid #eee;
+    padding: 12px;
+    font-size: 1.5rem;
+    margin: 12px 0;
+    width: 100%;
+    padding-left: 20px;
+    border-radius: 30px;
+    transition: 0.2s;
+    color: #999;
+}
+
+.addNotify-form-block-input-title:focus {
+    color: var(--text);
+}
+
+.addNotify-userList {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.addNotify-user-item {
+    width: 20%;
+    padding: 15px;
+    font-size: 1.5rem;
+    overflow-x: hidden;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.addNotify-user-item .chonCheckBox {
+    min-width: 15px;
+    margin-right: 5px;
+}
+
+.submitAddNotify {
+    padding: 2px 10px;
+    font-size: 1.1rem;
+    border: 1px solid var(--primary);
+    background: none;
+    color: var(--primary);
+    border-radius: 3px;
+    transition: 0.2s;
+}
+
+.submitAddNotify:hover {
+    background-color: var(--primary);
+    color: var(--white);
+}
+
+.gach-ngang {
+    font-size: 2rem;
+    color: #999;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid #999;
+    margin: 15px 0;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.gach-ngang span {
+    background-color: var(--white);
+    margin-bottom: -14px;
+    padding: 0 15px;
+}
+
+.guiAll {
+    display: flex;
+    align-items: center;
+    font-size: 1.7rem;
+    color: var(--text);
+    margin-bottom: 0;
+}
+
+.guiAll input {
+    margin-right: 10px;
+}
+
+.adminQl-censorship {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.adminQl-censorship-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 12px 0;
+}
+
+.adminQl-censorship-item-left {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.adminQl-censorship-item-left img {
+    width: 32px;
+    height: 42px;
+    border-radius: 3px;
+    box-shadow: 0 0 10px rgba(0, 0,0,0.2);
+    margin-right: 15px;
+}
+
+.adminQl-censorship-item-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text);
+    display: block;
+}
+
+.adminQl-censorship-item-userUp {
+    font-size: 1.3rem;
+    color: #999;
+    margin-right: 10px;
+}
+
+.adminQl-censorship-item-timeUp {
+    font-size: 1.3rem;
+    color: #999;
+}
+
+.adminQl-censorship-item-right {
+    display: flex;
+    align-items: center;
+}
+
+.adminQl-censorship-item-btn {
+    min-width: 100px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    padding: 5px 12px;
+    transition: 0.2s;
+}
+
+.adminQl-censorship-item-right-duyet {
+    color: var(--white) !important;
+    background-color: var(--primary);
+    border-radius: 3px;
+    margin-right: 10px;
+}
+
+.adminQl-censorship-item-right-duyet:hover {
+    transform: scale(1.1);
+}
+
+.adminQl-censorship-item-right-delete {
+    color: #999;
+    border: 1px solid transparent;
+    border-radius: 3px;
+}
+
+.adminQl-censorship-item-right-delete:hover {
+    border-color: #999;
+    color: #999;
+}
+
+.adminQl-statistical {
+    flex-wrap: wrap;
+    margin-top: 0;
+}
+
+.adminQl-statistical-header {
+    width: 100%;
+    font-size: 2.3rem;
+    margin: 10px;
+    font-weight: 600;
+}
+
+.adminQl-statistical-header select {
+    margin-left: 12px;
+    outline: none;
+    font-size: 1.6rem;
+    padding: 2px 5px;
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+.adminQl-statistical-overview {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.adminQl-statistical-overview-item {
+    width: 32%;
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #eee;
+    margin: 0 7px;
+}
+
+.adminQl-statistical-overview-item-text {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.6rem;
+}
+
+.adminQl-statistical-overview-item-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color);
+    color: var(--white);
+    font-size: 1.5rem;
+}
+
+.adminQl-statistical-overview-item-other {
+    width: 100%;
+    font-size: 1.5rem;
+    margin-top: 8px;
+}
+
+.adminQl-statistical-overview-item-other span {
+    color: var(--color);
+    margin-right: 3px;
+    font-weight: 600;
+}

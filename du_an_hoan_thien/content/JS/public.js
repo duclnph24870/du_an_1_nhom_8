@@ -22,7 +22,7 @@ function showModifier (selectorModifier,titleText,contentText) {
     titleElment.innerText = titleText;
     contentEl.innerText = contentText;
     setTimeout(function(){
-        modifier.style.right = '-500px';   
+        modifier.style.right = '-1000px';   
     },2000);
 }
 
@@ -123,12 +123,12 @@ function editChuong (selectorPlus,selectorMinus,selectorValue,step,selectorObjEd
 }
 
 // next page có page con
-function nextPageAdmin (selectorBtn,selectorContent,selectorBtnChild = '',selectorContentChild = '') {
+function nextPageAdmin (selectorBtn,selectorContent,selectorBtnChild = '',selectorContentChild = '',nameVariableI,nameVariableJ) {
     const btnElements = document.querySelectorAll(selectorBtn);
     const contents = document.querySelectorAll(selectorContent);
 
-    let viTriI = sessionStorage.getItem('i');
-    let viTriJ = sessionStorage.getItem('j');
+    let viTriI = sessionStorage.getItem(nameVariableI);
+    let viTriJ = sessionStorage.getItem(nameVariableJ);
 
     if (viTriI && viTriJ) {
         //page cha
@@ -167,9 +167,9 @@ function nextPageAdmin (selectorBtn,selectorContent,selectorBtnChild = '',select
     for (let i = 0; i< btnElements.length;i++) {
 
         btnElements[i].onclick = () => {
-            sessionStorage.setItem('i',i); // lưu lại vị trí của page cha
-            if (!sessionStorage.getItem('j')) {
-                sessionStorage.setItem('j',0); // nếu j không tồn tại thì mặc định j = 0
+            sessionStorage.setItem(nameVariableI,i); // lưu lại vị trí của page cha
+            if (!sessionStorage.getItem(nameVariableJ)) {
+                sessionStorage.setItem(nameVariableJ,0); // nếu j không tồn tại thì mặc định j = 0
             }
 
                 for (let j = 0; j < btnElements.length;j++) {
@@ -186,8 +186,10 @@ function nextPageAdmin (selectorBtn,selectorContent,selectorBtnChild = '',select
                         btnChild[k].classList.remove('active');
                         contentChild[k].classList.remove('active');
                     }
-                    btnChild[0].classList.add('active');
-                    contentChild[0].classList.add('active');
+                    if (btnChild[0]) {
+                        btnChild[0].classList.add('active');
+                        contentChild[0].classList.add('active');
+                    }
                 }
         }
 
@@ -197,7 +199,7 @@ function nextPageAdmin (selectorBtn,selectorContent,selectorBtnChild = '',select
 
             for (let j = 0; j < btnChilds.length;j++) {
                 btnChilds[j].onclick = () => {
-                    sessionStorage.setItem('j',j); // lưu lại vị trí của page con
+                    sessionStorage.setItem(nameVariableJ,j); // lưu lại vị trí của page con
                     for (let k = 0; k < btnChilds.length;k++) {
                         btnChilds[k].classList.remove('active');
                         contentChilds[k].classList.remove('active');
@@ -667,7 +669,6 @@ function clickArrange (selectorBlock,selectorBtns,callback,callbackShow,options)
             options.arrange = function () {
                 callback(options.mainArr,typeBtn,nameColumn1);
             }
-            
             phanTrang(callbackShow,opitionShow);
         }
         btnEls[i].onclick = () => {

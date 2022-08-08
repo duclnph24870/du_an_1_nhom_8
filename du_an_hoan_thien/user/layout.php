@@ -1,6 +1,6 @@
 <?php 
     require "$DAO_URL/sign_up_login/login.php";
-    $sql = "SELECT * FROM truyen";      
+    $sql = "SELECT * FROM truyen WHERE trangThai=1";      
     $truyen = select_all ($sql);
     date_default_timezone_set('Asia/Ho_Chi_Minh');
     $timePr = date("Y-m-d H:i:s");   

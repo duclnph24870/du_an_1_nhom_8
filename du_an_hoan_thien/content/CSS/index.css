@@ -286,10 +286,23 @@
     width: 725px;
     right: -155px;
     top: calc(100% + 0px);
+    max-height: 350px;
+    overflow-y: scroll;
     left: unset;
     list-style: none;
     padding: 12px 0;
     padding-bottom: 0;
+}
+
+.header__notify-content-main::-webkit-scrollbar {
+    width: 10px;
+    background-color: rgba(183, 138, 40,0.1);
+    border-radius: 5px;
+}
+
+.header__notify-content-main::-webkit-scrollbar-thumb {
+    background-color: rgba(183, 138, 40,0.7);
+    border-radius: 5px;
 }
 
 .header__notify::before {
