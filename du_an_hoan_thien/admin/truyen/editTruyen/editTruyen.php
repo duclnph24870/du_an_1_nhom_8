@@ -19,6 +19,8 @@
 <link rel="stylesheet" href="<?=$CONTENT_URL?>/CSS/admin.css">
 <script src="<?=$CONTENT_URL?>/JS/public.js"></script>
 <script src="<?=$CONTENT_URL?>/JS/validateFile.js"></script>
+<script src="https://cdn.tiny.cloud/1/n0w3znccmbe1olsksfz3ey52m36uf38jf2xhnh66xkcn7smy/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
 
 <div class="row">
     <div class="col-12">
@@ -57,7 +59,7 @@
                         </div>
                         <div class="admin-right-item-content-item-input">
                             <div>Giới Thiệu Ngắn</div>
-                            <textarea name="gioiThieu" id="" cols="30" rows="5" class="w-100"><?=$gioiThieu?></textarea>
+                            <textarea name="gioiThieu" id="editTruyenGioiThieu" cols="30" rows="5" class="w-100"><?=$gioiThieu?></textarea>
                             <span class="addProduct-message"></span>
                         </div>
                         <div class="admin-right-item-content-item-select">
@@ -175,4 +177,16 @@
             ],
         });
     })
+</script>
+
+<!-- timce  -->
+<script>
+    tinymce.init({
+        selector: 'textarea#editTruyenGioiThieu',
+        plugins: 'a11ychecker advcode casechange export formatpainter image editimage linkchecker autolink lists checklist media mediaembed pageembed permanentpen powerpaste table advtable tableofcontents tinycomments tinymcespellchecker',
+        toolbar: 'a11ycheck addcomment showcomments casechange checklist code export formatpainter image editimage pageembed permanentpen table tableofcontents',
+        toolbar_mode: 'floating',
+        tinycomments_mode: 'embedded',
+        tinycomments_author: 'Author name',
+    });
 </script>

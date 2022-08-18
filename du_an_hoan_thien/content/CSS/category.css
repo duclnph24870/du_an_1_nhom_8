@@ -61,6 +61,15 @@
     position: relative;
 }
 
+.filter__category-item.filter__category-item-numberChuong input {
+    font-size: 1.3rem;
+    max-width: 70px;
+    padding-left: 5px;
+    outline: none;
+    border-radius: 3px;
+    border: 1px solid #eee;
+}
+
 .category__filter-item.active:hover .category__filter-update {
     display: block;
 }

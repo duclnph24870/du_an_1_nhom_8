@@ -14,6 +14,9 @@
         'tinhTrang' => isset($_GET['tinhTrang']),
     ];
 
+    // lấy ra dữ liệu của số chương
+    $checkNumberChuong = isset($_GET['startChuong']) && isset($_GET['endChuong']) && ((int)$_GET['startChuong'] < (int)$_GET['endChuong']);
+
     $arrFillterValue = [];
     foreach ($arrFillter as $k => $item) {
         if ($item) {
@@ -35,6 +38,14 @@
         $sqlFillter['keyword'] = "( tenTruyen LIKE '%".$arrFillterValue['keyword']."%' OR tacGia LIKE '%".$arrFillterValue['keyword']."%' )";
     }
 
+    // thêm câu lệnh lọc chương vào mảng lọc
+    if ($checkNumberChuong) {
+        $startNumberChuong = (int)$_GET['startChuong'];
+        $endNumberChuong = (int)$_GET['endChuong'];
+        $sqlChuongNumber = "(soChuong >= ".$startNumberChuong." AND soChuong <= ".$endNumberChuong.")";
+        $sqlFillter['numberChuong'] = $sqlChuongNumber;
+    }
+
     $sqlSelect = "";
     if (count($sqlFillter) > 0) {
         $sqlSelect = "SELECT * FROM truyen WHERE trangThai=1 AND ";
@@ -45,7 +56,6 @@
         $sqlSelect = "SELECT * FROM truyen WHERE trangThai=1"; 
     }
 
-    // echo trim($sqlSelect,' AND ');
     $sqlSelectTruyen = trim($sqlSelect,' AND ');
     $truyen = select_all($sqlSelectTruyen);
 
@@ -76,6 +86,16 @@
                                     <input type="text" hidden value="<?=$_GET['keyword']?>" name="keyword">
                                 <?php endif?>
                             </div>
+
+                            <div class="filter__category-item filter__category-item-numberChuong">
+                                <div class="filter__category-title title">Số Chương</div>
+                                <div class="d-flex align-items-center">
+                                    <input type="number" name="startChuong" value="" placeholder="Start">
+                                    <div class="mx-3" style="font-size: 1.5rem;">=></div>
+                                    <input type="number" name="endChuong" value="" placeholder="End">
+                                </div>
+                            </div>
+
                             <div class="filter__category-item filter__category-item-theLoai">
                                 <div class="filter__category-title title">Thể Loại</div>
                                 <input type="radio" name="nhom1" value="-1" id="theLoai__0" hidden>

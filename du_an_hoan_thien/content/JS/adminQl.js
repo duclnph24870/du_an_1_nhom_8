@@ -800,7 +800,6 @@ function showListCensorship (numberPagination,options) {
 }
 
 function showListUserNoti (numberPagination,options) {
-    console.log('hello')
     const listEl1 = document.querySelector(options.selectorList);
     if (options.arrange) {
         options.arrange();

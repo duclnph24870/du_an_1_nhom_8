@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="<?=$CONTENT_URL?>/CSS/admin.css">
 <script src="<?=$CONTENT_URL?>/JS/public.js"></script>
 <script src="<?=$CONTENT_URL?>/JS/validation.js"></script>
+<script src="https://cdn.tiny.cloud/1/n0w3znccmbe1olsksfz3ey52m36uf38jf2xhnh66xkcn7smy/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 
 <div class="row">
     <div class="col-12">
@@ -54,7 +55,7 @@
 
                             <div class="admin-right-item-content-item-input">
                                 <div>Nội Dung</div>
-                                <textarea name="noiDung" placeholder="Nhập vào nội dung chương" id="" cols="30" rows="10" class="w-100"><?=$chuongEdit['noiDung']?></textarea>
+                                <textarea name="noiDung" placeholder="Nhập vào nội dung chương" id="editChuongText" cols="30" rows="10" class="w-100"><?=$chuongEdit['noiDung']?></textarea>
                                 <span class="addChuong-message"></span>
                             </div>
                             <input type="text" name="idTruyen" value="<?=$idTruyen?>" hidden>
@@ -190,4 +191,15 @@
 
 <script>
     checkAll('.chuongList','.checkbox-btn-block-iconCheck','.btn-allCheck','input[name="chuongCheckBox[]"]','.checkbox-btn-block-delete');
+</script>
+
+<script>
+    tinymce.init({
+        selector: 'textarea#editChuongText',
+        plugins: 'a11ychecker advcode casechange export formatpainter image editimage linkchecker autolink lists checklist media mediaembed pageembed permanentpen powerpaste table advtable tableofcontents tinycomments tinymcespellchecker',
+        toolbar: 'a11ycheck addcomment showcomments casechange checklist code export formatpainter image editimage pageembed permanentpen table tableofcontents',
+        toolbar_mode: 'floating',
+        tinycomments_mode: 'embedded',
+        tinycomments_author: 'Author name',
+    });
 </script>
